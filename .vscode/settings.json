@@ -3,7 +3,9 @@
     "*.ejs": "html",
     "*.tsx": "typescriptreact",
     "stdlib.h": "c",
-    "queue.h": "c"
+    "queue.h": "c",
+    "boolean.h": "c",
+    "mesinkar.h": "c"
   },
   "C_Cpp_Runner.cCompilerPath": "gcc",
   "C_Cpp_Runner.cppCompilerPath": "g++",
