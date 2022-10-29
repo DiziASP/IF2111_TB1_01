@@ -4,8 +4,8 @@
 #ifndef __MESINKATA_H__
 #define __MESINKATA_H__
 
-#include "boolean.h"
-#include "mesinkar.h"
+#include "../Boolean/boolean.h"
+#include "../Mesinkarakter/mesinkar.h"
 
 #define NMax 50
 #define BLANK ' '
