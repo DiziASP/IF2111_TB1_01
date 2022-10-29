@@ -6,11 +6,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
-// #include "../ADT/boolean.h"
-// #include "../ADT/Array/array.h"
-// #include "../ADT/Mesinkarakter/mesinkar.h"
-// #include "../ADT/Mesinkata/mesinkata.h"
-// #include "../ADT/Queue/queue.h"
+#include "../ADT/Boolean/boolean.h"
+#include "../ADT/Array/array.h"
+#include "../ADT/Mesinkarakter/mesinkar.h"
+#include "../ADT/Mesinkata/mesinkata.h"
+#include "../ADT/Queue/queue.h"
 
 /* *** Definisi Fungsi dan Prosedur *** */
 
