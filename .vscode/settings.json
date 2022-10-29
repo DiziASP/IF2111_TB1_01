@@ -1,0 +1,8 @@
+{
+    "files.associations": {
+        "*.ejs": "html",
+        "*.tsx": "typescriptreact",
+        "stdlib.h": "c",
+        "queue.h": "c"
+    }
+}
