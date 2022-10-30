@@ -1,3 +1,5 @@
+/* File: bnmo.c */
+/* Implementasi fungsi dan prosedur Game BNMO */
 #include "bnmo.h"
 
 /* ***  Fungsi Utama BNMO *** */
@@ -14,7 +16,7 @@ void MAINMENU()
         switch (command)
         {
         case 1:
-            printf("STARTGAME()");
+            // STARTGAME();
             break;
         case 2:
             printf("LOADGAME()");
@@ -77,17 +79,20 @@ void HELP();
 /* F.S. Menampilkan list bantuan */
 
 /* Implementasi Fungsi Bantuan */
-/* Menampilkan Welcome Screen */
+
 void WELCOMESCREEN()
 {
+    char *res;
+    char *filename = "src/ASCIIArt/welcome.txt";
+    STARTWORDFILE(filename);
 
-    char *welcomeText = "src/ASCIIArt/welcome.txt";
-    char read_string[255];
-    FILE *fp = NULL;
-    fp = fopen(welcomeText, "r");
-    if (fp != NULL)
-        while (fgets(read_string, sizeof(read_string), fp) != NULL)
+    if (!IsEOP())
+    {
+        while (!EndWord)
         {
-            printf("%s", read_string);
+            res = WordToString(currentWord);
+            printf("%s\n", res);
+            ADVWORD();
         }
+    }
 }

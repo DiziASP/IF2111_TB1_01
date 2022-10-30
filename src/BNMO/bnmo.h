@@ -6,14 +6,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+#include <time.h>
 #include "../ADT/Boolean/boolean.h"
-#include "../ADT/Array/array.h"
-#include "../ADT/Mesinkarakter/mesinkar.h"
-#include "../ADT/Mesinkata/mesinkata.h"
-#include "../ADT/Queue/queue.h"
+#include "../ADT/Mesin/mesinkar.h"
+#include "../ADT/Mesin/mesinkata.h"
 
+/* *** Initial State dari BNMO *** */
 /* *** Definisi Fungsi dan Prosedur *** */
-
 /* Menampilkan Main Menu BNMO */
 void MAINMENU();
 /* I.S. Sembarang */
@@ -76,6 +75,7 @@ void HELP();
 /* F.S. Menampilkan list bantuan */
 
 /* ***  Fungsi dan Prosedur Bantuan (Miscellaneous) *** */
+/* Menampilkan Welcome Screen */
 void WELCOMESCREEN();
 
 #endif
