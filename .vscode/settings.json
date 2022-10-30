@@ -5,9 +5,13 @@
     "stdlib.h": "c",
     "queue.h": "c",
     "boolean.h": "c",
+<<<<<<< HEAD
     "mesinkar.h": "c",
     "math.h": "c",
     "mesinkata.h": "c"
+=======
+    "mesinkar.h": "c"
+>>>>>>> a8f120b79db3a8318a5b0d670c90394b9acf9554
   },
   "C_Cpp_Runner.cCompilerPath": "gcc",
   "C_Cpp_Runner.cppCompilerPath": "g++",
