@@ -29,7 +29,7 @@ void MAINMENU()
             break;
         }
         printf("Command: ");
-        scanf("%s", &command);
+        scanf("%d", &command);
     }
 }
 
