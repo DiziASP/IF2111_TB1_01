@@ -1,24 +1,10 @@
 {
-  "files.associations": {
-    "*.ejs": "html",
-    "*.tsx": "typescriptreact",
-    "stdlib.h": "c",
-    "queue.h": "c",
-    "boolean.h": "c",
-<<<<<<< HEAD
-    "mesinkar.h": "c",
-    "math.h": "c",
-    "mesinkata.h": "c"
-=======
-    "mesinkar.h": "c"
->>>>>>> a8f120b79db3a8318a5b0d670c90394b9acf9554
-  },
+  "C_Cpp_Runner.msvcBatchPath": "C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Auxiliary/Build/vcvarsall.bat",
   "C_Cpp_Runner.cCompilerPath": "gcc",
   "C_Cpp_Runner.cppCompilerPath": "g++",
   "C_Cpp_Runner.debuggerPath": "gdb",
   "C_Cpp_Runner.cStandard": "",
   "C_Cpp_Runner.cppStandard": "",
-  "C_Cpp_Runner.msvcBatchPath": "C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Auxiliary/Build/vcvarsall.bat",
   "C_Cpp_Runner.useMsvc": false,
   "C_Cpp_Runner.warnings": [
     "-Wall",
