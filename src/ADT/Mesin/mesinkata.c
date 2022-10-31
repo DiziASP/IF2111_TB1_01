@@ -1,56 +1,33 @@
 /* File: mesinkata.h */
-/* Definisi Mesin Kata: Model Modifikasi File Eksternal */
+/* Definisi Mesin Kata: Model Modifikasi Mesin Kata Versi 2 File Eksternal */
 
 #include "../Boolean/boolean.h"
 #include "mesinkata.h"
 
 /* State Mesin Kata */
-boolean EndWord;
+
 Word currentWord;
 
 void IgnoreBlanks()
 {
-    while (currentChar == NEWLINE)
+    while (currentChar == NEWLINE || currentChar == BLANK && !EOP)
     {
-        ADV();
+        ADVFILE();
     }
 }
 /* Mengabaikan satu atau beberapa BLANK
    I.S. : currentChar sembarang
    F.S. : currentChar ≠ BLANK atau currentChar = MARK */
 
-void STARTWORD()
-{
-    START();
-    if (currentChar == MARK)
-    {
-        EndWord = true;
-    }
-    else
-    {
-        IgnoreBlanks();
-        EndWord = false;
-        CopyWord();
-    }
-}
-/* I.S. : currentChar sembarang
-   F.S. : EndWord = true, dan currentChar = MARK;
-          atau EndWord = false, currentWord adalah kata yang sudah diakuisisi,
-          currentChar karakter pertama sesudah karakter terakhir kata */
-
 void STARTWORDFILE(char *filename)
 {
     STARTFILE(filename);
     IgnoreBlanks();
-    if (currentChar == MARK)
+    if (!EOP)
     {
-        EndWord = true;
     }
-    else
-    {
-        EndWord = false;
-        CopyWord();
-    }
+
+    CopyWord();
 }
 
 /* Versi Input dari File Eksternal */
@@ -62,13 +39,10 @@ void STARTWORDFILE(char *filename)
 void ADVWORD()
 {
     IgnoreBlanks();
-    if (IsEOP())
-    {
-        EndWord = true;
-    }
-    else
+    if (!EOP)
     {
         CopyWord();
+        IgnoreBlanks();
     }
 }
 /* I.S. : currentChar adalah karakter pertama kata yang akan diakuisisi
@@ -79,12 +53,11 @@ void ADVWORD()
 
 void CopyWord()
 {
-    int i;
-    i = 0;
-    while (currentChar != MARK && currentChar != NEWLINE && i < NMax && !IsEOP())
+    int i = 0;
+    while (currentChar != MARK && currentChar != NEWLINE && i < NMax && !EOP)
     {
         currentWord.TabWord[i] = currentChar;
-        ADV();
+        ADVFILE();
         i++;
     }
     currentWord.Length = i;
