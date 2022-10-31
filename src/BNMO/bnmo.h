@@ -10,8 +10,14 @@
 #include "../ADT/Boolean/boolean.h"
 #include "../ADT/Mesin/mesinkar.h"
 #include "../ADT/Mesin/mesinkata.h"
+#include "../ADT/Mesin/charmachine.h"
+#include "../ADT/Mesin/wordmachine.h"
+#include "../ADT/Array/array.h"
 
 /* *** Initial State dari BNMO *** */
+extern ArrayDin gamesList;
+extern ArrayDin history;
+
 /* *** Definisi Fungsi dan Prosedur *** */
 /* Menampilkan Main Menu BNMO */
 void MAINMENU();

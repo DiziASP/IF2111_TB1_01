@@ -1,6 +1,6 @@
+/* File: array.c */
+/* Implementasi ADT Dinamis Array */
 #include "array.h"
-#include <stdio.h>
-#include <stdlib.h>
 
 /**
  * Konstruktor
@@ -9,11 +9,11 @@
  */
 ArrayDin MakeArrayDin()
 {
-    ArrayDin array;
-    array.A = (ElType *)malloc(InitialSize * sizeof(ElType));
-    array.Capacity = InitialSize;
-    array.Neff = 0;
-    return array;
+    ArrayDin Arr;
+    Arr.A = (ElType *)malloc(InitialSize * sizeof(ElType));
+    Arr.Capacity = InitialSize;
+    Arr.Neff = 0;
+    return Arr;
 }
 
 /**
@@ -23,7 +23,7 @@ ArrayDin MakeArrayDin()
  */
 void DeallocateArrayDin(ArrayDin *array)
 {
-    free((*array).A);
+    free(array->A);
 }
 
 /**
@@ -32,7 +32,7 @@ void DeallocateArrayDin(ArrayDin *array)
  */
 boolean IsEmpty(ArrayDin array)
 {
-    return (array.Neff == 0);
+    return array.Neff == 0;
 }
 
 /**
@@ -41,7 +41,7 @@ boolean IsEmpty(ArrayDin array)
  */
 int Length(ArrayDin array)
 {
-    return (array.Neff);
+    return array.Neff;
 }
 
 /**
@@ -50,7 +50,7 @@ int Length(ArrayDin array)
  */
 ElType Get(ArrayDin array, IdxType i)
 {
-    return (array.A[i]);
+    return array.A[i];
 }
 
 /**
@@ -59,7 +59,7 @@ ElType Get(ArrayDin array, IdxType i)
  */
 int GetCapacity(ArrayDin array)
 {
-    return (array.Capacity);
+    return array.Capacity;
 }
 
 /**
@@ -68,13 +68,35 @@ int GetCapacity(ArrayDin array)
  */
 void InsertAt(ArrayDin *array, ElType el, IdxType i)
 {
-    IdxType j;
-    for (j = Length(*array); j > i; j--)
+    if (array->Neff == array->Capacity)
     {
-        (*array).A[j] = (*array).A[j - 1];
+        array->Capacity *= 2;
+        array->A = (ElType *)realloc(array->A, array->Capacity * sizeof(ElType));
     }
-    (*array).A[i] = el;
-    (*array).Neff += 1;
+    for (int j = array->Neff; j > i; j--)
+    {
+        array->A[j] = array->A[j - 1];
+    }
+    array->A[i] = el;
+    array->Neff++;
+}
+
+/**
+ * Fungsi untuk menambahkan elemen baru di awal array
+ * Prekondisi: array terdefinisi
+ */
+void InsertFirst(ArrayDin *array, ElType el)
+{
+    InsertAt(array, el, 0);
+}
+
+/**
+ * Fungsi untuk menambahkan elemen baru di akhir array
+ * Prekondisi: array terdefinisi
+ */
+void InsertLast(ArrayDin *array, ElType el)
+{
+    InsertAt(array, el, array->Neff);
 }
 
 /**
@@ -83,10 +105,9 @@ void InsertAt(ArrayDin *array, ElType el, IdxType i)
  */
 void DeleteAt(ArrayDin *array, IdxType i)
 {
-    IdxType j;
-    for (j = i; j < (Length(*array) - 1); j++)
+    for (int j = i; j < array->Neff - 1; j++)
     {
-        (*array).A[j] = (*array).A[j + 1];
+        array->A[j] = array->A[j + 1];
     }
-    (*array).Neff -= 1;
+    array->Neff--;
 }

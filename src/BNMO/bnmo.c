@@ -2,13 +2,16 @@
 /* Implementasi fungsi dan prosedur Game BNMO */
 #include "bnmo.h"
 
+/* Inisialisasi State */
+ArrayDin gamesList;
+ArrayDin history;
+
 /* ***  Fungsi Utama BNMO *** */
 
 void MAINMENU()
 {
     int command;
     WELCOMESCREEN(); // Print Welcome Screen
-
     printf("Command: ");
     scanf("%d", &command);
     while (command != 3)
@@ -16,7 +19,7 @@ void MAINMENU()
         switch (command)
         {
         case 1:
-            // STARTGAME();
+            STARTGAME();
             break;
         case 2:
             printf("LOADGAME()");
@@ -33,7 +36,37 @@ void MAINMENU()
     }
 }
 
-void STARTGAME();
+void STARTGAME()
+{
+    /* 1. Read Games List */
+    char *filename = "data/config.txt";
+    gamesList = MakeArrayDin();
+    history = MakeArrayDin();
+    STARTWORDFILE(filename);
+    if (!EOP)
+    {
+        int totalGame = WordToInt(currentWord), i = 0;
+        while (i < totalGame)
+        {
+            ADVWORD();
+            InsertLast(&gamesList, WordToString(currentWord));
+            i++;
+        }
+
+        /* 2. Read History */
+        ADVWORD();
+        int totalHistory = (!EOP ? WordToInt(currentWord) : 0), j = 0;
+        while (j < totalHistory)
+        {
+            ADVWORD();
+            InsertLast(&history, WordToString(currentWord));
+            j++;
+        }
+
+        /* 3. Print Konfig berhasil */
+        printf("File konfigurasi sistem berhasil dibaca. BNMO berhasil dijalankan.\n");
+    }
+}
 /* I.S. Sembarang */
 /* F.S. Game dimulai */
 
@@ -82,17 +115,13 @@ void HELP();
 
 void WELCOMESCREEN()
 {
-    char *res;
     char *filename = "src/ASCIIArt/welcome.txt";
     STARTWORDFILE(filename);
 
-    if (!IsEOP())
+    while (!EOP)
     {
-        while (!EndWord)
-        {
-            res = WordToString(currentWord);
-            printf("%s\n", res);
-            ADVWORD();
-        }
+        printf("%s\n", WordToString(currentWord));
+        ADVWORD();
     }
+    printf("%s\n", WordToString(currentWord)); // LastWord
 }
