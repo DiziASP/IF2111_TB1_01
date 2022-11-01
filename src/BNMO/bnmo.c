@@ -6,22 +6,24 @@
 ArrayDin gamesList;
 ArrayDin history;
 boolean Quit;
+boolean isLoad;
 /* ***  Fungsi Utama BNMO *** */
 
 void MAINMENU()
 {
     char *query;
     Quit = false;
+    isLoad = false;
     WELCOMESCREEN(); // Print Welcome Screen
     printf("Command: ");
     query = readQuery();
     while (!Quit)
     {
-        if (compQuery(query, "START"))
+        if (compQuery(query, "START") && !isLoad)
         {
             STARTGAME("config.txt");
         }
-        else if (compQuery(query, "LOAD"))
+        else if (compQuery(query, "LOAD") && !isLoad)
         {
             LOADGAME();
         }
@@ -36,6 +38,7 @@ void MAINMENU()
         }
         if (!Quit)
         {
+            MMSCREEN();
             printf("Command: ");
             query = readQuery();
         }
@@ -79,6 +82,7 @@ void STARTGAME(char *userFile)
         {
             printf("Save file berhasil dibaca. BNMO berhasil dijalankan.\n");
         }
+        isLoad = true;
     }
 }
 /* I.S. Sembarang */
@@ -152,6 +156,19 @@ void HELP();
 void WELCOMESCREEN()
 {
     char *filename = "src/ASCIIArt/welcome.txt";
+    STARTWORDFILE(filename);
+
+    while (!EOP)
+    {
+        printf("%s\n", WordToString(currentWord));
+        ADVWORD();
+    }
+    printf("%s\n", WordToString(currentWord)); // LastWord
+}
+
+void MMSCREEN()
+{
+    char *filename = "src/ASCIIArt/menu.txt";
     STARTWORDFILE(filename);
 
     while (!EOP)

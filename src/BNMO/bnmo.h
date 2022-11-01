@@ -18,6 +18,8 @@
 extern ArrayDin gamesList;
 extern ArrayDin history;
 extern boolean Quit;
+extern boolean isLoad;
+
 /* *** Definisi Fungsi dan Prosedur *** */
 /* Menampilkan Main Menu BNMO */
 void MAINMENU();
@@ -83,6 +85,9 @@ void HELP();
 /* ***  Fungsi dan Prosedur Bantuan (Miscellaneous) *** */
 /* Menampilkan Welcome Screen */
 void WELCOMESCREEN();
+
+/* Menampilkan MAINMENU Screen */
+void MMSCREEN();
 
 /* Menggabung String */
 void concatStr(char *str1, char *str2, char *str3);
