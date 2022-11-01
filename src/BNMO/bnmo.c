@@ -125,7 +125,7 @@ void CREATEGAME(ArrayDin* arr)
         }
         i++;
     }
-    if (found == false)
+    if (!found)
     {
         InsertLast(arr, input);
         printf("Game berhasil ditambahkan\n");
