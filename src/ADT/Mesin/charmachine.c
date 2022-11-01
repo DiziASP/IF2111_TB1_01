@@ -5,7 +5,6 @@
 
 /* State Mesin */
 char cc;
-boolean EOT;
 
 static FILE *tape;
 static int retval;
@@ -25,11 +24,6 @@ void START()
 void ADV()
 {
     retval = fscanf(tape, "%c", &cc);
-    EOT = (cc == MARK);
-    if (EOT)
-    {
-        fclose(tape);
-    }
 }
 /* Pita dimajukan satu karakter.
    I.S. : Karakter pada jendela = CC, CC != MARK

@@ -84,4 +84,12 @@ void HELP();
 /* Menampilkan Welcome Screen */
 void WELCOMESCREEN();
 
+/* Menggabung String */
+void concatStr(char *str1, char *str2, char *str3);
+
+/* Membandingkan String*/
+boolean compQuery(char *query, char *command);
+
+/* Membaca Query user */
+char *readQuery();
 #endif

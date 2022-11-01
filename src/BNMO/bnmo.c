@@ -10,36 +10,58 @@ ArrayDin history;
 
 void MAINMENU()
 {
-    int command;
+    char *query;
+    boolean Quit = false;
     WELCOMESCREEN(); // Print Welcome Screen
     printf("Command: ");
-    scanf("%d", &command);
-    while (command != 3)
+    query = readQuery();
+    while (!Quit)
     {
-        switch (command)
+        if (compQuery(query, "START"))
         {
-        case 1:
-            STARTGAME();
-            break;
-        case 2:
-            printf("LOADGAME()");
-            break;
-        case 3:
-            printf("LOADGAME()");
-            break;
-        default:
-            printf("Command tidak dikenali. Silahkan masukkan command yang benar.\n");
-            break;
+            STARTGAME("config.txt");
         }
-        printf("Command: ");
-        scanf("%d", &command);
+        else if (compQuery(query, "LOAD"))
+        {
+            /* Next Query */
+            if (cc == MARK)
+            {
+                printf("Input invalid\n");
+            }
+            else
+            {
+                ADVWORDSTD();
+                char *userFile = KataToString(currentKata);
+                STARTGAME(userFile);
+            }
+        }
+        else if (compQuery(query, "QUIT"))
+        {
+            printf("Apakah kamu yakin? Y/N: ");
+            query = readQuery();
+            if (compQuery(query, "Y") || compQuery(query, "YES") || compQuery(query, "y"))
+            {
+                printf("Terima Kasih sudah bermain :D\n");
+                Quit = true;
+            }
+        }
+        else
+        {
+            printf("Command not found. Please try again.\n");
+        }
+        if (!Quit)
+        {
+            printf("Command: ");
+            query = readQuery();
+        }
     }
 }
 
-void STARTGAME()
+void STARTGAME(char *userFile)
 {
     /* 1. Read Games List */
-    char *filename = "data/config.txt";
+    char *filename = (char *)malloc(100 * sizeof(char));
+    concatStr("data/", userFile, filename);
     gamesList = MakeArrayDin();
     history = MakeArrayDin();
     STARTWORDFILE(filename);
@@ -64,7 +86,14 @@ void STARTGAME()
         }
 
         /* 3. Print Konfig berhasil */
-        printf("File konfigurasi sistem berhasil dibaca. BNMO berhasil dijalankan.\n");
+        if (compQuery(userFile, "config.txt"))
+        {
+            printf("File konfigurasi sistem berhasil dibaca. BNMO berhasil dijalankan.\n");
+        }
+        else
+        {
+            printf("Save file berhasil dibaca. BNMO berhasil dijalankan.\n");
+        }
     }
 }
 /* I.S. Sembarang */
@@ -124,4 +153,42 @@ void WELCOMESCREEN()
         ADVWORD();
     }
     printf("%s\n", WordToString(currentWord)); // LastWord
+}
+
+char *readQuery()
+{
+    STARTWORD();
+    return KataToString(currentKata);
+}
+
+boolean compQuery(char *query, char *command)
+{
+    int i = 0;
+    while (query[i] != '\0' && command[i] != '\0')
+    {
+        if (query[i] != command[i])
+        {
+            return false;
+        }
+        i++;
+    }
+    return true;
+}
+
+void concatStr(char *str1, char *str2, char *str3)
+{
+    int i = 0;
+    while (str1[i] != '\0')
+    {
+        str3[i] = str1[i];
+        i++;
+    }
+    int j = 0;
+    while (str2[j] != '\0')
+    {
+        str3[i] = str2[j];
+        i++;
+        j++;
+    }
+    str3[i] = '\0';
 }
