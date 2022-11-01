@@ -23,17 +23,7 @@ void MAINMENU()
         }
         else if (compQuery(query, "LOAD"))
         {
-            /* Next Query */
-            if (cc == MARK)
-            {
-                printf("Input invalid\n");
-            }
-            else
-            {
-                ADVWORDSTD();
-                char *userFile = KataToString(currentKata);
-                STARTGAME(userFile);
-            }
+            LOADGAME();
         }
         else if (compQuery(query, "QUIT"))
         {
@@ -99,7 +89,20 @@ void STARTGAME(char *userFile)
 /* I.S. Sembarang */
 /* F.S. Game dimulai */
 
-void LOADGAME();
+void LOADGAME()
+{
+    /* Next Query */
+    if (cc == MARK)
+    {
+        printf("Input invalid\n");
+    }
+    else
+    {
+        ADVWORDSTD();
+        char *userFile = KataToString(currentKata);
+        STARTGAME(userFile);
+    }
+}
 /* I.S. Sembarang */
 /* F.S. Game dilanjutkan dari file eksternal */
 
