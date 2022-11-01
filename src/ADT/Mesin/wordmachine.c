@@ -7,7 +7,7 @@ Kata currentKata;
 
 void IgnoreBlank()
 {
-    while (cc == BLANK || cc == MARK && !EOT)
+    while (cc == BLANK || cc == MARK)
     {
         ADV();
     }
@@ -20,7 +20,7 @@ void STARTWORD()
 {
     START();
     IgnoreBlank();
-    if (!EOT)
+    if (cc != MARK)
         CopyWordSTD();
 }
 /* I.S. : currentChar sembarang
@@ -31,7 +31,7 @@ void STARTWORD()
 void ADVWORDSTD()
 {
     IgnoreBlank();
-    if (!EOT)
+    if (cc != MARK)
         CopyWordSTD();
 }
 /* I.S. : currentChar adalah karakter pertama kata yang akan diakuisisi
@@ -43,7 +43,7 @@ void ADVWORDSTD()
 void CopyWordSTD()
 {
     int i = 0;
-    while (cc != BLANK && cc != MARK && !EOT)
+    while (cc != BLANK && cc != MARK)
     {
         currentKata.TabWord[i] = cc;
         ADV();

@@ -13,7 +13,6 @@
 
 /* State Mesin */
 extern char cc;
-extern boolean EOT;
 
 void START();
 /* Mesin siap dioperasikan. Pita disiapkan untuk dibaca.

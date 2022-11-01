@@ -4,7 +4,7 @@ int main()
 {
     START();
 
-    while (!EOT)
+    while (cc != MARK)
     {
         printf("%c", cc);
         ADV();
