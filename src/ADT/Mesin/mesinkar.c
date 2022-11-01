@@ -10,30 +10,18 @@ boolean EOP;
 static FILE *pita;
 static int retval;
 
-void START()
-{
-   pita = stdin;
-   ADV();
-}
-/* Mesin siap dioperasikan. Pita disiapkan untuk dibaca.
-   Karakter pertama yang ada pada pita posisinya adalah pada jendela.
-   Pita baca diambil dari stdin.
-   I.S. : sembarang
-   F.S. : currentChar adalah karakter pertama pada pita
-          Jika currentChar != MARK maka EOP akan padam (false)
-          Jika currentChar = MARK maka EOP akan menyala (true) */
-
 void STARTFILE(char *filename)
 {
    pita = fopen(filename, "r");
 
    if (pita != Nil)
    {
-      ADV();
+      ADVFILE();
    }
    else
    {
       printf("File konfigurasi tidak ditemukan\n");
+      EOP = true;
    }
 }
 /* Mesin siap dioperasikan. Pita disiapkan untuk dibaca.
@@ -43,12 +31,12 @@ void STARTFILE(char *filename)
    F.S. : currentChar adalah karakter pertama pada pita
           Jika currentChar != MARK maka EOP akan padam (false)
           Jika currentChar = MARK maka EOP akan menyala (true) */
-void ADV()
+void ADVFILE()
 {
 
    retval = fscanf(pita, "%c", &currentChar);
-   EOP = (currentChar == MARK || retval == EOF);
-   if (IsEOP())
+   EOP = (retval < 0);
+   if (EOP)
    {
       fclose(pita);
    }
