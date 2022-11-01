@@ -13,7 +13,7 @@
 #include "../ADT/Mesin/charmachine.h"
 #include "../ADT/Mesin/wordmachine.h"
 #include "../ADT/Array/array.h"
-
+#include "../ADT/Queue/queue.h"
 /* *** Initial State dari BNMO *** */
 extern ArrayDin gamesList;
 extern ArrayDin history;
