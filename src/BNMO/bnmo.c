@@ -5,13 +5,13 @@
 /* Inisialisasi State */
 ArrayDin gamesList;
 ArrayDin history;
-
+boolean Quit;
 /* ***  Fungsi Utama BNMO *** */
 
 void MAINMENU()
 {
     char *query;
-    boolean Quit = false;
+    Quit = false;
     WELCOMESCREEN(); // Print Welcome Screen
     printf("Command: ");
     query = readQuery();
@@ -27,13 +27,8 @@ void MAINMENU()
         }
         else if (compQuery(query, "QUIT"))
         {
-            printf("Apakah kamu yakin? Y/N: ");
-            query = readQuery();
-            if (compQuery(query, "Y") || compQuery(query, "YES") || compQuery(query, "y"))
-            {
-                printf("Terima Kasih sudah bermain :D\n");
-                Quit = true;
-            }
+            QUITGAME();
+            break;
         }
         else
         {
@@ -135,7 +130,16 @@ void SKIPGAME();
 /* I.S. Sembarang */
 /* F.S. Melewati giliran game dalam queue */
 
-void QUITGAME();
+void QUITGAME()
+{
+    printf("Apakah kamu yakin? Y/N: ");
+    char *cmd = readQuery();
+    if (compQuery(cmd, "Y") || compQuery(cmd, "YES") || compQuery(cmd, "y"))
+    {
+        printf("Terima Kasih sudah bermain :D\n");
+        Quit = true;
+    }
+}
 /* I.S. Sembarang */
 /* F.S. Keluar dari game */
 

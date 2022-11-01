@@ -17,7 +17,7 @@
 /* *** Initial State dari BNMO *** */
 extern ArrayDin gamesList;
 extern ArrayDin history;
-
+extern boolean Quit;
 /* *** Definisi Fungsi dan Prosedur *** */
 /* Menampilkan Main Menu BNMO */
 void MAINMENU();
