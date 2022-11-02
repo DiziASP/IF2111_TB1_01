@@ -97,4 +97,7 @@ boolean compQuery(char *query, char *command);
 
 /* Membaca Query user */
 char *readQuery();
+
+/* Membaca Query creategame*/
+char *readGame();
 #endif

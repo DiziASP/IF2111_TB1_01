@@ -28,6 +28,18 @@ void MAINMENU()
         {
             LOADGAME();
         }
+        else if (compQuery(query, "CREATEGAME"))
+        {
+            CREATEGAME(&gamesList);
+        }
+        else if (compQuery(query, "LISTGAME"))
+        {
+            LISTGAME(gamesList);
+        }
+        else if (compQuery(query, "DELETEGAME"))
+        {
+            DELETEGAME(&gamesList);
+        }
         else if (compQuery(query, "QUIT"))
         {
             QUITGAME();
@@ -110,13 +122,14 @@ void SAVEGAME();
 /* I.S. Sembarang */
 /* F.S. Game disimpan ke file eksternal */
 
-void CREATEGAME(ArrayDin* arr)
+void CREATEGAME(ArrayDin *arr)
 {
     boolean found = false;
     int i = 0;
-    char *input;
     printf("Masukkan nama game yang akan ditambahkan: ");
-    input = readQuery();
+    /* Input Mechanism */
+    char *input = readGame();
+    /* End Input */
     while (i < (*arr).Neff && found == false)
     {
         if (compQuery(input, arr->A[i]))
@@ -134,7 +147,6 @@ void CREATEGAME(ArrayDin* arr)
     {
         printf("Game sudah ada\n");
     }
-
 }
 /* I.S. Sembarang */
 /* F.S. Membuat game baru */
@@ -143,15 +155,23 @@ void LISTGAME(ArrayDin arr)
 {
     int panjang = arr.Neff;
     int i;
-    for(i = 0; i < panjang; i++)
+    printf("List game BNMO :\n");
+    if (IsEmpty(arr))
     {
-        printf("%d. %s\n",i+1, arr.A[i]);
+        printf("Tidak ada game yang tersedia\n");
+    }
+    else
+    {
+        for (i = 0; i < panjang; i++)
+        {
+            printf("%d. %s\n", i + 1, arr.A[i]);
+        }
     }
 }
 /* I.S. Sembarang */
 /* F.S. Menampilkan list game yang tersedia */
 
-void DELETEGAME(ArrayDin* arr)
+void DELETEGAME(ArrayDin *arr)
 {
     int nomor;
     printf("Berikut adalah daftar game yang tersedia \n");
@@ -272,4 +292,19 @@ void concatStr(char *str1, char *str2, char *str3)
         j++;
     }
     str3[i] = '\0';
+}
+
+char *readGame()
+{
+    char *input = (char *)malloc(sizeof(char) * 100);
+    concatStr("", "", input);
+    STARTWORD();
+    while (cc != MARK)
+    {
+        concatStr(input, KataToString(currentKata), input);
+        concatStr(input, " ", input);
+        ADVWORDSTD();
+    }
+    concatStr(input, KataToString(currentKata), input);
+    return input;
 }
