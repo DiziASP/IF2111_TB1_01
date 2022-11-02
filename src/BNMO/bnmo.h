@@ -19,6 +19,7 @@ extern ArrayDin gamesList;
 extern ArrayDin history;
 extern boolean Quit;
 extern boolean isLoad;
+extern Queue nowPlaying;
 
 /* *** Definisi Fungsi dan Prosedur *** */
 /* Menampilkan Main Menu BNMO */
