@@ -8,5 +8,6 @@ int main()
 {
     /* Start the program */
     MAINMENU();
+
     return 0;
 }

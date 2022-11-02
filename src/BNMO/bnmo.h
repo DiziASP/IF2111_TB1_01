@@ -13,7 +13,7 @@
 #include "../ADT/Mesin/charmachine.h"
 #include "../ADT/Mesin/wordmachine.h"
 #include "../ADT/Array/array.h"
-
+#include "../ADT/Queue/queue.h"
 /* *** Initial State dari BNMO *** */
 extern ArrayDin gamesList;
 extern ArrayDin history;
@@ -97,4 +97,7 @@ boolean compQuery(char *query, char *command);
 
 /* Membaca Query user */
 char *readQuery();
+
+/* Membaca Query creategame*/
+char *readGame();
 #endif
