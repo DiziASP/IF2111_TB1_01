@@ -1,0 +1,15 @@
+___  ___  ___   _____  _   _  ___  ___ _____  _   _  _   _ 
+|  \/  | / _ \ |_   _|| \ | | |  \/  ||  ___|| \ | || | | |
+| .  . |/ /_\ \  | |  |  \| | | .  . || |__  |  \| || | | |
+| |\/| ||  _  |  | |  | . ` | | |\/| ||  __| | . ` || | | |
+| |  | || | | | _| |_ | |\  | | |  | || |___ | |\  || |_| |
+\_|  |_/\_| |_/ \___/ \_| \_/ \_|  |_/\____/ \_| \_/ \___/ 
+                                                           
+Pilih Menu: 
+1. CREATEGAME   ::: Mau buat game baru mas/mbak?
+2. LISTGAME     ::: Mau liat gamenya? mau liat lagi?
+3. DELETEGAME   ::: kamu nenyeee? kamu bertenyee tenyee mau apus game
+4. QUEUEGAME    ::: Antrian game kamu disini
+5. SKIPGAME     ::: Skip antrian game kamu
+6. QUIT         ::: Mau cabut kemana maz :(
+7. HELP         ::: Idieh gitu aja ga ngerti (canda :p)

@@ -1,17 +1,19 @@
-#include "../Boolean/boolean.h"
+/* File: array.c */
+/* Definisi ADT Dinamis Array */
 #ifndef __ARRAY_DINAMIK__
 #define __ARRAY_DINAMIK__
 
 // Boolean
-#define boolean unsigned char
-#define true 1
-#define false 0
+#include "../Boolean/boolean.h"
+#include <stdio.h>
+#include <stdlib.h>
 
-#define InitialSize 10
+#define InitialSize 50
 
 typedef int IdxType;
-typedef int ElType;
-typedef struct {
+typedef char *ElType;
+typedef struct
+{
     ElType *A;
     int Capacity;
     int Neff;
@@ -61,6 +63,17 @@ int GetCapacity(ArrayDin array);
  */
 void InsertAt(ArrayDin *array, ElType el, IdxType i);
 
+/**
+ * Fungsi untuk menambahkan elemen baru di awal array
+ * Prekondisi: array terdefinisi
+ */
+void InsertFirst(ArrayDin *array, ElType el);
+
+/**
+ * Fungsi untuk menambahkan elemen baru di akhir array
+ * Prekondisi: array terdefinisi
+ */
+void InsertLast(ArrayDin *array, ElType el);
 /**
  * Fungsi untuk menghapus elemen di index ke-i ArrayDin
  * Prekondisi: array terdefinisi, i di antara 0..Length(array).

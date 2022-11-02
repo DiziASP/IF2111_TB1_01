@@ -1,11 +1,11 @@
-/* File: mesinkata.h */
-/* Definisi Mesin Kata: Model Modifikasi File Eksternal */
+/* File: wordmachine.h */
+/* Definisi Mesin Kata Standar (input STDIN) */
 
-#ifndef __MESINKATA_H__
-#define __MESINKATA_H__
+#ifndef _WORDMACHINE_H
+#define _WORDMACHINE_H
 
 #include "../Boolean/boolean.h"
-#include "mesinkar.h"
+#include "charmachine.h"
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -17,31 +17,30 @@ typedef struct
 {
    char TabWord[NMax]; /* container penyimpan kata, indeks yang dipakai [0..NMax-1] */
    int Length;
-} Word;
+} Kata;
 
 /* State Mesin Kata */
-extern Word currentWord;
+extern Kata currentKata;
 
-void IgnoreBlanks();
+void IgnoreBlank();
 /* Mengabaikan satu atau beberapa BLANK
    I.S. : currentChar sembarang
    F.S. : currentChar ≠ BLANK atau currentChar = MARK */
 
-void STARTWORDFILE();
-/* Versi Input dari File Eksternal */
+void STARTWORD();
 /* I.S. : currentChar sembarang
    F.S. : EndWord = true, dan currentChar = MARK;
           atau EndWord = false, currentWord adalah kata yang sudah diakuisisi,
           currentChar karakter pertama sesudah karakter terakhir kata */
 
-void ADVWORD();
+void ADVWORDSTD();
 /* I.S. : currentChar adalah karakter pertama kata yang akan diakuisisi
    F.S. : currentWord adalah kata terakhir yang sudah diakuisisi,
           currentChar adalah karakter pertama dari kata berikutnya, mungkin MARK
           Jika currentChar = MARK, EndWord = true.
    Proses : Akuisisi kata menggunakan procedure SalinWord */
 
-void CopyWord();
+void CopyWordSTD();
 /* Mengakuisisi kata, menyimpan dalam currentWord
    I.S. : currentChar adalah karakter pertama dari kata
    F.S. : currentWord berisi kata yang sudah diakuisisi;
@@ -49,13 +48,11 @@ void CopyWord();
           currentChar adalah karakter sesudah karakter terakhir yang diakuisisi.
           Jika panjang kata melebihi NMax, maka sisa kata "dipotong" */
 
-int WordToInt();
-/* Mengubah Word menjadi integer
-   I.S. : W terdefinisi
-   F.S. : W berisi integer yang sudah diakuisisi */
+int KataToInt(Kata K);
+/* Mengubah kata menjadi integer */
 
-char *WordToString();
-/* Mengubah Word menjadi string
-   I.S. : W terdefinisi
-   F.S. : W berisi string yang sudah diakuisisi */
+char *KataToString(Kata K);
+/* Mengubah kata menjadi string */
+
+Kata StringToKata(char *str);
 #endif
