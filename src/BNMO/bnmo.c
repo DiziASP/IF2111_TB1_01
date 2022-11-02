@@ -12,9 +12,12 @@ Queue nowPlaying;
 
 void MAINMENU()
 {
+    /* STATE INITIAL */
     char *query;
     Quit = false;
     isLoad = false;
+
+    /* STATE MAIN MENU */
     WELCOMESCREEN(); // Print Welcome Screen
     printf("Command: ");
     query = readQuery();
@@ -177,7 +180,18 @@ void DELETEGAME(ArrayDin *arr)
     printf("Berikut adalah daftar game yang tersedia \n");
     LISTGAME(*arr);
     printf("Masukkan nomor game yang akan dihapus: ");
-    scanf("%d", &nomor);
+
+    /* Read Angka */
+    do
+    {
+        STARTWORD();
+        nomor = KataToInt(currentKata);
+        if (nomor < 0 || nomor > (*arr).Neff)
+        {
+            printf("Input invalid. Silahkan masukkan nomor game yang valid: ");
+        }
+    } while (nomor < 0 || nomor > (*arr).Neff);
+
     if (nomor >= 1 && nomor <= (*arr).Neff)
     {
         if (nomor >= 1 && nomor <= 5)
