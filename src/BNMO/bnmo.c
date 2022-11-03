@@ -45,7 +45,7 @@ void MAINMENU()
         }
         else if (compQuery(query, "SKIPGAME"))
         {
-            SKIPGAME(gamesList);
+            SKIPGAME(&nowPlaying);
         }
         else if (compQuery(query, "QUIT"))
         {
@@ -225,10 +225,9 @@ void PLAYGAME();
 /* I.S. Sembarang */
 /* F.S. Memainkan game yang dipilih */
 
-void SKIPGAME(ArrayDin arr) // ini array dari daftar game pribadi ntar diganti
+void SKIPGAME(Queue *nowPlaying)
 {
-    /* Next Query */
-    if (cc == MARK)
+    if (cc == MARK || KataToInt(currentKata) < 0 || KataToInt(currentKata) > length(*nowPlaying))
     {
         printf("Input invalid\n");
     }
@@ -236,13 +235,13 @@ void SKIPGAME(ArrayDin arr) // ini array dari daftar game pribadi ntar diganti
     {
         ADVWORDSTD();
         int skip = KataToInt(currentKata);
-        
+
         // Nampilin daftar game //
 
-        int panjang = arr.Neff;
+        int panjang = length(*nowPlaying);
         if (skip < panjang)
         {
-            printf("Loading %s ...\n", arr.A[skip]);
+            printf("Loading %s ...\n", (*nowPlaying).buffer[skip]);
         }
         else
         {
