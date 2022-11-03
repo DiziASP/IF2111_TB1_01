@@ -43,6 +43,10 @@ void MAINMENU()
         {
             DELETEGAME(&gamesList);
         }
+        else if (compQuery(query, "SKIPGAME"))
+        {
+            SKIPGAME(gamesList);
+        }
         else if (compQuery(query, "QUIT"))
         {
             QUITGAME();
@@ -221,19 +225,40 @@ void PLAYGAME();
 /* I.S. Sembarang */
 /* F.S. Memainkan game yang dipilih */
 
-void SKIPGAME();
+void SKIPGAME(ArrayDin arr) // ini array dari daftar game pribadi ntar diganti
+{
+    /* Next Query */
+    if (cc == MARK)
+    {
+        printf("Input invalid\n");
+    }
+    else
+    {
+        ADVWORDSTD();
+        int skip = KataToInt(currentKata);
+        
+        // Nampilin daftar game //
+
+        int panjang = arr.Neff;
+        if (skip < panjang)
+        {
+            printf("Loading %s ...\n", arr.A[skip]);
+        }
+        else
+        {
+            printf("Tidak ada permainan lagi dalam daftar game-mu.\n");
+        }
+    }
+}
 /* I.S. Sembarang */
 /* F.S. Melewati giliran game dalam queue */
 
 void QUITGAME()
 {
-    printf("Apakah kamu yakin? Y/N: ");
-    char *cmd = readQuery();
-    if (compQuery(cmd, "Y") || compQuery(cmd, "YES") || compQuery(cmd, "y"))
-    {
-        printf("Terima Kasih sudah bermain :D\n");
-        Quit = true;
-    }
+    printf("Anda keluar dari game BNMO.\n");
+    printf("Bye bye ...\n");
+    Quit = true;
+    
 }
 /* I.S. Sembarang */
 /* F.S. Keluar dari game */
