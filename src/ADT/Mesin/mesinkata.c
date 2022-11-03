@@ -1,38 +1,36 @@
 /* File: mesinkata.h */
-/* Definisi Mesin Kata: Model Akuisisi Versi I */
+/* Definisi Mesin Kata: Model Modifikasi Mesin Kata Versi 2 File Eksternal */
 
 #include "../Boolean/boolean.h"
 #include "mesinkata.h"
 
 /* State Mesin Kata */
-boolean EndWord;
+
 Word currentWord;
 
 void IgnoreBlanks()
 {
-    while (currentChar == BLANK)
+    while (currentChar == NEWLINE || currentChar == BLANK && !EOP)
     {
-        ADV();
+        ADVFILE();
     }
 }
 /* Mengabaikan satu atau beberapa BLANK
    I.S. : currentChar sembarang
    F.S. : currentChar ≠ BLANK atau currentChar = MARK */
 
-void STARTWORD()
+void STARTWORDFILE(char *filename)
 {
-    START();
-    if (currentChar == MARK)
+    STARTFILE(filename);
+    IgnoreBlanks();
+    if (!EOP)
     {
-        EndWord = true;
     }
-    else
-    {
-        IgnoreBlanks();
-        EndWord = false;
-        CopyWord();
-    }
+
+    CopyWord();
 }
+
+/* Versi Input dari File Eksternal */
 /* I.S. : currentChar sembarang
    F.S. : EndWord = true, dan currentChar = MARK;
           atau EndWord = false, currentWord adalah kata yang sudah diakuisisi,
@@ -40,11 +38,8 @@ void STARTWORD()
 
 void ADVWORD()
 {
-    if (currentChar == MARK && EndWord == false)
-    {
-        EndWord = true;
-    }
-    else
+    IgnoreBlanks();
+    if (!EOP)
     {
         CopyWord();
         IgnoreBlanks();
@@ -58,22 +53,14 @@ void ADVWORD()
 
 void CopyWord()
 {
-    int i;
-    i = 0;
-    while (currentChar != MARK && currentChar != BLANK)
+    int i = 0;
+    while (currentChar != MARK && currentChar != NEWLINE && i < NMax && !EOP)
     {
         currentWord.TabWord[i] = currentChar;
-        ADV();
-        i = i + 1;
+        ADVFILE();
+        i++;
     }
-    if (i < NMax)
-    {
-        currentWord.Length = i;
-    }
-    else
-    {
-        currentWord.Length = NMax;
-    }
+    currentWord.Length = i;
 }
 /* Mengakuisisi kata, menyimpan dalam currentWord
    I.S. : currentChar adalah karakter pertama dari kata
@@ -81,9 +68,31 @@ void CopyWord()
           currentChar = BLANK atau currentChar = MARK;
           currentChar adalah karakter sesudah karakter terakhir yang diakuisisi.
           Jika panjang kata melebihi NMax, maka sisa kata "dipotong" */
-/* Mengakuisisi kata, menyimpan dalam currentWord
-   I.S. : currentChar adalah karakter pertama dari kata
-   F.S. : currentWord berisi kata yang sudah diakuisisi;
-          currentChar = BLANK atau currentChar = MARK;
-          currentChar adalah karakter sesudah karakter terakhir yang diakuisisi.
-          Jika panjang kata melebihi NMax, maka sisa kata "dipotong" */
+
+int WordToInt(Word W)
+{
+    int i, result = 0;
+    for (i = 0; i < W.Length; i++)
+    {
+        result = result * 10 + (W.TabWord[i] - '0');
+    }
+    return result;
+}
+/* Mengubah Word menjadi integer
+   I.S. : W terdefinisi
+   F.S. : W berisi integer yang sudah diakuisisi */
+
+char *WordToString(Word W)
+{
+    char *result = (char *)malloc(sizeof(char) * (W.Length + 1));
+    int i;
+    for (i = 0; i < W.Length; i++)
+    {
+        result[i] = W.TabWord[i];
+    }
+    result[W.Length] = '\0';
+    return result;
+}
+/* Mengubah Word menjadi string
+   I.S. : W terdefinisi
+   F.S. : W berisi string yang sudah diakuisisi */

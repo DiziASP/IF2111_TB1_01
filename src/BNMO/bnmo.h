@@ -6,14 +6,22 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+#include <time.h>
 #include "../ADT/Boolean/boolean.h"
+#include "../ADT/Mesin/mesinkar.h"
+#include "../ADT/Mesin/mesinkata.h"
+#include "../ADT/Mesin/charmachine.h"
+#include "../ADT/Mesin/wordmachine.h"
 #include "../ADT/Array/array.h"
-#include "../ADT/Mesinkarakter/mesinkar.h"
-#include "../ADT/Mesinkata/mesinkata.h"
 #include "../ADT/Queue/queue.h"
+/* *** Initial State dari BNMO *** */
+extern ArrayDin gamesList;
+extern ArrayDin history;
+extern boolean Quit;
+extern boolean isLoad;
+extern Queue nowPlaying;
 
 /* *** Definisi Fungsi dan Prosedur *** */
-
 /* Menampilkan Main Menu BNMO */
 void MAINMENU();
 /* I.S. Sembarang */
@@ -76,6 +84,21 @@ void HELP();
 /* F.S. Menampilkan list bantuan */
 
 /* ***  Fungsi dan Prosedur Bantuan (Miscellaneous) *** */
+/* Menampilkan Welcome Screen */
 void WELCOMESCREEN();
 
+/* Menampilkan MAINMENU Screen */
+void MMSCREEN();
+
+/* Menggabung String */
+void concatStr(char *str1, char *str2, char *str3);
+
+/* Membandingkan String*/
+boolean compQuery(char *query, char *command);
+
+/* Membaca Query user */
+char *readQuery();
+
+/* Membaca Query creategame*/
+char *readGame();
 #endif

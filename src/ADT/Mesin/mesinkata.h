@@ -1,14 +1,17 @@
 /* File: mesinkata.h */
-/* Definisi Mesin Kata: Model Akuisisi Versi I */
+/* Definisi Mesin Kata: Model Modifikasi File Eksternal */
 
 #ifndef __MESINKATA_H__
 #define __MESINKATA_H__
 
 #include "../Boolean/boolean.h"
-#include "../Mesinkarakter/mesinkar.h"
+#include "mesinkar.h"
+#include <stdio.h>
+#include <stdlib.h>
 
-#define NMax 50
+#define NMax 255
 #define BLANK ' '
+#define NEWLINE '\n'
 
 typedef struct
 {
@@ -17,7 +20,6 @@ typedef struct
 } Word;
 
 /* State Mesin Kata */
-extern boolean EndWord;
 extern Word currentWord;
 
 void IgnoreBlanks();
@@ -25,7 +27,8 @@ void IgnoreBlanks();
    I.S. : currentChar sembarang
    F.S. : currentChar ≠ BLANK atau currentChar = MARK */
 
-void STARTWORD();
+void STARTWORDFILE();
+/* Versi Input dari File Eksternal */
 /* I.S. : currentChar sembarang
    F.S. : EndWord = true, dan currentChar = MARK;
           atau EndWord = false, currentWord adalah kata yang sudah diakuisisi,
@@ -46,4 +49,13 @@ void CopyWord();
           currentChar adalah karakter sesudah karakter terakhir yang diakuisisi.
           Jika panjang kata melebihi NMax, maka sisa kata "dipotong" */
 
+int WordToInt();
+/* Mengubah Word menjadi integer
+   I.S. : W terdefinisi
+   F.S. : W berisi integer yang sudah diakuisisi */
+
+char *WordToString();
+/* Mengubah Word menjadi string
+   I.S. : W terdefinisi
+   F.S. : W berisi string yang sudah diakuisisi */
 #endif
