@@ -212,7 +212,7 @@ void DELETEGAME(ArrayDin *arr)
 /* I.S. Sembarang */
 /* F.S. Menghapus game yang dipilih */
 
-void QUEUEGAME()
+void QUEUEGAME(ArrayDin arr, Queue * daftargame)
 /* I.S. Sembarang */
 /* F.S. mendaftarkan permainan kedalam list.
    List dalam queue akan hilang ketika pemain menjalankan command QUIT */
@@ -256,9 +256,34 @@ void QUEUEGAME()
     printf("Game berhasil ditambahkan kedalam daftar antrian.\n");
 }
 
-void PLAYGAME();
+void PLAYGAME(Queue * daftargame)
 /* I.S. Sembarang */
 /* F.S. Memainkan game yang dipilih */
+{
+    ElType game_now;
+    dequeue(daftargame,&game_now);
+
+    if(isEmpty(*daftargame))
+    {
+        printf("Daftar Antrian game-mu kosong.\n");
+        return;
+    }
+    
+
+    if(game_now == "Diner DASH")
+    {
+        // Mainkan Diner Dash
+        printf("Loading %s ...\n", game_now);
+        int a = dinnerDash();
+    }else if(game_now == "RNG")
+    {
+        printf("Loading %s ...\n", game_now);
+        int a = RNG();
+    }else
+    {
+        printf("Game %s masih dalam maintenance, belum dapat dimainkan.\n Silahkan pilih game lain.\n");
+    }
+}
 
 void SKIPGAME();
 /* I.S. Sembarang */
