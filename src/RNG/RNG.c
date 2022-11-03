@@ -25,6 +25,7 @@ int binary_exponent(int a, int b)
 
 int random_generate()
 {
+    srand(time(NULL));
     int a = rand() % mod;
     int b = rand() % (1000000007);
 
