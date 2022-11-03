@@ -1,5 +1,5 @@
 #include "RNG.h"
-int mod = 1013; // bilangan prima
+int mod = 107; // bilangan prima
 int binary_exponent(int a, int b)
 {
     int result = 1;
