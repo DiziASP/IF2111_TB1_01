@@ -1,4 +1,5 @@
 #include "dinnerdash.h"
+
 /* File : q_dinerdash.h */
 /* Definisi ADT Queue dengan representasi array secara eksplisit dan alokasi statik */
 /*void hitungMasakan(Queue q, int *ctr){
@@ -11,6 +12,32 @@
     }
 }
 */
+char *query;
+char arg;
+
+void readQuery(char *arg1, char *arg2)
+{
+    
+    START();
+    arg1 = KataToString(currentKata);
+    ADVWORDSTD();
+    char* temp =KataToString(currentKata);
+    arg2 = temp;
+}
+
+boolean compQuery(char *query, char *command)
+{
+    int i = 0;
+    while (query[i] != '\0' && command[i] != '\0')
+    {
+        if (query[i] != command[i])
+        {
+            return false;
+        }
+        i++;
+    }
+    return true;
+}
 
 void faseAwal(int saldo, Queue Order, Queue Cook, Queue Rserve)
 {
@@ -88,9 +115,9 @@ int dinnerDash()
         faseAwal(saldo, Order, Cook, RServe);
         waktu(&Order, &Cook, &RServe, command);
         printf("MASUKKAN COMMAND: ");
-        scanf("%s M%d", command, &id_pesanan);
+        readQuery(query, arg);
         printf("\n\n");
-        if (command[0] == 'C' && command[1] == 'O' && command[2] == 'O' && command[3] == 'K')
+        if (compQuery(query, "COOK"))
         {
             if (length(Cook) <= 5)
             {
@@ -103,7 +130,7 @@ int dinnerDash()
                 printf("Antrian memasak penuh\n");
             }
         }
-        else if (command[0] == 'S' && command[1] == 'E' && command[2] == 'R' && command[3] == 'V' && command[4] == 'E')
+        else if (compQuery(query, "SERVE"))
         {
             if (Order.buffer[IDX_HEAD(Order)].OrderId == id_pesanan)
             {
