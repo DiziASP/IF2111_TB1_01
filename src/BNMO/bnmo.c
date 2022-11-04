@@ -19,7 +19,6 @@ void MAINMENU()
 
     /* STATE MAIN MENU */
     WELCOMESCREEN(); // Print Welcome Screen
-    printf("Command: ");
     query = readQuery();
     while (!Quit)
     {
@@ -52,12 +51,14 @@ void MAINMENU()
         {
             printf("Command not found. Please try again.\n");
         }
-        if (!Quit)
+
+        if (Quit)
+            break;
+        if (isLoad)
         {
             MMSCREEN();
-            printf("Command: ");
-            query = readQuery();
         }
+        query = readQuery();
     }
 }
 
@@ -272,6 +273,8 @@ void MMSCREEN()
 
 char *readQuery()
 {
+
+    printf("Command: ");
     STARTWORD();
     return KataToString(currentKata);
 }
