@@ -268,6 +268,14 @@ void PLAYGAME(Queue * daftargame)
         printf("Daftar Antrian game-mu kosong.\n");
         return;
     }
+    printf("Berikut adalah daftar antrian game-mu\n");
+    IdxType i;
+    int start = 1;
+    for (i = IDX_HEAD(*daftargame); i != IDX_TAIL(*daftargame); i = (i + 1) % CAPACITY)
+    {
+        printf("%d. %s\n",start, (daftargame->buffer+i));
+        start+=1;
+   }
     
 
     if(game_now == "Diner DASH")
