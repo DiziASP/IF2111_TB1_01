@@ -254,10 +254,45 @@ void SKIPGAME(Queue *nowPlaying)
 
 void QUITGAME()
 {
-    printf("Anda keluar dari game BNMO.\n");
-    printf("Bye bye ...\n");
-    Quit = true;
-    
+    printf("Apakah kamu yakin? Y/N\n");
+    char *cmd = readQuery();
+    if (compQuery(cmd, "Y") || compQuery(cmd, "YES") || compQuery(cmd, "y"))
+    {
+        if (!isSave)
+        {
+            printf("Sepertinya kamu belum menyimpan permainan\n");
+            printf("Apakah kamu ingin menyimpan permainan? Y/N\n");
+            char *cmd = readQuery();
+            if (compQuery(cmd, "Y") || compQuery(cmd, "YES") || compQuery(cmd, "y"))
+            {
+                char *filename = (char *)malloc(100 * sizeof(char));
+                printf("Masukkan nama file: ");
+                char *userInput = readQuery();
+
+                while (!ContainStr(userInput, ".txt"))
+                {
+                    printf("Input tidak valid. Ulangi kembali: \n");
+                    userInput = readQuery();
+                }
+                concatStr("data/", userInput, filename);
+                FILE *file = fopen(filename, "w");
+                fprintf(file, "%d\n", Length(gamesList));
+                for (int i = 0; i < Length(gamesList); i++)
+                {
+                    if (i == Length(gamesList) - 1)
+                        fprintf(file, "%s", Get(gamesList, i));
+                    else
+                        fprintf(file, "%s\n", Get(gamesList, i));
+                }
+                fclose(file);
+
+                /* 3. Print Konfig berhasil */
+                printf("Save file berhasil dibuat.\n");
+            }
+        }
+        printf("Terima Kasih sudah bermain :D\n");
+        Quit = true;
+    }
 }
 /* I.S. Sembarang */
 /* F.S. Keluar dari game */
