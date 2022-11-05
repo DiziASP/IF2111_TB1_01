@@ -4,9 +4,9 @@
 
 /* Inisialisasi State */
 ArrayDin gamesList;
-ArrayDin history;
 boolean Quit;
 boolean isLoad;
+boolean isSave;
 Queue nowPlaying;
 /* ***  Fungsi Utama BNMO *** */
 
@@ -16,6 +16,7 @@ void MAINMENU()
     char *query;
     Quit = false;
     isLoad = false;
+    isSave = false;
 
     /* STATE MAIN MENU */
     WELCOMESCREEN(); // Print Welcome Screen
@@ -29,6 +30,10 @@ void MAINMENU()
         else if (compQuery(query, "LOAD") && !isLoad)
         {
             LOADGAME();
+        }
+        else if (compQuery(query, "SAVE"))
+        {
+            SAVEGAME();
         }
         else if (compQuery(query, "CREATEGAME"))
         {
@@ -56,6 +61,7 @@ void MAINMENU()
             break;
         if (isLoad)
         {
+            printf("\n");
             MMSCREEN();
         }
         query = readQuery();
@@ -68,7 +74,6 @@ void STARTGAME(char *userFile)
     char *filename = (char *)malloc(100 * sizeof(char));
     concatStr("data/", userFile, filename);
     gamesList = MakeArrayDin();
-    history = MakeArrayDin();
     STARTWORDFILE(filename);
     if (!EOP)
     {
@@ -80,17 +85,7 @@ void STARTGAME(char *userFile)
             i++;
         }
 
-        /* 2. Read History */
-        ADVWORD();
-        int totalHistory = (!EOP ? WordToInt(currentWord) : 0), j = 0;
-        while (j < totalHistory)
-        {
-            ADVWORD();
-            InsertLast(&history, WordToString(currentWord));
-            j++;
-        }
-
-        /* 3. Print Konfig berhasil */
+        /* 2. Print Konfig berhasil */
         if (compQuery(userFile, "config.txt"))
         {
             printf("File konfigurasi sistem berhasil dibaca. BNMO berhasil dijalankan.\n");
@@ -122,7 +117,35 @@ void LOADGAME()
 /* I.S. Sembarang */
 /* F.S. Game dilanjutkan dari file eksternal */
 
-void SAVEGAME();
+void SAVEGAME()
+{
+    /* 1. Save Games List */
+    ADVWORDSTD();
+    char *userInput = KataToString(currentKata);
+    char *filename = (char *)malloc(100 * sizeof(char));
+    // Check input valid
+    while (!ContainStr(userInput, ".txt"))
+    {
+        printf("Input tidak valid. Ulangi kembali: \n");
+        STARTWORD();
+        userInput = KataToString(currentKata);
+    }
+
+    concatStr("data/", userInput, filename);
+    FILE *file = fopen(filename, "w");
+    fprintf(file, "%d\n", Length(gamesList));
+    for (int i = 0; i < Length(gamesList); i++)
+    {
+        if (i == Length(gamesList) - 1)
+            fprintf(file, "%s", Get(gamesList, i));
+        else
+            fprintf(file, "%s\n", Get(gamesList, i));
+    }
+    fclose(file);
+
+    /* 3. Print Konfig berhasil */
+    printf("Save file berhasil dibuat.\n");
+}
 /* I.S. Sembarang */
 /* F.S. Game disimpan ke file eksternal */
 
@@ -228,10 +251,42 @@ void SKIPGAME();
 
 void QUITGAME()
 {
-    printf("Apakah kamu yakin? Y/N: ");
+    printf("Apakah kamu yakin? Y/N\n");
     char *cmd = readQuery();
     if (compQuery(cmd, "Y") || compQuery(cmd, "YES") || compQuery(cmd, "y"))
     {
+        if (!isSave)
+        {
+            printf("Sepertinya kamu belum menyimpan permainan\n");
+            printf("Apakah kamu ingin menyimpan permainan? Y/N\n");
+            char *cmd = readQuery();
+            if (compQuery(cmd, "Y") || compQuery(cmd, "YES") || compQuery(cmd, "y"))
+            {
+                char *filename = (char *)malloc(100 * sizeof(char));
+                printf("Masukkan nama file: ");
+                char *userInput = readQuery();
+
+                while (!ContainStr(userInput, ".txt"))
+                {
+                    printf("Input tidak valid. Ulangi kembali: \n");
+                    userInput = readQuery();
+                }
+                concatStr("data/", userInput, filename);
+                FILE *file = fopen(filename, "w");
+                fprintf(file, "%d\n", Length(gamesList));
+                for (int i = 0; i < Length(gamesList); i++)
+                {
+                    if (i == Length(gamesList) - 1)
+                        fprintf(file, "%s", Get(gamesList, i));
+                    else
+                        fprintf(file, "%s\n", Get(gamesList, i));
+                }
+                fclose(file);
+
+                /* 3. Print Konfig berhasil */
+                printf("Save file berhasil dibuat.\n");
+            }
+        }
         printf("Terima Kasih sudah bermain :D\n");
         Quit = true;
     }
@@ -324,4 +379,30 @@ char *readGame()
     }
     concatStr(input, KataToString(currentKata), input);
     return input;
+}
+
+boolean ContainStr(char *query, char *comp)
+{
+    int i = 0;
+    int j = 0;
+    while (query[i] != '\0' && comp[j] != '\0')
+    {
+        if (query[i] == comp[j])
+        {
+            i++;
+            j++;
+        }
+        else
+        {
+            i++;
+        }
+    }
+    if (comp[j] == '\0')
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
 }

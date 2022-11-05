@@ -8,8 +8,10 @@ ___  ___  ___   _____  _   _  ___  ___ _____  _   _  _   _
 Pilih Menu: 
 1. CREATEGAME   ::: Mau buat game baru mas/mbak?
 2. LISTGAME     ::: Mau liat gamenya? mau liat lagi?
-3. DELETEGAME   ::: kamu nenyeee? kamu bertenyee tenyee mau apus game
-4. QUEUEGAME    ::: Antrian game kamu disini
-5. SKIPGAME     ::: Skip antrian game kamu
-6. QUIT         ::: Mau cabut kemana maz :(
-7. HELP         ::: Idieh gitu aja ga ngerti (canda :p)
+3. SAVEGAME     ::: Save progress game kamu
+4. DELETEGAME   ::: kamu nenyeee? kamu bertenyee tenyee mau apus game
+5. QUEUEGAME    ::: Antrian game kamu disini
+6. PLAYGAME     ::: Daripada nubes mulu mending main ye ga?
+7. SKIPGAME     ::: Skip antrian game kamu
+8. QUIT         ::: Mau cabut kemana maz :(
+9. HELP         ::: Idieh gitu aja ga ngerti (canda :p)

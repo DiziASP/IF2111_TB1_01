@@ -16,9 +16,9 @@
 #include "../ADT/Queue/queue.h"
 /* *** Initial State dari BNMO *** */
 extern ArrayDin gamesList;
-extern ArrayDin history;
 extern boolean Quit;
 extern boolean isLoad;
+extern boolean isSave;
 extern Queue nowPlaying;
 
 /* *** Definisi Fungsi dan Prosedur *** */
@@ -95,6 +95,9 @@ void concatStr(char *str1, char *str2, char *str3);
 
 /* Membandingkan String*/
 boolean compQuery(char *query, char *command);
+
+/* Melihat apakah query valid */
+boolean ContainStr(char *query, char *comp);
 
 /* Membaca Query user */
 char *readQuery();
