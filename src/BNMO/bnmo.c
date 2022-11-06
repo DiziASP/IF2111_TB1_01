@@ -227,18 +227,37 @@ void PLAYGAME();
 
 void SKIPGAME(Queue *nowPlaying)
 {
+    /* Memeriksa input tidak valid*/
     if (cc == MARK || KataToInt(currentKata) < 0 || KataToInt(currentKata) > length(*nowPlaying))
     {
         printf("Input invalid\n");
     }
+
+    /* Memeriksa input valid*/
     else
     {
         ADVWORDSTD();
         int skip = KataToInt(currentKata);
-
-        // Nampilin daftar game //
-
         int panjang = length(*nowPlaying);
+        
+        /* Menampilkan daftar game milih user */
+        if(isEmpty(*nowPlaying))
+        {
+            printf("Daftar Game-mu kosong\n\n.");
+        }
+        else
+        {
+            printf("Berikut adalah daftar Game-mu\n");
+            IdxType i;
+            int start = 1;
+            for (i = IDX_HEAD(*nowPlaying); i != IDX_TAIL(*nowPlaying); i = (i + 1) % CAPACITY)
+            {
+                printf("%d. %s\n",start, (nowPlaying->buffer+i));
+                start+=1;
+            }
+        }
+        
+        /* Menampilkan output setelah game di-skip */
         if (skip < panjang)
         {
             printf("Loading %s ...\n", (*nowPlaying).buffer[skip]);
@@ -247,6 +266,15 @@ void SKIPGAME(Queue *nowPlaying)
         {
             printf("Tidak ada permainan lagi dalam daftar game-mu.\n");
         }
+
+        /* Melakukan dequeue game yang telah diskip*/
+        ElType val;
+        int del;
+        for (del = 0; del < skip; del++)
+        {
+            dequeue(nowPlaying, val);
+        }
+
     }
 }
 /* I.S. Sembarang */
@@ -286,7 +314,6 @@ void QUITGAME()
                 }
                 fclose(file);
 
-                /* 3. Print Konfig berhasil */
                 printf("Save file berhasil dibuat.\n");
             }
         }
