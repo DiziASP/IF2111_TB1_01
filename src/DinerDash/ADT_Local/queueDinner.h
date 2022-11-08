@@ -11,7 +11,7 @@
 #include <time.h>
 
 #define IDX_UNDEF -1
-#define CAPACITY 7
+#define CAPACITYF 7
 
 /* Definisi elemen dan address */
 typedef struct
@@ -24,10 +24,10 @@ typedef struct
 
 typedef struct
 {
-        Food buffer[CAPACITY];
+        Food buffer[CAPACITYF];
         int idxHead;
         int idxTail;
-} Queue;
+} QueueF;
 
 /* ********* AKSES (Selektor) ********* */
 /* Jika q adalah Queue, maka akses elemen : */
@@ -37,7 +37,7 @@ typedef struct
 #define TAIL(q) (q).buffer[(q).idxTail]
 
 /* *** Kreator *** */
-void CreateQueueF(Queue *q);
+void CreateQueueF(QueueF *q);
 /* I.S. sembarang */
 /* F.S. Sebuah q kosong terbentuk dengan kondisi sbb: */
 /* - Index head bernilai IDX_UNDEF */
@@ -45,31 +45,31 @@ void CreateQueueF(Queue *q);
 /* Proses : Melakukan alokasi, membuat sebuah q kosong */
 
 /* ********* Prototype ********* */
-boolean isEmptyF(Queue q);
+boolean isEmptyF(QueueF q);
 /* Mengirim true jika q kosong: lihat definisi di atas */
-boolean isFullF(Queue q);
+boolean isFullF(QueueF q);
 /* Mengirim true jika tabel penampung elemen q sudah penuh */
 /* yaitu IDX_TAIL akan selalu di belakang IDX_HEAD dalam buffer melingkar*/
 
-int lengthF(Queue q);
+int lengthF(QueueF q);
 /* Mengirimkan banyaknya elemen queue. Mengirimkan 0 jika q kosong. */
 
 /* *** Primitif Add/Delete *** */
-void enqueueF(Queue *q, Food val);
+void enqueueF(QueueF *q, Food val);
 /* Proses: Menambahkan val pada q dengan aturan FIFO */
 /* I.S. q mungkin kosong, tabel penampung elemen q TIDAK penuh */
 /* F.S. val menjadi TAIL yang baru, IDX_TAIL "mundur" dalam buffer melingkar. */
 
-void dequeueF(Queue *q, Food *val);
+void dequeueF(QueueF *q, Food *val);
 /* Proses: Menghapus val pada q dengan aturan FIFO */
 /* I.S. q tidak mungkin kosong */
 /* F.S. val = nilai elemen HEAD pd I.S., IDX_HEAD "mundur";
         q mungkin kosong */
 
-int searchIdx(Queue *q, char *id);
+int searchIdx(QueueF *q, char *id);
 
 /* *** Display Queue *** */
-void displayQueueOrder(Queue q);
+void displayQueueOrder(QueueF q);
 /* Proses : Menuliskan isi Queue dengan traversal, Queue ditulis di antara kurung
    siku; antara dua elemen dipisahkan dengan separator "koma", tanpa tambahan
    karakter di depan, di tengah, atau di belakang, termasuk spasi dan enter */
@@ -78,7 +78,7 @@ void displayQueueOrder(Queue q);
 /* Contoh : jika ada tiga elemen bernilai 1, 20, 30 akan dicetak: [1,20,30] */
 /* Jika Queue kosong : menulis [] */
 
-void displayQueueCook(Queue q);
+void displayQueueCook(QueueF q);
 /* Proses : Menuliskan isi Queue dengan traversal, Queue ditulis di antara kurung
    siku; antara dua elemen dipisahkan dengan separator "koma", tanpa tambahan
    karakter di depan, di tengah, atau di belakang, termasuk spasi dan enter */
@@ -87,7 +87,7 @@ void displayQueueCook(Queue q);
 /* Contoh : jika ada tiga elemen bernilai 1, 20, 30 akan dicetak: [1,20,30] */
 /* Jika Queue kosong : menulis [] */
 
-void displayQueueServe(Queue q);
+void displayQueueServe(QueueF q);
 /* Proses : Menuliskan isi Queue dengan traversal, Queue ditulis di antara kurung
    siku; antara dua elemen dipisahkan dengan separator "koma", tanpa tambahan
    karakter di depan, di tengah, atau di belakang, termasuk spasi dan enter */

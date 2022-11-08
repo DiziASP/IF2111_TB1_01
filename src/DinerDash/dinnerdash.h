@@ -11,24 +11,24 @@ extern char *query1;
 extern char *query2;
 extern int ordNum;
 
-void readQuery(char **arg1, char **arg2);
+void rQuery(char **arg1, char **arg2);
 
-char *concatStr(char *str1, char *str2);
+char *conStr(char *str1, char *str2);
 
 int charLength(char *str);
 
-boolean compQuery(char *query, char *command);
+boolean cQuery(char *query, char *command);
 
 char *IntToString(int x);
 
 /* End of fungsi bantuan */
-void PrintInitialState(int saldo, int ctr_layani, Queue Order, Queue Cook, Queue RServe);
+void PrintInitialState(int saldo, int ctr_layani, QueueF Order, QueueF Cook, QueueF RServe);
 
-void QueueOrder(Queue *Order);
+void QueueOrder(QueueF *Order);
 
-void CookCycle(Queue *Cook, Queue *RServe, Queue *Order);
+void CookCycle(QueueF *Cook, QueueF *RServe, QueueF *Order);
 
-void RServeCycle(Queue *RServe, Queue *Cook, Queue *Order);
+void RServeCycle(QueueF *RServe, QueueF *Cook, QueueF *Order);
 
 boolean ValidInput(char *query1, char *query2);
 

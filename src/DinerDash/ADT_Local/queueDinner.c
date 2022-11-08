@@ -9,7 +9,7 @@ Deskripsi : Program ini berisi implementasi queue.h
 #include "queueDinner.h"
 
 /* *** Kreator *** */
-void CreateQueueF(Queue *q)
+void CreateQueueF(QueueF *q)
 {
     /* I.S. sembarang */
     /* F.S. Sebuah q kosong terbentuk dengan kondisi sbb: */
@@ -21,20 +21,20 @@ void CreateQueueF(Queue *q)
 }
 
 /* ********* Prototype ********* */
-boolean isEmptyF(Queue q)
+boolean isEmptyF(QueueF q)
 {
     /* Mengirim true jika q kosong: lihat definisi di atas */
     return (IDX_HEAD(q) == IDX_UNDEF) && (IDX_TAIL(q) == IDX_UNDEF);
 }
 
-boolean isFullF(Queue q)
+boolean isFullF(QueueF q)
 {
     /* Mengirim true jika tabel penampung elemen q sudah penuh */
     /* yaitu jika index head bernilai 0 dan index tail bernilai CAPACITY-1 */
-    return ((IDX_HEAD(q) == 0) && (IDX_TAIL(q) == CAPACITY - 1));
+    return ((IDX_HEAD(q) == 0) && (IDX_TAIL(q) == CAPACITYF - 1));
 }
 
-int lengthF(Queue q)
+int lengthF(QueueF q)
 {
     /* Mengirimkan banyaknya elemen queue. Mengirimkan 0 jika q kosong. */
     /* ALGORITMA */
@@ -50,7 +50,7 @@ int lengthF(Queue q)
 
 /* *** Primitif Add/Delete *** */
 
-void enqueueF(Queue *q, Food Order)
+void enqueueF(QueueF *q, Food Order)
 {
     /* Proses: Menambahkan val pada q dengan aturan FIFO */
     /* I.S. q mungkin kosong, tabel penampung elemen q TIDAK penuh */
@@ -66,7 +66,7 @@ void enqueueF(Queue *q, Food Order)
     }
     else
     {
-        if ((IDX_TAIL(*q) == CAPACITY - 1))
+        if ((IDX_TAIL(*q) == CAPACITYF - 1))
         {
             for (i = IDX_HEAD(*q); i <= IDX_TAIL(*q); i++)
             {
@@ -84,7 +84,7 @@ void enqueueF(Queue *q, Food Order)
     TAIL(*q).harga = Order.harga;
 }
 
-void dequeueF(Queue *q, Food *Order)
+void dequeueF(QueueF *q, Food *Order)
 {
     /* Proses: Menghapus val pada q dengan aturan FIFO */
     /* I.S. q tidak mungkin kosong */
@@ -119,7 +119,7 @@ boolean compare(char *query, char *command)
     return true;
 }
 
-int searchIdx(Queue *q, char *id)
+int searchIdx(QueueF *q, char *id)
 {
     int i = IDX_HEAD(*q);
     while (i <= IDX_TAIL(*q))
@@ -133,7 +133,7 @@ int searchIdx(Queue *q, char *id)
     return IDX_UNDEF;
 }
 /* *** Display Queue *** */
-void displayQueueOrder(Queue q)
+void displayQueueOrder(QueueF q)
 {
     printf("Daftar Pesanan\n");
     printf("Makanan | Durasi memasak | Ketahanan | Harga\n");
@@ -158,7 +158,7 @@ void displayQueueOrder(Queue q)
 /* Contoh : jika ada tiga elemen bernilai 1, 20, 30 akan dicetak: [1,20,30] */
 /* Jika Queue kosong : menulis [] */
 
-void displayQueueCook(Queue q)
+void displayQueueCook(QueueF q)
 {
     printf("\nDaftar Makanan yang sedang dimasak\n");
     printf("Makanan | Sisa durasi memasak\n");
@@ -177,7 +177,7 @@ void displayQueueCook(Queue q)
     }
 }
 
-void displayQueueServe(Queue q)
+void displayQueueServe(QueueF q)
 {
     printf("\nDaftar Makanan yang dapat disajikan\n");
     printf("Makanan | Sisa ketahanan makanan\n");

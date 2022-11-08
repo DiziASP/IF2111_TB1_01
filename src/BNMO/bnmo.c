@@ -324,7 +324,7 @@ void PLAYGAME(Queue *daftargame)
     {
         // Mainkan Diner Dash
         printf("Loading %s ...\n\n", game_now);
-        // int a = dinnerDash();
+        dinnerdash();
     }
     else if (compQuery(game_now, "RNG"))
     {

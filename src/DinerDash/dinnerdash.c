@@ -5,7 +5,7 @@ char *query1;
 char *query2;
 int ordNum;
 /* Fungsi bantuan */
-void readQuery(char **arg1, char **arg2)
+void rQuery(char **arg1, char **arg2)
 {
     STARTWORD();
     *arg1 = KataToString(currentKata);
@@ -13,7 +13,7 @@ void readQuery(char **arg1, char **arg2)
     *arg2 = KataToString(currentKata);
 }
 
-char *concatStr(char *str1, char *str2)
+char *conStr(char *str1, char *str2)
 {
     int i = 0;
     int j = 0;
@@ -43,7 +43,7 @@ int charLength(char *str)
     return i;
 }
 
-boolean compQuery(char *query, char *command)
+boolean cQuery(char *query, char *command)
 {
     int i = 0;
     if (charLength(query) == charLength(command))
@@ -63,9 +63,9 @@ boolean compQuery(char *query, char *command)
 
 boolean ValidInput(char *query1, char *query2)
 {
-    if (compQuery(query1, "COOK") || compQuery(query1, "SERVE") || query2 != NULL)
+    if (cQuery(query1, "COOK") || cQuery(query1, "SERVE") || query2 != NULL)
     {
-        if (query2[0] == 'M' && !compQuery(query2, "M"))
+        if (query2[0] == 'M' && !cQuery(query2, "M"))
         {
             int i = 1;
             while (query2[i] != '\0')
@@ -98,7 +98,7 @@ char *IntToString(int x)
 }
 /* End of fungsi bantuan */
 
-void PrintInitialState(int saldo, int ctr_layani, Queue Order, Queue Cook, Queue RServe)
+void PrintInitialState(int saldo, int ctr_layani, QueueF Order, QueueF Cook, QueueF RServe)
 {
     printf("Saldo: %d\n", saldo);
     printf("Customer yang telah dilayani: %d\n", ctr_layani);
@@ -107,11 +107,11 @@ void PrintInitialState(int saldo, int ctr_layani, Queue Order, Queue Cook, Queue
     displayQueueServe(RServe);
 }
 
-void QueueOrder(Queue *Order)
+void QueueOrder(QueueF *Order)
 {
     Food order;
     char *ordnum = IntToString(ordNum);
-    order.OrderId = concatStr("M", ordnum);
+    order.OrderId = conStr("M", ordnum);
     order.durasi = rand() % 5 + 1;
     order.ketahanan = rand() % 5 + 1;
     order.harga = rand() % 41 * 1000 + 10000;
@@ -119,7 +119,7 @@ void QueueOrder(Queue *Order)
     ordNum++;
 }
 
-void CookCycle(Queue *Cook, Queue *RServe, Queue *Order)
+void CookCycle(QueueF *Cook, QueueF *RServe, QueueF *Order)
 {
 
     Food val;
@@ -148,7 +148,7 @@ void CookCycle(Queue *Cook, Queue *RServe, Queue *Order)
     }
 }
 
-void RServeCycle(Queue *RServe, Queue *Cook, Queue *Order)
+void RServeCycle(QueueF *RServe, QueueF *Cook, QueueF *Order)
 {
     Food val;
     for (int i = IDX_HEAD(*RServe); i <= IDX_TAIL(*RServe); i++)
@@ -179,7 +179,7 @@ void RServeCycle(Queue *RServe, Queue *Cook, Queue *Order)
 void dinnerdash()
 {
     ordNum = 0;
-    Queue Order, Cook, RServe;
+    QueueF Order, Cook, RServe;
     CreateQueueF(&Order);
     CreateQueueF(&Cook);
     CreateQueueF(&RServe);
@@ -198,15 +198,15 @@ void dinnerdash()
     {
 
         printf("Masukkan perintah: ");
-        readQuery(&query1, &query2);
+        rQuery(&query1, &query2);
 
         while (!ValidInput(query1, query2))
         {
             printf("Masukkan perintah yang valid: ");
-            readQuery(&query1, &query2);
+            rQuery(&query1, &query2);
         }
 
-        if (compQuery(query1, "COOK"))
+        if (cQuery(query1, "COOK"))
         {
             if (searchIdx(&Order, query2) != -1)
             {
@@ -229,13 +229,13 @@ void dinnerdash()
                 printf("Pesanan tidak ditemukan\n");
             }
         }
-        else if (compQuery(query1, "SERVE"))
+        else if (cQuery(query1, "SERVE"))
         {
             if (!isEmptyF(RServe))
             {
                 if (searchIdx(&RServe, query2) != -1)
                 {
-                    if (compQuery(HEAD(Order).OrderId, query2))
+                    if (cQuery(HEAD(Order).OrderId, query2))
                     {
                         Food temp;
                         dequeueF(&Order, &temp);
@@ -243,8 +243,8 @@ void dinnerdash()
                         saldo += temp.harga;
                         ctr_layani++;
                         printf("Berhasil mengantar %s\n", temp.OrderId);
-                        // RServeCycle(&RServe, &Cook, &Order);
-                        // CookCycle(&Cook, &RServe);
+                        RServeCycle(&RServe, &Cook, &Order);
+                        CookCycle(&Cook, &RServe, &Order);
                         QueueOrder(&Order);
                     }
                     else
@@ -262,7 +262,8 @@ void dinnerdash()
                 printf("Tidak ada makanan yang siap disajikan\n");
             }
         }
-        else if (compQuery(query1, "SKIP")){
+        else if (cQuery(query1, "SKIP"))
+        {
             RServeCycle(&RServe, &Cook, &Order);
             CookCycle(&Cook, &RServe, &Order);
             QueueOrder(&Order);
@@ -283,10 +284,4 @@ void dinnerdash()
     {
         printf("\nMaaf, Anda gagal menyelesaikan level ini!\n");
     }
-}
-
-int main()
-{
-    dinnerdash();
-    return 0;
 }
