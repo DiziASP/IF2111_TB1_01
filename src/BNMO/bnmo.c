@@ -236,15 +236,86 @@ void DELETEGAME(ArrayDin *arr)
 /* I.S. Sembarang */
 /* F.S. Menghapus game yang dipilih */
 
-void QUEUEGAME();
+void QUEUEGAME(ArrayDin arr, Queue * daftargame)
 /* I.S. Sembarang */
 /* F.S. mendaftarkan permainan kedalam list.
    List dalam queue akan hilang ketika pemain menjalankan command QUIT */
+{
+    ADVWORDSTD();
+    if(isEmpty(*daftargame))
+    {
+        printf("Daftar game antrianmu kosong\n\n.");
+    }else
+    {
+        printf("Berikut adalah daftar antrian game-mu\n");
+        IdxType i;
+        int start = 1;
+        for (i = IDX_HEAD(*daftargame); i != IDX_TAIL(*daftargame); i = (i + 1) % CAPACITY)
+        {
+            printf("%d. %s\n",start, (daftargame->buffer+i));
+            start+=1;
+        }
+    }
 
-void PLAYGAME();
+    LISTGAME(arr);
+
+    while(KataToInt(currentKata) >arr.Neff || KataToInt(currentKata) < 0 )
+    {
+        printf("Nomor permainan tidak valid, silahkan masukkan nomor game pada list.\n");
+        STARTWORD();
+    }
+
+    IdxType nomor = KataToInt(currentKata);
+    IdxType i;
+    ElType val;
+    IdxType find = 0;
+
+    for (i = 0;i < arr.Neff && find != nomor;i++)
+    {   
+        val = arr.A[i];
+        find+=1;
+    }
+    enqueue(daftargame, val);
+
+    printf("Game berhasil ditambahkan kedalam daftar antrian.\n");
+}
+
+void PLAYGAME(Queue * daftargame)
 /* I.S. Sembarang */
 /* F.S. Memainkan game yang dipilih */
+{
+    ElType game_now;
+    dequeue(daftargame,&game_now);
 
+    if(isEmpty(*daftargame))
+    {
+        printf("Daftar Antrian game-mu kosong.\n");
+        return;
+    }
+    printf("Berikut adalah daftar antrian game-mu\n");
+    IdxType i;
+    int start = 1;
+    for (i = IDX_HEAD(*daftargame); i != IDX_TAIL(*daftargame); i = (i + 1) % CAPACITY)
+    {
+        printf("%d. %s\n",start, (daftargame->buffer+i));
+        start+=1;
+   }
+    
+
+    if(game_now == "Diner DASH")
+    {
+        // Mainkan Diner Dash
+        printf("Loading %s ...\n", game_now);
+        int a = dinnerDash();
+    }else if(game_now == "RNG")
+    {
+        printf("Loading %s ...\n", game_now);
+        int a = RNG();      // Karena RNG & Diner Dash dibuat dalam int() / bukan void(), jadi jalaninnya gini
+    }else
+    {
+        printf("Game %s masih dalam maintenance, belum dapat dimainkan.\n Silahkan pilih game lain.\n");
+    }
+}
 void SKIPGAME();
 /* I.S. Sembarang */
 /* F.S. Melewati giliran game dalam queue */
