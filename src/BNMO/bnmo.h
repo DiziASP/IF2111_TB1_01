@@ -19,6 +19,8 @@
 #include "../RandomIntegerGenerator/randomintegergenerator.h"
 #include "../UserCreated/UserCreated.h"
 #include "../Hangman/hangman.h"
+#include "../DinerDash/dinnerdash.h"
+
 /* *** Initial State dari BNMO *** */
 extern ArrayDin gamesList;
 extern boolean Quit;

@@ -323,7 +323,7 @@ void PLAYGAME(Queue *daftargame)
     {
         // Mainkan Diner Dash
         printf("Loading %s ...\n\n", game_now);
-        // int a = dinnerDash();
+        dinnerdash();
     }
     else if (compQuery(game_now, "RNG"))
     {
@@ -442,7 +442,20 @@ void QUITGAME()
 /* I.S. Sembarang */
 /* F.S. Keluar dari game */
 
-void HELP();
+void HELP()
+{
+    printf("============ HELP ============\n");
+    printf("1. START - Mulai menjalankan BNMO\n");
+    printf("2. LOAD <namafile.txt> - Untuk memuat file yang sudah disimpan\n");
+    printf("3. SAVE - Untuk menyimpan state game ke dalam file yang sudah dijalankan");
+    printf("4. CREATEGAME - Untuk menambahkan game baru");
+    printf("5. LISTGAME - Untuk melihat list game yang tersedia dalam sistem");
+    printf("6. DELETEGAME - Untuk menghapus game dari daftar game");
+    printf("7. QUEUEGAME - Untuk mendaftarkan permainan ke dalam antrian Game");
+    printf("8. PLAYGAME - Untuk memulai permainan sesuai antrian game");
+    printf("9. SKIPGAME <nomor game> - Untuk melewati antrian game sebanyak yang diinginkan");
+    printf("10. QUIT - Untuk keluar dari program");
+}
 /* I.S. Sembarang */
 /* F.S. Menampilkan list bantuan */
 
