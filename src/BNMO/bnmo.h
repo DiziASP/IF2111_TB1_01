@@ -18,13 +18,14 @@
 /* Import game */
 #include "../RandomIntegerGenerator/randomintegergenerator.h"
 #include "../UserCreated/UserCreated.h"
+#include "../Hangman/hangman.h"
 /* *** Initial State dari BNMO *** */
 extern ArrayDin gamesList;
 extern boolean Quit;
 extern boolean isLoad;
 extern boolean isSave;
 extern Queue nowPlaying;
-extern char* userCreated;
+extern char *userCreated;
 
 /* *** Definisi Fungsi dan Prosedur *** */
 /* Menampilkan Main Menu BNMO */

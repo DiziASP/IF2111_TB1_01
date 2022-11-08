@@ -331,6 +331,11 @@ void PLAYGAME(Queue *daftargame)
         printf("Loading %s ...\n\n", game_now);
         // int a = RNG(); // Karena RNG & Diner Dash dibuat dalam int() / bukan void(), jadi jalaninnya gini
     }
+    else if (compQuery(game_now, "HANGMAN"))
+    {
+        printf("Loading %s ...\n\n", game_now);
+        hangman();
+    }
     else if (compQuery(game_now, userCreated))
     {
         printf("Loading %s ...\n\n", game_now);
@@ -369,6 +374,11 @@ void SKIPGAME(Queue *daftargame)
         {
             printf("Loading %s ...\n\n", game_now);
             // int a = RNG(); // Karena RNG & Diner Dash dibuat dalam int() / bukan void(), jadi jalaninnya gini
+        }
+        else if (compQuery(game_now, "hangman"))
+        {
+            printf("Loading %s ...\n\n", game_now);
+            hangman();
         }
         else if (compQuery(game_now, userCreated))
         {
