@@ -63,10 +63,14 @@ boolean cQuery(char *query, char *command)
 
 boolean ValidInput(char *query1, char *query2)
 {
-    if (cQuery(query1, "COOK") || cQuery(query1, "SERVE") || query2 != NULL)
+    if (cQuery(query1, "COOK") || cQuery(query1, "SERVE") || cQuery(query1, "SKIP") || query2 != NULL)
     {
-        if (query2[0] == 'M' && !cQuery(query2, "M"))
+        if (query2[0] == 'M' || !cQuery(query2, "M") || cQuery(query2, "TURN"))
         {
+            if (cQuery(query1, "SKIP") && cQuery(query2, "TURN"))
+            {
+                return true;
+            }
             int i = 1;
             while (query2[i] != '\0')
             {
@@ -105,6 +109,11 @@ void PrintInitialState(int saldo, int ctr_layani, QueueF Order, QueueF Cook, Que
     displayQueueOrder(Order);
     displayQueueCook(Cook);
     displayQueueServe(RServe);
+
+    printf("List Command\n");
+    printf("1. COOK <Makanan>\n");
+    printf("2. SERVE <Makanan>\n");
+    printf("3. SKIP TURN\n");
 }
 
 void QueueOrder(QueueF *Order)
@@ -264,6 +273,7 @@ void dinnerdash()
         }
         else if (cQuery(query1, "SKIP"))
         {
+            printf("Skip turn...\n");
             RServeCycle(&RServe, &Cook, &Order);
             CookCycle(&Cook, &RServe, &Order);
             QueueOrder(&Order);
