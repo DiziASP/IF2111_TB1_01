@@ -48,7 +48,7 @@ void MAINMENU()
         }
         else if (compQuery(query, "DELETEGAME"))
         {
-            DELETEGAME(&gamesList);
+            DELETEGAME(&gamesList, nowPlaying);
         }
         else if (compQuery(query, "QUEUEGAME"))
         {
@@ -217,24 +217,16 @@ void LISTGAME(ArrayDin arr)
 /* I.S. Sembarang */
 /* F.S. Menampilkan list game yang tersedia */
 
-void DELETEGAME(ArrayDin *arr)
+void DELETEGAME(ArrayDin *arr, Queue daftargame)
 {
     int nomor;
     printf("Berikut adalah daftar game yang tersedia \n");
     LISTGAME(*arr);
     printf("Masukkan nomor game yang akan dihapus: ");
-
+    //Read angka
+    STARTWORD();
+    nomor = KataToInt(currentKata);
     /* Read Angka */
-    do
-    {
-        STARTWORD();
-        nomor = KataToInt(currentKata);
-        if (nomor < 0 || nomor > (*arr).Neff)
-        {
-            printf("Input invalid. Silahkan masukkan nomor game yang valid: ");
-        }
-    } while (nomor < 0 || nomor > (*arr).Neff);
-
     if (nomor >= 1 && nomor <= (*arr).Neff)
     {
         if (nomor >= 1 && nomor <= 5)
@@ -243,8 +235,15 @@ void DELETEGAME(ArrayDin *arr)
         }
         else
         {
-            printf("Game berhasil dihapus\n");
-            DeleteAt(arr, nomor - 1);
+            if(isInQueue((*arr).A[nomor-1],daftargame))
+            {
+                printf("Game gagal dihapus karena sedang ada di dalam queue\n");
+            }
+            else
+            {
+                printf("Game berhasil dihapus\n");
+                DeleteAt(arr , nomor-1);
+            }
         }
     }
     else
@@ -554,4 +553,17 @@ boolean ContainStr(char *query, char *comp)
     {
         return false;
     }
+}
+boolean isInQueue(ElType str, Queue q)
+{
+   int len = length(q);
+   int i;
+   for(i = 0; i < len; i++)
+   {
+        if (compQuery(str,q.buffer[i]))
+        {
+            return true;
+        }
+   }
+   return false;
 }
