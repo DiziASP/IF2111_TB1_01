@@ -25,9 +25,5 @@ usercreated:
 hangman:
 	$(CC) src/Hangman/*.c src/ADT/Mesin/*.c src/ADT/Array/*.c -o hangman
 	
-	
-diner:
-	$(CC) src/ADT/Mesin/*.c src/DinerDash/*.c src/DinerDash/ADT_Local/*.c -o diner
-	
 clean:
 	rm $(TARGET)
