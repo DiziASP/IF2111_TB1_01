@@ -62,6 +62,10 @@ void MAINMENU()
         {
             SKIPGAME(&nowPlaying);
         }
+        else if (compQuery(query, "HELP"))
+        {
+            HELP();
+        }
         else if (compQuery(query, "QUIT"))
         {
             QUITGAME();
@@ -223,7 +227,7 @@ void DELETEGAME(ArrayDin *arr, Queue daftargame)
     printf("Berikut adalah daftar game yang tersedia \n");
     LISTGAME(*arr);
     printf("Masukkan nomor game yang akan dihapus: ");
-    //Read angka
+    // Read angka
     STARTWORD();
     nomor = KataToInt(currentKata);
     /* Read Angka */
@@ -235,14 +239,14 @@ void DELETEGAME(ArrayDin *arr, Queue daftargame)
         }
         else
         {
-            if(isInQueue((*arr).A[nomor-1],daftargame))
+            if (isInQueue((*arr).A[nomor - 1], daftargame))
             {
                 printf("Game gagal dihapus karena sedang ada di dalam queue\n");
             }
             else
             {
                 printf("Game berhasil dihapus\n");
-                DeleteAt(arr , nomor-1);
+                DeleteAt(arr, nomor - 1);
             }
         }
     }
@@ -447,14 +451,14 @@ void HELP()
     printf("============ HELP ============\n");
     printf("1. START - Mulai menjalankan BNMO\n");
     printf("2. LOAD <namafile.txt> - Untuk memuat file yang sudah disimpan\n");
-    printf("3. SAVE - Untuk menyimpan state game ke dalam file yang sudah dijalankan");
-    printf("4. CREATEGAME - Untuk menambahkan game baru");
-    printf("5. LISTGAME - Untuk melihat list game yang tersedia dalam sistem");
-    printf("6. DELETEGAME - Untuk menghapus game dari daftar game");
-    printf("7. QUEUEGAME - Untuk mendaftarkan permainan ke dalam antrian Game");
-    printf("8. PLAYGAME - Untuk memulai permainan sesuai antrian game");
-    printf("9. SKIPGAME <nomor game> - Untuk melewati antrian game sebanyak yang diinginkan");
-    printf("10. QUIT - Untuk keluar dari program");
+    printf("3. SAVE - Untuk menyimpan state game ke dalam file yang sudah dijalankan\n");
+    printf("4. CREATEGAME - Untuk menambahkan game baru\n");
+    printf("5. LISTGAME - Untuk melihat list game yang tersedia dalam sistem\n");
+    printf("6. DELETEGAME - Untuk menghapus game dari daftar game\n");
+    printf("7. QUEUEGAME - Untuk mendaftarkan permainan ke dalam antrian Game\n");
+    printf("8. PLAYGAME - Untuk memulai permainan sesuai antrian game\n");
+    printf("9. SKIPGAME <nomor game> - Untuk melewati antrian game sebanyak yang diinginkan\n");
+    printf("10. QUIT - Untuk keluar dari program\n");
 }
 /* I.S. Sembarang */
 /* F.S. Menampilkan list bantuan */
@@ -569,14 +573,14 @@ boolean ContainStr(char *query, char *comp)
 }
 boolean isInQueue(ElType str, Queue q)
 {
-   int len = length(q);
-   int i;
-   for(i = 0; i < len; i++)
-   {
-        if (compQuery(str,q.buffer[i]))
+    int len = length(q);
+    int i;
+    for (i = 0; i < len; i++)
+    {
+        if (compQuery(str, q.buffer[i]))
         {
             return true;
         }
-   }
-   return false;
+    }
+    return false;
 }
