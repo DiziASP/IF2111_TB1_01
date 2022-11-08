@@ -2,7 +2,7 @@ CC=gcc
 TARGET=main
 
 all:
-	$(CC) src/BNMO/*.c src/ADT/Mesin/*.c src/ADT/Array/*.c -o $(TARGET) 
+	$(CC) src/BNMO/*.c src/ADT/Mesin/*.c src/ADT/Array/*.c src/ADT/Queue/*.c -o $(TARGET) 
 
 array:
 	$(CC) src/ADT/Array/*.c src/Driver_ADT/driverarray.c -o array
