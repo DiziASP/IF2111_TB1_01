@@ -110,4 +110,6 @@ char *readQuery();
 
 /* Membaca Query creategame*/
 char *readGame();
+
+boolean isInQueue(ElType str, Queue q);
 #endif
