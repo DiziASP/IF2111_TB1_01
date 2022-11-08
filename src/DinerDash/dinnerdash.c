@@ -5,11 +5,7 @@ char *query1;
 char *query2;
 int ordNum;
 /* Fungsi bantuan */
-<<<<<<< HEAD
 void rQuery(char **arg1, char **arg2)
-=======
-void readQuery(char **arg1, char **arg2)
->>>>>>> b9e9aa7fbae1c523553cb01d061d02895df47d7c
 {
     STARTWORD();
     *arg1 = KataToString(currentKata);
@@ -17,11 +13,7 @@ void readQuery(char **arg1, char **arg2)
     *arg2 = KataToString(currentKata);
 }
 
-<<<<<<< HEAD
 char *conStr(char *str1, char *str2)
-=======
-char *concatStr(char *str1, char *str2)
->>>>>>> b9e9aa7fbae1c523553cb01d061d02895df47d7c
 {
     int i = 0;
     int j = 0;
@@ -51,11 +43,7 @@ int charLength(char *str)
     return i;
 }
 
-<<<<<<< HEAD
 boolean cQuery(char *query, char *command)
-=======
-boolean compQuery(char *query, char *command)
->>>>>>> b9e9aa7fbae1c523553cb01d061d02895df47d7c
 {
     int i = 0;
     if (charLength(query) == charLength(command))
@@ -75,15 +63,9 @@ boolean compQuery(char *query, char *command)
 
 boolean ValidInput(char *query1, char *query2)
 {
-<<<<<<< HEAD
     if (cQuery(query1, "COOK") || cQuery(query1, "SERVE") || query2 != NULL)
     {
         if (query2[0] == 'M' && !cQuery(query2, "M"))
-=======
-    if (compQuery(query1, "COOK") || compQuery(query1, "SERVE") || query2 != NULL)
-    {
-        if (query2[0] == 'M' && !compQuery(query2, "M"))
->>>>>>> b9e9aa7fbae1c523553cb01d061d02895df47d7c
         {
             int i = 1;
             while (query2[i] != '\0')
@@ -116,11 +98,7 @@ char *IntToString(int x)
 }
 /* End of fungsi bantuan */
 
-<<<<<<< HEAD
 void PrintInitialState(int saldo, int ctr_layani, QueueF Order, QueueF Cook, QueueF RServe)
-=======
-void PrintInitialState(int saldo, int ctr_layani, Queue Order, Queue Cook, Queue RServe)
->>>>>>> b9e9aa7fbae1c523553cb01d061d02895df47d7c
 {
     printf("Saldo: %d\n", saldo);
     printf("Customer yang telah dilayani: %d\n", ctr_layani);
@@ -129,19 +107,11 @@ void PrintInitialState(int saldo, int ctr_layani, Queue Order, Queue Cook, Queue
     displayQueueServe(RServe);
 }
 
-<<<<<<< HEAD
 void QueueOrder(QueueF *Order)
 {
     Food order;
     char *ordnum = IntToString(ordNum);
     order.OrderId = conStr("M", ordnum);
-=======
-void QueueOrder(Queue *Order)
-{
-    Food order;
-    char *ordnum = IntToString(ordNum);
-    order.OrderId = concatStr("M", ordnum);
->>>>>>> b9e9aa7fbae1c523553cb01d061d02895df47d7c
     order.durasi = rand() % 5 + 1;
     order.ketahanan = rand() % 5 + 1;
     order.harga = rand() % 41 * 1000 + 10000;
@@ -149,11 +119,7 @@ void QueueOrder(Queue *Order)
     ordNum++;
 }
 
-<<<<<<< HEAD
 void CookCycle(QueueF *Cook, QueueF *RServe, QueueF *Order)
-=======
-void CookCycle(Queue *Cook, Queue *RServe, Queue *Order)
->>>>>>> b9e9aa7fbae1c523553cb01d061d02895df47d7c
 {
 
     Food val;
@@ -182,11 +148,7 @@ void CookCycle(Queue *Cook, Queue *RServe, Queue *Order)
     }
 }
 
-<<<<<<< HEAD
 void RServeCycle(QueueF *RServe, QueueF *Cook, QueueF *Order)
-=======
-void RServeCycle(Queue *RServe, Queue *Cook, Queue *Order)
->>>>>>> b9e9aa7fbae1c523553cb01d061d02895df47d7c
 {
     Food val;
     for (int i = IDX_HEAD(*RServe); i <= IDX_TAIL(*RServe); i++)
@@ -217,11 +179,7 @@ void RServeCycle(Queue *RServe, Queue *Cook, Queue *Order)
 void dinnerdash()
 {
     ordNum = 0;
-<<<<<<< HEAD
     QueueF Order, Cook, RServe;
-=======
-    Queue Order, Cook, RServe;
->>>>>>> b9e9aa7fbae1c523553cb01d061d02895df47d7c
     CreateQueueF(&Order);
     CreateQueueF(&Cook);
     CreateQueueF(&RServe);
@@ -240,26 +198,15 @@ void dinnerdash()
     {
 
         printf("Masukkan perintah: ");
-<<<<<<< HEAD
         rQuery(&query1, &query2);
-=======
-        readQuery(&query1, &query2);
->>>>>>> b9e9aa7fbae1c523553cb01d061d02895df47d7c
 
         while (!ValidInput(query1, query2))
         {
             printf("Masukkan perintah yang valid: ");
-<<<<<<< HEAD
             rQuery(&query1, &query2);
         }
 
         if (cQuery(query1, "COOK"))
-=======
-            readQuery(&query1, &query2);
-        }
-
-        if (compQuery(query1, "COOK"))
->>>>>>> b9e9aa7fbae1c523553cb01d061d02895df47d7c
         {
             if (searchIdx(&Order, query2) != -1)
             {
@@ -282,21 +229,13 @@ void dinnerdash()
                 printf("Pesanan tidak ditemukan\n");
             }
         }
-<<<<<<< HEAD
         else if (cQuery(query1, "SERVE"))
-=======
-        else if (compQuery(query1, "SERVE"))
->>>>>>> b9e9aa7fbae1c523553cb01d061d02895df47d7c
         {
             if (!isEmptyF(RServe))
             {
                 if (searchIdx(&RServe, query2) != -1)
                 {
-<<<<<<< HEAD
                     if (cQuery(HEAD(Order).OrderId, query2))
-=======
-                    if (compQuery(HEAD(Order).OrderId, query2))
->>>>>>> b9e9aa7fbae1c523553cb01d061d02895df47d7c
                     {
                         Food temp;
                         dequeueF(&Order, &temp);
@@ -304,13 +243,8 @@ void dinnerdash()
                         saldo += temp.harga;
                         ctr_layani++;
                         printf("Berhasil mengantar %s\n", temp.OrderId);
-<<<<<<< HEAD
                         RServeCycle(&RServe, &Cook, &Order);
                         CookCycle(&Cook, &RServe, &Order);
-=======
-                        // RServeCycle(&RServe, &Cook, &Order);
-                        // CookCycle(&Cook, &RServe);
->>>>>>> b9e9aa7fbae1c523553cb01d061d02895df47d7c
                         QueueOrder(&Order);
                     }
                     else
@@ -328,12 +262,8 @@ void dinnerdash()
                 printf("Tidak ada makanan yang siap disajikan\n");
             }
         }
-<<<<<<< HEAD
         else if (cQuery(query1, "SKIP"))
         {
-=======
-        else if (compQuery(query1, "SKIP")){
->>>>>>> b9e9aa7fbae1c523553cb01d061d02895df47d7c
             RServeCycle(&RServe, &Cook, &Order);
             CookCycle(&Cook, &RServe, &Order);
             QueueOrder(&Order);
@@ -354,13 +284,4 @@ void dinnerdash()
     {
         printf("\nMaaf, Anda gagal menyelesaikan level ini!\n");
     }
-<<<<<<< HEAD
-=======
-}
-
-int main()
-{
-    dinnerdash();
-    return 0;
->>>>>>> b9e9aa7fbae1c523553cb01d061d02895df47d7c
 }
