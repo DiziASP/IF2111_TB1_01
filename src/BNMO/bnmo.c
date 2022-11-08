@@ -7,6 +7,7 @@ ArrayDin gamesList;
 boolean Quit;
 boolean isLoad;
 boolean isSave;
+char *userCreated;
 Queue nowPlaying;
 /* ***  Fungsi Utama BNMO *** */
 
@@ -17,6 +18,7 @@ void MAINMENU()
     Quit = false;
     isLoad = false;
     isSave = false;
+    userCreated = NULL;
     CreateQueue(&nowPlaying);
 
     /* STATE MAIN MENU */
@@ -181,6 +183,10 @@ void CREATEGAME(ArrayDin *arr)
     if (!found)
     {
         InsertLast(arr, input);
+        if (userCreated == NULL)
+        {
+            userCreated = input;
+        }
         printf("Game berhasil ditambahkan\n");
     }
     else
@@ -307,23 +313,28 @@ void PLAYGAME(Queue *daftargame)
     int start = 1;
     for (i = IDX_HEAD(*daftargame); i != IDX_TAIL(*daftargame); i = (i + 1) % CAPACITY)
     {
-        printf("%d. %s\n", i, daftargame->buffer[i]);
+        printf("%d. %s\n", start, daftargame->buffer[i]);
         start += 1;
     }
-    printf("%d. %s\n\n", i, daftargame->buffer[i]);
+    printf("%d. %s\n\n", start, daftargame->buffer[i]);
 
     char *game_now;
     dequeue(daftargame, &game_now);
     if (compQuery(game_now, "Diner DASH"))
     {
         // Mainkan Diner Dash
-        printf("Loading %s ...\n", game_now);
+        printf("Loading %s ...\n\n", game_now);
         // int a = dinnerDash();
     }
     else if (compQuery(game_now, "RNG"))
     {
-        printf("Loading %s ...\n", game_now);
+        printf("Loading %s ...\n\n", game_now);
         // int a = RNG(); // Karena RNG & Diner Dash dibuat dalam int() / bukan void(), jadi jalaninnya gini
+    }
+    else if (compQuery(game_now, userCreated))
+    {
+        printf("Loading %s ...\n\n", game_now);
+        UserCreated();
     }
     else
     {
@@ -351,13 +362,18 @@ void SKIPGAME(Queue *daftargame)
         if (compQuery(game_now, "Diner DASH"))
         {
             // Mainkan Diner Dash
-            printf("Loading %s ...\n", game_now);
+            printf("Loading %s ...\n\n", game_now);
             // int a = dinnerDash();
         }
         else if (compQuery(game_now, "RNG"))
         {
-            printf("Loading %s ...\n", game_now);
+            printf("Loading %s ...\n\n", game_now);
             // int a = RNG(); // Karena RNG & Diner Dash dibuat dalam int() / bukan void(), jadi jalaninnya gini
+        }
+        else if (compQuery(game_now, userCreated))
+        {
+            printf("Loading %s ...\n\n", game_now);
+            UserCreated();
         }
         else
         {
