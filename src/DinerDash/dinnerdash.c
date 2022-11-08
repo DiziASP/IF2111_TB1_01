@@ -262,6 +262,11 @@ void dinnerdash()
                 printf("Tidak ada makanan yang siap disajikan\n");
             }
         }
+        else if (compQuery(query1, "SKIP")){
+            RServeCycle(&RServe, &Cook, &Order);
+            CookCycle(&Cook, &RServe, &Order);
+            QueueOrder(&Order);
+        }
         query1 = NULL;
         query2 = NULL;
         printf("==========================================================\n\n");
