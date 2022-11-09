@@ -32,29 +32,62 @@ void MAINMENU()
         }
         else if (compQuery(query, "LOAD") && !isLoad)
         {
+
             LOADGAME();
         }
         else if (compQuery(query, "SAVE"))
         {
             SAVEGAME();
         }
-        else if (compQuery(query, "CREATEGAME"))
+        else if (compQuery(query, "CREATE"))
         {
-            CREATEGAME(&gamesList);
+            ADVWORDSTD();
+            if (compQuery(KataToString(currentKata), "GAME"))
+            {
+                CREATEGAME(&gamesList);
+            }
+            else
+            {
+                printf("Input tidak valid\n");
+            }
         }
-        else if (compQuery(query, "LISTGAME"))
+        else if (compQuery(query, "LIST"))
         {
-            LISTGAME(gamesList);
+            ADVWORDSTD();
+            if (compQuery(KataToString(currentKata), "GAME"))
+            {
+                LISTGAME(gamesList);
+            }
+            else
+            {
+                printf("Input tidak valid\n");
+            }
         }
-        else if (compQuery(query, "DELETEGAME"))
+        else if (compQuery(query, "DELETE"))
         {
-            DELETEGAME(&gamesList, nowPlaying);
+            ADVWORDSTD();
+            if (compQuery(KataToString(currentKata), "GAME"))
+            {
+                DELETEGAME(&gamesList, nowPlaying);
+            }
+            else
+            {
+                printf("Input tidak valid\n");
+            }
         }
-        else if (compQuery(query, "QUEUEGAME"))
+        else if (compQuery(query, "QUEUE"))
         {
-            QUEUEGAME(gamesList, &nowPlaying);
+            ADVWORDSTD();
+            if (compQuery(KataToString(currentKata), "GAME"))
+            {
+                QUEUEGAME(gamesList, &nowPlaying);
+            }
+            else
+            {
+                printf("Input tidak valid\n");
+            }
         }
-        else if (compQuery(query, "PLAYGAME"))
+        else if (compQuery(query, "PLAY"))
         {
             PLAYGAME(&nowPlaying);
         }
