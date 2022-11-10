@@ -14,12 +14,21 @@
 #include "../ADT/Mesin/wordmachine.h"
 #include "../ADT/Array/array.h"
 #include "../ADT/Queue/queue.h"
+
+/* Import game */
+#include "../RandomIntegerGenerator/randomintegergenerator.h"
+#include "../RNG/RNG.h"
+#include "../UserCreated/UserCreated.h"
+#include "../Hangman/hangman.h"
+#include "../DinerDash/dinnerdash.h"
+
 /* *** Initial State dari BNMO *** */
 extern ArrayDin gamesList;
-extern ArrayDin history;
 extern boolean Quit;
 extern boolean isLoad;
+extern boolean isSave;
 extern Queue nowPlaying;
+extern char *userCreated;
 
 /* *** Definisi Fungsi dan Prosedur *** */
 /* Menampilkan Main Menu BNMO */
@@ -96,9 +105,14 @@ void concatStr(char *str1, char *str2, char *str3);
 /* Membandingkan String*/
 boolean compQuery(char *query, char *command);
 
+/* Melihat apakah query valid */
+boolean ContainStr(char *query, char *comp);
+
 /* Membaca Query user */
 char *readQuery();
 
 /* Membaca Query creategame*/
 char *readGame();
+
+boolean isInQueue(ElType str, Queue q);
 #endif

@@ -19,6 +19,7 @@ void IgnoreBlank()
 void STARTWORD()
 {
     START();
+    currentKata.Length = 0;
     IgnoreBlank();
     if (cc != MARK)
         CopyWordSTD();
