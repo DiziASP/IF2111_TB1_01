@@ -17,6 +17,7 @@
 
 /* Import game */
 #include "../RandomIntegerGenerator/randomintegergenerator.h"
+#include "../RNG/RNG.h"
 #include "../UserCreated/UserCreated.h"
 #include "../Hangman/hangman.h"
 #include "../DinerDash/dinnerdash.h"
