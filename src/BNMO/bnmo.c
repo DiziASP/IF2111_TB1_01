@@ -396,6 +396,7 @@ void PLAYGAME(Queue *daftargame)
         printf("Game %s masih dalam maintenance, belum dapat dimainkan.\n Silahkan pilih game lain.\n", game_now);
     }
 }
+
 void SKIPGAME(Queue *daftargame)
 {
     ADVWORDSTD();

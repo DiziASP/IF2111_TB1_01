@@ -14,6 +14,9 @@
 #include "../ADT/Mesin/wordmachine.h"
 #include "../ADT/Array/array.h"
 #include "../ADT/Queue/queue.h"
+#include "../ADT/Stack/stack.h"
+#include "../ADT/Set/set.h"
+#include "../ADT/LinkedList/linkedlist.h"
 
 /* Import game */
 #include "../RandomIntegerGenerator/randomintegergenerator.h"
@@ -23,7 +26,7 @@
 #include "../DinerDash/dinnerdash.h"
 
 /* *** Initial State dari BNMO *** */
-extern ArrayDin gamesList;
+extern Set gamesList;
 extern boolean Quit;
 extern boolean isLoad;
 extern boolean isSave;

@@ -271,7 +271,7 @@ void dinnerdash()
                 printf("Tidak ada makanan yang siap disajikan\n");
             }
         }
-        else if (cQuery(query1, "SKIP"))
+        else if (cQuery(query1, "SKIP") && cQuery(query2, "TURN"))
         {
             printf("Skip turn...\n");
             RServeCycle(&RServe, &Cook, &Order);
