@@ -16,7 +16,7 @@
 #include "../ADT/Queue/queue.h"
 #include "../ADT/Stack/stack.h"
 #include "../ADT/Set/set.h"
-#include "../ADT/LinkedList/linkedlist.h"
+// #include "../ADT/LinkedList/linkedlist.h"
 
 /* Import game */
 #include "../RandomIntegerGenerator/randomintegergenerator.h"
@@ -26,6 +26,7 @@
 #include "../DinerDash/dinnerdash.h"
 
 /* *** Initial State dari BNMO *** */
+extern ArrayDin history;
 extern Set gamesList;
 extern boolean Quit;
 extern boolean isLoad;
@@ -95,6 +96,9 @@ void HELP();
 /* I.S. Sembarang */
 /* F.S. Menampilkan list bantuan */
 
+void HISTORY(ArrayDin *history);
+
+void RESETHIST(ArrayDin *history);
 /* ***  Fungsi dan Prosedur Bantuan (Miscellaneous) *** */
 /* Menampilkan Welcome Screen */
 void WELCOMESCREEN();

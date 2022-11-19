@@ -1,37 +1,37 @@
 #include "set.h"
 
 /* *** Konstruktor/Kreator *** */
-void CreateEmpty(Set *S)
+void CreateSet(Set *S)
 {
-    S->Count = Nil;
+    S->Count = NilSet;
 }
 /* I.S. Sembarang */
 /* F.S. Membuat sebuah Set S kosong berkapasitas MaxEl */
 /* Ciri Set kosong : count bernilai Nil */
 
 /* ********* Predikat Untuk test keadaan KOLEKSI ********* */
-boolean IsEmpty(Set S)
+boolean IsEmptySet(Set S)
 {
-    return S.Count == Nil;
+    return S.Count == NilSet;
 }
 /* Mengirim true jika Set S kosong*/
 /* Ciri Set kosong : count bernilai Nil */
 
-boolean IsFull(Set S)
+boolean IsFullSet(Set S)
 {
     return S.Count == MaxEl;
 }
 /* Mengirim true jika Set S penuh */
 /* Ciri Set penuh : count bernilai MaxEl */
 
-int length(Set S)
+int lengthSet(Set S)
 {
     return S.Count;
 }
 /* Mengirimkan banyaknya elemen Set S, mungkin 0 */
 
 /* ********** Operator Dasar Set ********* */
-void Insert(Set *S, infotype Elmt)
+void InsertSet(Set *S, infotype Elmt)
 {
     if (!IsMember(*S, Elmt))
     {
@@ -44,7 +44,7 @@ void Insert(Set *S, infotype Elmt)
         S mungkin sudah beranggotakan Elmt */
 /* F.S. Elmt menjadi anggota dari S. Jika Elmt sudah merupakan anggota, operasi tidak dilakukan */
 
-void Delete(Set *S, infotype Elmt)
+void DeleteSet(Set *S, infotype Elmt)
 {
     int i = 0;
     while (i < S->Count && S->Elements[i] != Elmt)
@@ -93,17 +93,17 @@ boolean IsMember(Set S, infotype Elmt)
 /* ********** Primitif Dasar Set ********* */
 void Union(Set *S1, Set *S2, Set *S3)
 {
-    CreateEmpty(S3);
+    CreateSet(S3);
     int i = 0;
     while (i < S1->Count)
     {
-        Insert(S3, S1->Elements[i]);
+        InsertSet(S3, S1->Elements[i]);
         i++;
     }
     i = 0;
     while (i < S2->Count)
     {
-        Insert(S3, S2->Elements[i]);
+        InsertSet(S3, S2->Elements[i]);
         i++;
     }
 }
@@ -111,13 +111,13 @@ void Union(Set *S1, Set *S2, Set *S3)
 
 void Intersection(Set *S1, Set *S2, Set *S3)
 {
-    CreateEmpty(S3);
+    CreateSet(S3);
     int i = 0;
     while (i < S1->Count)
     {
         if (IsMember(*S2, S1->Elements[i]))
         {
-            Insert(S3, S1->Elements[i]);
+            InsertSet(S3, S1->Elements[i]);
         }
         i++;
     }
@@ -126,13 +126,13 @@ void Intersection(Set *S1, Set *S2, Set *S3)
 
 void Difference(Set *S1, Set *S2, Set *S3)
 {
-    CreateEmpty(S3);
+    CreateSet(S3);
     int i = 0;
     while (i < S1->Count)
     {
         if (!IsMember(*S2, S1->Elements[i]))
         {
-            Insert(S3, S1->Elements[i]);
+            InsertSet(S3, S1->Elements[i]);
         }
         i++;
     }
@@ -153,11 +153,11 @@ void PrintSet(Set S)
 
 void CopySet(Set Sin, Set *Sout)
 {
-    CreateEmpty(Sout);
+    CreateSet(Sout);
     int i = 0;
     while (i < Sin.Count)
     {
-        Insert(Sout, Sin.Elements[i]);
+        InsertSet(Sout, Sin.Elements[i]);
         i++;
     }
 }

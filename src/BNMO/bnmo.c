@@ -3,7 +3,8 @@
 #include "bnmo.h"
 
 /* Inisialisasi State */
-ArrayDin gamesList;
+ArrayDin history;
+Set gamesList;
 boolean Quit;
 boolean isLoad;
 boolean isSave;
@@ -19,7 +20,9 @@ void MAINMENU()
     isLoad = false;
     isSave = false;
     userCreated = NULL;
+    history = MakeArrayDin();
     CreateQueue(&nowPlaying);
+    CreateSet(&gamesList);
 
     /* STATE MAIN MENU */
     WELCOMESCREEN(); // Print Welcome Screen
@@ -103,6 +106,22 @@ void MAINMENU()
         {
             SKIPGAME(&nowPlaying);
         }
+        else if (compQuery(query, "HISTORY"))
+        {
+            HISTORY(&history);
+        }
+        else if (compQuery(query, "RESET"))
+        {
+            ADVWORDSTD();
+            if (compQuery(KataToString(currentKata), "HISTORY"))
+            {
+                RESETHIST(&history);
+            }
+            else
+            {
+                printf("Input tidak valid\n");
+            }
+        }
         else if (compQuery(query, "HELP"))
         {
             HELP();
@@ -132,17 +151,31 @@ void STARTGAME(char *userFile)
     /* 1. Read Games List */
     char *filename = (char *)malloc(100 * sizeof(char));
     concatStr("data/", userFile, filename);
-    gamesList = MakeArrayDin();
     STARTWORDFILE(filename);
     if (!EOP)
     {
-        int totalGame = WordToInt(currentWord), i = 0;
+        /* 1. Add Games List*/
+        int totalGame = WordToInt(WordToString(currentWord)), i = 0;
         while (i < totalGame)
         {
             ADVWORD();
-            InsertLast(&gamesList, WordToString(currentWord));
+            InsertSet(&gamesList, WordToString(currentWord));
             i++;
         }
+        /* 1.2. Add History */
+        ADVWORD();
+        int totalHistory = WordToInt(WordToString(currentWord)), j = 0;
+        while (j < totalHistory)
+        {
+            ADVWORD();
+            InsertLast(&history, WordToString(currentWord));
+            j++;
+        }
+
+        /* 1.3 Add Scoreboard */
+        /* RNG */
+        /* Hangman */
+        /* Diner DASH */
 
         /* 2. Print Konfig berhasil */
         if (compQuery(userFile, "config.txt"))
@@ -155,10 +188,10 @@ void STARTGAME(char *userFile)
         }
 
         /* 3. User created game */
-        if (Length(gamesList) > 5)
+        if (lengthSet(gamesList) > 5)
         {
             userCreated = (char *)malloc(100 * sizeof(char));
-            userCreated = Get(gamesList, 5);
+            userCreated = gamesList.Elements[5];
         }
         isLoad = true;
     }
@@ -199,13 +232,28 @@ void SAVEGAME()
 
     concatStr("data/", userInput, filename);
     FILE *file = fopen(filename, "w");
-    fprintf(file, "%d\n", Length(gamesList));
-    for (int i = 0; i < Length(gamesList); i++)
+    /* Print Game */
+    fprintf(file, "%d\n", lengthSet(gamesList));
+    for (int i = 0; i < lengthSet(gamesList); i++)
     {
-        if (i == Length(gamesList) - 1)
-            fprintf(file, "%s", Get(gamesList, i));
+        fprintf(file, "%s\n", gamesList.Elements[i]);
+    }
+    /* Print History */
+    if (Length(history) == 0)
+    {
+        fprintf(file, "%d", Length(history));
+    }
+    else
+    {
+        fprintf(file, "%d\n", Length(history));
+    }
+
+    for (int i = 0; i < Length(history); i++)
+    {
+        if (i == Length(history) - 1)
+            fprintf(file, "%s", Get(history, i));
         else
-            fprintf(file, "%s\n", Get(gamesList, i));
+            fprintf(file, "%s\n", Get(history, i));
     }
     fclose(file);
 
@@ -215,25 +263,17 @@ void SAVEGAME()
 /* I.S. Sembarang */
 /* F.S. Game disimpan ke file eksternal */
 
-void CREATEGAME(ArrayDin *arr)
+void CREATEGAME(Set *arr)
 {
-    boolean found = false;
     int i = 0;
     printf("Masukkan nama game yang akan ditambahkan: ");
     /* Input Mechanism */
     char *input = readGame();
     /* End Input */
-    while (i < (*arr).Neff && found == false)
+
+    if (!IsMember(*arr, input))
     {
-        if (compQuery(input, arr->A[i]))
-        {
-            found = true;
-        }
-        i++;
-    }
-    if (!found)
-    {
-        InsertLast(arr, input);
+        InsertSet(arr, input);
         if (userCreated == NULL)
         {
             userCreated = input;
@@ -248,12 +288,12 @@ void CREATEGAME(ArrayDin *arr)
 /* I.S. Sembarang */
 /* F.S. Membuat game baru */
 
-void LISTGAME(ArrayDin arr)
+void LISTGAME(Set arr)
 {
-    int panjang = arr.Neff;
+    int panjang = lengthSet(arr);
     int i;
     printf("List game BNMO :\n");
-    if (IsEmpty(arr))
+    if (IsEmptySet(arr))
     {
         printf("Tidak ada game yang tersedia\n");
     }
@@ -261,14 +301,14 @@ void LISTGAME(ArrayDin arr)
     {
         for (i = 0; i < panjang; i++)
         {
-            printf("%d. %s\n", i + 1, arr.A[i]);
+            printf("%d. %s\n", i + 1, arr.Elements[i]);
         }
     }
 }
 /* I.S. Sembarang */
 /* F.S. Menampilkan list game yang tersedia */
 
-void DELETEGAME(ArrayDin *arr, Queue daftargame)
+void DELETEGAME(Set *arr, Queue daftargame)
 {
     int nomor;
     printf("Berikut adalah daftar game yang tersedia \n");
@@ -278,7 +318,7 @@ void DELETEGAME(ArrayDin *arr, Queue daftargame)
     STARTWORD();
     nomor = KataToInt(currentKata);
     /* Read Angka */
-    if (nomor >= 1 && nomor <= (*arr).Neff)
+    if (nomor >= 1 && nomor <= lengthSet(*arr))
     {
         if (nomor >= 1 && nomor <= 5)
         {
@@ -286,14 +326,14 @@ void DELETEGAME(ArrayDin *arr, Queue daftargame)
         }
         else
         {
-            if (isInQueue((*arr).A[nomor - 1], daftargame))
+            if (isInQueue((*arr).Elements[nomor - 1], daftargame))
             {
                 printf("Game gagal dihapus karena sedang ada di dalam queue\n");
             }
             else
             {
                 printf("Game berhasil dihapus\n");
-                DeleteAt(arr, nomor - 1);
+                DeleteSet(arr, (*arr).Elements[nomor - 1]);
             }
         }
     }
@@ -305,7 +345,7 @@ void DELETEGAME(ArrayDin *arr, Queue daftargame)
 /* I.S. Sembarang */
 /* F.S. Menghapus game yang dipilih */
 
-void QUEUEGAME(ArrayDin arr, Queue *daftargame)
+void QUEUEGAME(Set arr, Queue *daftargame)
 /* I.S. Sembarang */
 /* F.S. mendaftarkan permainan kedalam list.
    List dalam queue akan hilang ketika pemain menjalankan command QUIT */
@@ -331,7 +371,7 @@ void QUEUEGAME(ArrayDin arr, Queue *daftargame)
 
     printf("Nomor game yang ingin dimainkan: ");
     STARTWORD();
-    while (KataToInt(currentKata) > arr.Neff || KataToInt(currentKata) < 0)
+    while (KataToInt(currentKata) > lengthSet(arr) || KataToInt(currentKata) < 0)
     {
         printf("Nomor permainan tidak valid, silahkan masukkan nomor game pada list.\n");
         STARTWORD();
@@ -342,7 +382,7 @@ void QUEUEGAME(ArrayDin arr, Queue *daftargame)
     ElType val;
     IdxType find = 0;
 
-    ElType games = arr.A[nomor - 1];
+    ElType games = arr.Elements[nomor - 1];
     enqueue(daftargame, games);
 
     printf("Game berhasil ditambahkan kedalam daftar antrian.\n");
@@ -373,21 +413,25 @@ void PLAYGAME(Queue *daftargame)
     if (compQuery(game_now, "Diner DASH"))
     {
         // Mainkan Diner Dash
+        InsertLast(&history, "Diner DASH");
         printf("Loading %s ...\n\n", game_now);
         dinnerdash();
     }
     else if (compQuery(game_now, "RNG"))
     {
+        InsertLast(&history, "RNG");
         printf("Loading %s ...\n\n", game_now);
         int a = RNG(); // Karena RNG & Diner Dash dibuat dalam int() / bukan void(), jadi jalaninnya gini
     }
     else if (compQuery(game_now, "HANGMAN"))
     {
+        InsertLast(&history, "HANGMAN");
         printf("Loading %s ...\n\n", game_now);
         hangman();
     }
     else if (userCreated != NULL && compQuery(game_now, userCreated))
     {
+        InsertLast(&history, userCreated);
         printf("Loading %s ...\n\n", game_now);
         UserCreated();
     }
@@ -473,13 +517,28 @@ void QUITGAME()
                 }
                 concatStr("data/", userInput, filename);
                 FILE *file = fopen(filename, "w");
-                fprintf(file, "%d\n", Length(gamesList));
-                for (int i = 0; i < Length(gamesList); i++)
+                /* Print Game */
+                fprintf(file, "%d\n", lengthSet(gamesList));
+                for (int i = 0; i < lengthSet(gamesList); i++)
                 {
-                    if (i == Length(gamesList) - 1)
-                        fprintf(file, "%s", Get(gamesList, i));
+                    fprintf(file, "%s\n", gamesList.Elements[i]);
+                }
+                /* Print History */
+                if (Length(history) == 0)
+                {
+                    fprintf(file, "%d", Length(history));
+                }
+                else
+                {
+                    fprintf(file, "%d\n", Length(history));
+                }
+
+                for (int i = 0; i < Length(history); i++)
+                {
+                    if (i == Length(history) - 1)
+                        fprintf(file, "%s", Get(history, i));
                     else
-                        fprintf(file, "%s\n", Get(gamesList, i));
+                        fprintf(file, "%s\n", Get(history, i));
                 }
                 fclose(file);
 
@@ -506,11 +565,53 @@ void HELP()
     printf("7. QUEUEGAME - Untuk mendaftarkan permainan ke dalam antrian Game\n");
     printf("8. PLAYGAME - Untuk memulai permainan sesuai antrian game\n");
     printf("9. SKIPGAME <nomor game> - Untuk melewati antrian game sebanyak yang diinginkan\n");
+    printf("10. SCOREBOARD - Untuk melihat Scoreboard BNMO\n");
+    printf("11. RESET SCOREBOARD - Untuk menghapus Scoreboard BNMO\n");
+    printf("12. HISTORY - Untuk melihat riwayat game yang telah dimainkan\n");
+    printf("13. RESET HISTORY - Untuk menghapus riwayat game\n");
     printf("10. QUIT - Untuk keluar dari program\n");
 }
 /* I.S. Sembarang */
 /* F.S. Menampilkan list bantuan */
 
+void HISTORY(ArrayDin *history)
+{
+    ADVWORDSTD();
+    while (KataToInt(currentKata) > CAPACITY || KataToInt(currentKata) < 0)
+    {
+        printf("Jumlah permainan tidak valid, silahkan masukkan kembali.\n");
+        STARTWORD();
+    }
+    printf("============ HISTORY Permainan ============\n");
+    int i = 0;
+    while (i < KataToInt(currentKata) && i < Length(*history))
+    {
+        printf("%d. %s\n", i + 1, Get(*history, i));
+        i++;
+    }
+}
+
+void RESETHIST(ArrayDin *history)
+{
+    printf("Apakah kamu yakin ingin menghapus history? Y/N\n");
+    char *cmd = readQuery();
+    if (compQuery(cmd, "Y") || compQuery(cmd, "YES") || compQuery(cmd, "y"))
+    {
+        *history = MakeArrayDin();
+        printf("History berhasil direset.\n");
+    }
+    else
+    {
+        printf("History tidak jadi direset.\n");
+        printf("============ HISTORY Permainan ============\n");
+        int i = 0;
+        while (i < KataToInt(currentKata) && i < Length(*history))
+        {
+            printf("%d. %s\n", i + 1, Get(*history, i));
+            i++;
+        }
+    }
+}
 /* Implementasi Fungsi Bantuan */
 
 void WELCOMESCREEN()

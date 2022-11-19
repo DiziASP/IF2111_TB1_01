@@ -49,7 +49,7 @@ void CopyWord();
           currentChar adalah karakter sesudah karakter terakhir yang diakuisisi.
           Jika panjang kata melebihi NMax, maka sisa kata "dipotong" */
 
-int WordToInt();
+int WordToInt(char *);
 /* Mengubah Word menjadi integer
    I.S. : W terdefinisi
    F.S. : W berisi integer yang sudah diakuisisi */

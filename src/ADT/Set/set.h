@@ -3,13 +3,13 @@
 #include <stdio.h>
 #include "../Boolean/boolean.h"
 
-/* 
+/*
 Deklarasi stack yang dengan implementasi array eksplisit-statik rata kiri
 */
-#define Nil 0
+#define NilSet 0
 #define MaxEl 50
 
-typedef char* infotype;
+typedef char *infotype;
 typedef int address;
 
 typedef struct
@@ -25,31 +25,31 @@ typedef struct
 /* ********* Prototype ********* */
 
 /* *** Konstruktor/Kreator *** */
-void CreateEmpty(Set *S);
+void CreateSet(Set *S);
 /* I.S. Sembarang */
 /* F.S. Membuat sebuah Set S kosong berkapasitas MaxEl */
 /* Ciri Set kosong : count bernilai Nil */
 
 /* ********* Predikat Untuk test keadaan KOLEKSI ********* */
-boolean IsEmpty(Set S);
+boolean IsEmptySet(Set S);
 /* Mengirim true jika Set S kosong*/
 /* Ciri Set kosong : count bernilai Nil */
 
-boolean IsFull(Set S);
+boolean IsFullSet(Set S);
 /* Mengirim true jika Set S penuh */
 /* Ciri Set penuh : count bernilai MaxEl */
 
-int length(Set S);
+int lengthSet(Set S);
 /* Mengirimkan banyaknya elemen Set S, mungkin 0 */
 
 /* ********** Operator Dasar Set ********* */
-void Insert(Set *S, infotype Elmt);
+void InsertSet(Set *S, infotype Elmt);
 /* Menambahkan Elmt sebagai elemen Set S. */
 /* I.S. S mungkin kosong, S tidak penuh
         S mungkin sudah beranggotakan Elmt */
 /* F.S. Elmt menjadi anggota dari S. Jika Elmt sudah merupakan anggota, operasi tidak dilakukan */
 
-void Delete(Set *S, infotype Elmt);
+void DeleteSet(Set *S, infotype Elmt);
 /* Menghapus Elmt dari Set S. */
 /* I.S. S tidak kosong
         Elmt mungkin anggota / bukan anggota dari S */

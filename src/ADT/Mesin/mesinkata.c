@@ -25,9 +25,8 @@ void STARTWORDFILE(char *filename)
     IgnoreBlanks();
     if (!EOP)
     {
+        CopyWord();
     }
-
-    CopyWord();
 }
 
 /* Versi Input dari File Eksternal */
@@ -69,12 +68,13 @@ void CopyWord()
           currentChar adalah karakter sesudah karakter terakhir yang diakuisisi.
           Jika panjang kata melebihi NMax, maka sisa kata "dipotong" */
 
-int WordToInt(Word W)
+int WordToInt(char *W)
 {
-    int i, result = 0;
-    for (i = 0; i < W.Length; i++)
+    int i = 0, result = 0;
+    while (W[i] != '\0')
     {
-        result = result * 10 + (W.TabWord[i] - '0');
+        result = result * 10 + (W[i] - '0');
+        i++;
     }
     return result;
 }
