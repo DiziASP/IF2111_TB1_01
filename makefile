@@ -16,6 +16,9 @@ mesinkata:
 mesinkar:
 	$(CC) src/ADT/Mesin/*.c src/Driver_ADT/drivercharmachine.c -o mesinkar
 
+linkedlist:
+	$(CC) src/ADT/LinkedList/*.c src/Driver_ADT/driverLL.c -o linkedlist
+
 diner:
 	$(CC) src/ADT/Mesin/*.c src/DinerDash/*.c src/DinerDash/ADT_Local/*.c -o diner
 
