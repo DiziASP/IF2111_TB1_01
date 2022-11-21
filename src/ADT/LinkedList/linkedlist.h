@@ -67,6 +67,8 @@ address SearchLL(List L, infotype X);
 /* Jika ada, mengirimkan address elemen tersebut. */
 /* Jika tidak ada, mengirimkan Nil */
 
+int indexOfLL(List L, infotype X);
+
 /****************** PRIMITIF BERDASARKAN NILAI ******************/
 /*** PENAMBAHAN ELEMEN ***/
 void InsVFirst(List *L, infotype X);

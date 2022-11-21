@@ -63,6 +63,26 @@ address SearchLL(List L, infotype Point)
 /* Jika ada, mengirimkan address elemen tersebut. */
 /* Jika tidak ada, mengirimkan Nil */
 
+int indexOfLL(List L, infotype X)
+{
+    address p = First(L);
+    int i = 1;
+    boolean found = false;
+
+    while (p != Nil && !found)
+    {
+        if (InfoX(p) == X.x && InfoY(p) == X.y)
+        {
+            found = true;
+        }
+        else
+        {
+            p = Next(p);
+            i++;
+        }
+    }
+    return found ? i : -1;
+}
 /****************** PRIMITIF BERDASARKAN NILAI ******************/
 /*** PENAMBAHAN ELEMEN ***/
 void InsVFirst(List *L, infotype X)
