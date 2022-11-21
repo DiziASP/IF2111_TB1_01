@@ -26,6 +26,7 @@ typedef struct tElmtlist
 typedef struct
 {
     address First;
+    address Last;
 } List;
 
 /* Definisi list : */
@@ -37,6 +38,7 @@ typedef struct
 #define InfoY(P) (P)->info.y
 #define Next(P) (P)->next
 #define First(L) ((L).First)
+#define Last(L) ((L).Last)
 
 /* PROTOTYPE */
 /****************** TEST LIST KOSONG ******************/

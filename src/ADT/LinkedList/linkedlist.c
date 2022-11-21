@@ -4,7 +4,7 @@
 /****************** TEST LIST KOSONG ******************/
 boolean IsEmptyLL(List L)
 {
-    return (First(L) == Nil);
+    return (First(L) == Nil && Last(L) == Nil);
 }
 /* Mengirim true jika list kosong */
 
@@ -12,6 +12,7 @@ boolean IsEmptyLL(List L)
 void CreateEmptyLL(List *L)
 {
     First(*L) = Nil;
+    Last(*L) = Nil;
 }
 /* I.S. sembarang             */
 /* F.S. Terbentuk list kosong */
@@ -114,8 +115,16 @@ void DelVLast(List *L, infotype *X)
 /*** PENAMBAHAN ELEMEN BERDASARKAN ALAMAT ***/
 void InsertFirstLL(List *L, address P)
 {
-    Next(P) = First(*L);
-    First(*L) = P;
+    if (IsEmptyLL(*L))
+    {
+        First(*L) = P;
+        Last(*L) = P;
+    }
+    else
+    {
+        Next(P) = First(*L);
+        First(*L) = P;
+    }
 }
 /* I.S. Sembarang, P sudah dialokasi  */
 /* F.S. Menambahkan elemen ber-address P sebagai elemen pertama */
@@ -135,12 +144,8 @@ void InsertLastLL(List *L, address P)
     }
     else
     {
-        address Last = First(*L);
-        while (Next(Last) != Nil)
-        {
-            Last = Next(Last);
-        }
-        InsertAfterLL(L, P, Last);
+        Next(Last(*L)) = P;
+        Last(*L) = P;
     }
 }
 /* I.S. Sembarang, P sudah dialokasi  */
@@ -185,21 +190,19 @@ void DelP(List *L, infotype X)
 /* List mungkin menjadi kosong karena penghapusan */
 void DelLastLL(List *L, address *P)
 {
-    address p = Nil;
-    address last = First(*L);
-    while (Next(last) != Nil)
+    address Last = Last(*L);
+    if (Last == First(*L))
     {
-        p = last;
-        last = Next(last);
-    }
-    *P = last;
-    if (p == Nil)
-    {
-        First(*L) = Nil;
+        DelFirstLL(L, P);
     }
     else
     {
-        Next(p) = Nil;
+        address Prec = First(*L);
+        while (Next(Prec) != Last)
+        {
+            Prec = Next(Prec);
+        }
+        DelAfter(L, P, Prec);
     }
 }
 /* I.S. List tidak kosong */
@@ -287,7 +290,7 @@ void Konkat1(List *L1, List *L2, List *L3)
 {
     CreateEmptyLL(L3);
 
-    address last = First(*L1);
+    address last = Last(*L1);
     if (IsEmptyLL(*L1))
     {
         First(*L3) = First(*L2);
@@ -295,10 +298,6 @@ void Konkat1(List *L1, List *L2, List *L3)
     else
     {
         First(*L3) = First(*L1);
-        while (Next(last) != Nil)
-        {
-            last = Next(last);
-        }
         Next(last) = First(*L2);
     }
     CreateEmptyLL(L1);

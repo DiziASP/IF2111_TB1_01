@@ -19,6 +19,12 @@ mesinkar:
 linkedlist:
 	$(CC) src/ADT/LinkedList/*.c src/Driver_ADT/driverLL.c -o linkedlist
 
+set:
+	$(CC) src/ADT/Set/*.c src/Driver_ADT/driverset.c -o set
+
+map:
+	$(CC) src/ADT/Map/*.c src/Driver_ADT/drivermap.c -o map
+
 diner:
 	$(CC) src/ADT/Mesin/*.c src/DinerDash/*.c src/DinerDash/ADT_Local/*.c -o diner
 
