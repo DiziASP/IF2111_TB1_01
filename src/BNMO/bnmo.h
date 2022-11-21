@@ -16,6 +16,7 @@
 #include "../ADT/Queue/queue.h"
 #include "../ADT/Stack/stack.h"
 #include "../ADT/Set/set.h"
+#include "../ADT/Map/map.h"
 // #include "../ADT/LinkedList/linkedlist.h"
 
 /* Import game */
@@ -99,6 +100,10 @@ void HELP();
 void HISTORY(ArrayDin *history);
 
 void RESETHIST(ArrayDin *history);
+
+void SCOREBOARD(Map scoreboardRNG,Map scoreboardDinerDash,Map scoreboardHangman,Map scoreboardTowerOfHanoi,Map scoreboardSnake);
+
+void ResetScoreboard(Set game, Map *scoreboardRNG,Map *scoreboardDinerDash,Map *scoreboardHangman,Map *scoreboardTowerOfHanoi,Map *scoreboardSnake)
 /* ***  Fungsi dan Prosedur Bantuan (Miscellaneous) *** */
 /* Menampilkan Welcome Screen */
 void WELCOMESCREEN();
