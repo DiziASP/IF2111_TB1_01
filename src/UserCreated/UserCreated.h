@@ -12,6 +12,6 @@ extern ArrayDin Booster;
 extern ArrayDin Sad;
 extern int YourMood;
 
-void UserCreated();
+int UserCreated();
 
 #endif

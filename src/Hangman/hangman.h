@@ -13,5 +13,6 @@ extern ArrayDin word;
 extern ArrayDin answer;
 extern ArrayDin wordGuess;
 
-void hangman();
+int hangman();
+
 #endif

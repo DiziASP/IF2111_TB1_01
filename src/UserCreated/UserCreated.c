@@ -50,7 +50,7 @@ void Quotinator()
         printf("%s\n\n", Get(Booster, rand() % Length(Booster)));
     }
 }
-void UserCreated()
+int UserCreated()
 {
     srand(time(NULL));
     Encourage = MakeArrayDin();
@@ -58,4 +58,6 @@ void UserCreated()
     Sad = MakeArrayDin();
     printf("Selamat datang di QUOTINATOR!\n");
     Quotinator();
+
+    return YourMood;
 }

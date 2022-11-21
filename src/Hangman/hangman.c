@@ -84,7 +84,7 @@ char *reaued()
     return KataToString(currentKata);
 }
 
-void hangman()
+int hangman()
 {
     babak = 1;
     win = false;
@@ -138,4 +138,6 @@ void hangman()
         printf("Kamu kalah, git gud ya dek!\n");
         printf("Skor kamu: %d\n", streak);
     }
+
+    return streak;
 }

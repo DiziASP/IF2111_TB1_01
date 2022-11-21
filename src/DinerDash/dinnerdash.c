@@ -185,7 +185,7 @@ void RServeCycle(QueueF *RServe, QueueF *Cook, QueueF *Order)
     }
 }
 
-void dinnerdash()
+int dinnerdash()
 {
     ordNum = 0;
     QueueF Order, Cook, RServe;
@@ -294,4 +294,5 @@ void dinnerdash()
     {
         printf("\nMaaf, Anda gagal menyelesaikan level ini!\n");
     }
+    return saldo;
 }

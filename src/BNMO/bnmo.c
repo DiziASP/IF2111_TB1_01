@@ -5,16 +5,13 @@
 /* Inisialisasi State */
 ArrayDin history;
 Set gamesList;
-Map scoreboardRNG;
-Map scoreboardDinerDash;
-Map scoreboardHangman;
-Map scoreboardTowerOfHanoi;
-Map scoreboardSnake;
+Map scoreboardRNG, scoreboardDinerDash, scoreboardHangman, scoreboardTowerOfHanoi, scoreboardSnake, scoreboardCustomGame;
 boolean Quit;
 boolean isLoad;
 boolean isSave;
 char *userCreated;
 Queue nowPlaying;
+char *username;
 /* ***  Fungsi Utama BNMO *** */
 
 void MAINMENU()
@@ -33,6 +30,7 @@ void MAINMENU()
     CreateMap(&scoreboardHangman);
     CreateMap(&scoreboardTowerOfHanoi);
     CreateMap(&scoreboardSnake);
+    CreateMap(&scoreboardCustomGame);
 
     /* STATE MAIN MENU */
     WELCOMESCREEN(); // Print Welcome Screen
@@ -129,7 +127,7 @@ void MAINMENU()
             }
             else if (compQuery(KataToString(currentKata), "SCOREBOARD"))
             {
-                ResetScoreboard (gamesList, &scoreboardRNG, &scoreboardDinerDash, &scoreboardHangman, &scoreboardTowerOfHanoi, &scoreboardSnake);
+                ResetScoreboard(gamesList, &scoreboardRNG, &scoreboardDinerDash, &scoreboardHangman, &scoreboardTowerOfHanoi, &scoreboardSnake, &scoreboardCustomGame);
             }
             else
             {
@@ -146,7 +144,7 @@ void MAINMENU()
         }
         else if (compQuery(query, "SCOREBOARD"))
         {
-            SCOREBOARD(scoreboardRNG, scoreboardDinerDash, scoreboardHangman, scoreboardTowerOfHanoi, scoreboardSnake);
+            SCOREBOARD(scoreboardRNG, scoreboardDinerDash, scoreboardHangman, scoreboardTowerOfHanoi, scoreboardSnake, scoreboardCustomGame);
         }
         else
         {
@@ -190,50 +188,48 @@ void STARTGAME(char *userFile)
             j++;
         }
         ADVWORD();
-        int totalscoreRNG =  WordToInt(WordToString(currentWord)), k = 0;
-        while (k < totalscoreRNG)
+        if (!EOP)
         {
+            int totalscoreRNG = WordToInt(WordToString(currentWord)), k = 0;
+            while (k < totalscoreRNG)
+            {
+                ADVWORD();
+                InsertMap(&scoreboardRNG, firstString(WordToString(currentWord)), WordToInt(secondString(WordToString(currentWord))));
+                k++;
+            }
             ADVWORD();
-            InsertMap(&scoreboardRNG, firstString(WordToString(currentWord)),WordToInt(secondString(WordToString(currentWord))));
-            k++;
-        }
-        ADVWORD();
-        int totalscoreDinnerDash = WordToInt(WordToString(currentWord)), l = 0;
-        while  (l < totalscoreDinnerDash)
-        {
+            int totalscoreDinnerDash = WordToInt(WordToString(currentWord)), l = 0;
+            while (l < totalscoreDinnerDash)
+            {
+                ADVWORD();
+                InsertMap(&scoreboardDinerDash, firstString(WordToString(currentWord)), WordToInt(secondString(WordToString(currentWord))));
+                l++;
+            }
             ADVWORD();
-            InsertMap(&scoreboardDinerDash, firstString(WordToString(currentWord)),WordToInt(secondString(WordToString(currentWord))));
-            l++;
-        }
-        ADVWORD();
-        int totalscoreHangman = WordToInt(WordToString(currentWord)), m = 0;
-        while (m < totalscoreHangman)
-        {
+            int totalscoreHangman = WordToInt(WordToString(currentWord)), m = 0;
+            while (m < totalscoreHangman)
+            {
+                ADVWORD();
+                InsertMap(&scoreboardHangman, firstString(WordToString(currentWord)), WordToInt(secondString(WordToString(currentWord))));
+                m++;
+            }
             ADVWORD();
-            InsertMap(&scoreboardHangman, firstString(WordToString(currentWord)),WordToInt(secondString(WordToString(currentWord))));
-            m++;
-        }
-        ADVWORD();
-        int totalscoreHanoi = WordToInt(WordToString(currentWord)), n = 0;
-        while (n < totalscoreHanoi)
-        {
+            int totalscoreHanoi = WordToInt(WordToString(currentWord)), n = 0;
+            while (n < totalscoreHanoi)
+            {
+                ADVWORD();
+                InsertMap(&scoreboardTowerOfHanoi, firstString(WordToString(currentWord)), WordToInt(secondString(WordToString(currentWord))));
+                n++;
+            }
             ADVWORD();
-            InsertMap(&scoreboardTowerOfHanoi, firstString(WordToString(currentWord)),WordToInt(secondString(WordToString(currentWord))));
-            n++;
+            int totalscoreSnake = WordToInt(WordToString(currentWord)), o = 0;
+            while (0 < totalscoreSnake)
+            {
+                ADVWORD();
+                InsertMap(&scoreboardSnake, firstString(WordToString(currentWord)), WordToInt(secondString(WordToString(currentWord))));
+                o++;
+            }
         }
-        ADVWORD();
-        int totalscoreSnake = WordToInt(WordToString(currentWord)), o = 0;
-        while (0 < totalscoreSnake)
-        {
-            ADVWORD();
-            InsertMap(&scoreboardSnake, firstString(WordToString(currentWord)),WordToInt(secondString(WordToString(currentWord))));
-            o++;
-        }
-        /* 1.3 Add Scoreboard */
-        /* RNG */
-        /* Hangman */
-        /* Diner DASH */
-
         /* 2. Print Konfig berhasil */
         if (compQuery(userFile, "config.txt"))
         {
@@ -307,11 +303,49 @@ void SAVEGAME()
 
     for (int i = 0; i < Length(history); i++)
     {
-        if (i == Length(history) - 1)
-            fprintf(file, "%s", Get(history, i));
-        else
-            fprintf(file, "%s\n", Get(history, i));
+        fprintf(file, "%s\n", Get(history, i));
     }
+    sortedMap(&scoreboardRNG);
+    sortedMap(&scoreboardDinerDash);
+    sortedMap(&scoreboardHangman);
+    sortedMap(&scoreboardTowerOfHanoi);
+    sortedMap(&scoreboardSnake);
+
+    /* Scoreboard RNG */
+    fprintf(file, "%d\n", scoreboardRNG.Count); // Banyak data RNG
+    for (int i = 0; i < scoreboardRNG.Count; i++)
+    {
+        fprintf(file, "%s %d\n", scoreboardRNG.Elements[i].Key, scoreboardRNG.Elements[i].Value);
+    }
+
+    /* Scoreboard DinerDash */
+    fprintf(file, "%d\n", scoreboardDinerDash.Count); // Banyak data DinerDash
+    for (int i = 0; i < scoreboardDinerDash.Count; i++)
+    {
+        fprintf(file, "%s %d\n", scoreboardDinerDash.Elements[i].Key, scoreboardDinerDash.Elements[i].Value);
+    }
+
+    /* Scoreboard Hangman */
+    fprintf(file, "%d\n", scoreboardHangman.Count); // Banyak data Hangman
+    for (int i = 0; i < scoreboardHangman.Count; i++)
+    {
+        fprintf(file, "%s %d\n", scoreboardHangman.Elements[i].Key, scoreboardHangman.Elements[i].Value);
+    }
+
+    /* Scoreboard Tower of Hanoi */
+    fprintf(file, "%d\n", scoreboardTowerOfHanoi.Count); // Banyak data Tower of Hanoi
+    for (int i = 0; i < scoreboardTowerOfHanoi.Count; i++)
+    {
+        fprintf(file, "%s %d\n", scoreboardTowerOfHanoi.Elements[i].Key, scoreboardTowerOfHanoi.Elements[i].Value);
+    }
+
+    /* Scoreboard Snake */
+    fprintf(file, scoreboardSnake.Count != 0 ? "%d\n" : "%d", scoreboardSnake.Count); // Banyak data Snake
+    for (int i = 0; i < scoreboardSnake.Count; i++)
+    {
+        fprintf(file, i < scoreboardSnake.Count - 1 ? "%s %d\n" : "%s %d", scoreboardSnake.Elements[i].Key, scoreboardSnake.Elements[i].Value);
+    }
+
     fclose(file);
 
     /* 3. Print Konfig berhasil */
@@ -472,25 +506,37 @@ void PLAYGAME(Queue *daftargame)
         // Mainkan Diner Dash
         InsertLast(&history, "Diner DASH");
         printf("Loading %s ...\n\n", game_now);
-        dinnerdash();
+        printf("Masukkan Username (tanpa spasi)\n");
+        username = readQuery();
+        int score = dinnerdash();
+        InsertMap(&scoreboardDinerDash, username, score);
     }
     else if (compQuery(game_now, "RNG"))
     {
         InsertLast(&history, "RNG");
         printf("Loading %s ...\n\n", game_now);
-        int a = RNG(); // Karena RNG & Diner Dash dibuat dalam int() / bukan void(), jadi jalaninnya gini
+        printf("Masukkan Username (tanpa spasi)\n");
+        username = readQuery();
+        int score = RNG(); // Karena RNG & Diner Dash dibuat dalam int() / bukan void(), jadi jalaninnya gini
+        InsertMap(&scoreboardRNG, username, score);
     }
     else if (compQuery(game_now, "HANGMAN"))
     {
         InsertLast(&history, "HANGMAN");
         printf("Loading %s ...\n\n", game_now);
-        hangman();
+        printf("Masukkan Username (tanpa spasi)\n");
+        username = readQuery();
+        int score = hangman();
+        InsertMap(&scoreboardHangman, username, score);
     }
     else if (userCreated != NULL && compQuery(game_now, userCreated))
     {
         InsertLast(&history, userCreated);
         printf("Loading %s ...\n\n", game_now);
-        UserCreated();
+        printf("Masukkan Username (tanpa spasi)\n");
+        username = readQuery();
+        int score = UserCreated();
+        InsertMap(&scoreboardCustomGame, username, score);
     }
     else
     {
@@ -592,11 +638,49 @@ void QUITGAME()
 
                 for (int i = 0; i < Length(history); i++)
                 {
-                    if (i == Length(history) - 1)
-                        fprintf(file, "%s", Get(history, i));
-                    else
-                        fprintf(file, "%s\n", Get(history, i));
+                    fprintf(file, "%s\n", Get(history, i));
                 }
+                sortedMap(&scoreboardRNG);
+                sortedMap(&scoreboardDinerDash);
+                sortedMap(&scoreboardHangman);
+                sortedMap(&scoreboardTowerOfHanoi);
+                sortedMap(&scoreboardSnake);
+
+                /* Scoreboard RNG */
+                fprintf(file, "%d\n", scoreboardRNG.Count); // Banyak data RNG
+                for (int i = 0; i < scoreboardRNG.Count; i++)
+                {
+                    fprintf(file, "%s %d\n", scoreboardRNG.Elements[i].Key, scoreboardRNG.Elements[i].Value);
+                }
+
+                /* Scoreboard DinerDash */
+                fprintf(file, "%d\n", scoreboardDinerDash.Count); // Banyak data DinerDash
+                for (int i = 0; i < scoreboardDinerDash.Count; i++)
+                {
+                    fprintf(file, "%s %d\n", scoreboardDinerDash.Elements[i].Key, scoreboardDinerDash.Elements[i].Value);
+                }
+
+                /* Scoreboard Hangman */
+                fprintf(file, "%d\n", scoreboardHangman.Count); // Banyak data Hangman
+                for (int i = 0; i < scoreboardHangman.Count; i++)
+                {
+                    fprintf(file, "%s %d\n", scoreboardHangman.Elements[i].Key, scoreboardHangman.Elements[i].Value);
+                }
+
+                /* Scoreboard Tower of Hanoi */
+                fprintf(file, "%d\n", scoreboardTowerOfHanoi.Count); // Banyak data Tower of Hanoi
+                for (int i = 0; i < scoreboardTowerOfHanoi.Count; i++)
+                {
+                    fprintf(file, "%s %d\n", scoreboardTowerOfHanoi.Elements[i].Key, scoreboardTowerOfHanoi.Elements[i].Value);
+                }
+
+                /* Scoreboard Snake */
+                fprintf(file, scoreboardSnake.Count != 0 ? "%d\n" : "%d", scoreboardSnake.Count); // Banyak data Snake
+                for (int i = 0; i < scoreboardSnake.Count; i++)
+                {
+                    fprintf(file, i < scoreboardSnake.Count - 1 ? "%s %d\n" : "%s %d", scoreboardSnake.Elements[i].Key, scoreboardSnake.Elements[i].Value);
+                }
+
                 fclose(file);
 
                 /* 3. Print Konfig berhasil */
@@ -670,14 +754,15 @@ void RESETHIST(ArrayDin *history)
     }
 }
 
-void SCOREBOARD(Map scoreboardRNG,Map scoreboardDinerDash,Map scoreboardHangman,Map scoreboardTowerOfHanoi,Map scoreboardSnake)
+void SCOREBOARD(Map scoreboardRNG, Map scoreboardDinerDash, Map scoreboardHangman, Map scoreboardTowerOfHanoi, Map scoreboardSnake, Map scoreboardCustomGame)
 {
     sortedMap(&scoreboardRNG);
     sortedMap(&scoreboardDinerDash);
     sortedMap(&scoreboardHangman);
     sortedMap(&scoreboardTowerOfHanoi);
     sortedMap(&scoreboardSnake);
-    int panjang,i;
+    sortedMap(&scoreboardCustomGame);
+    int panjang, i;
     i = 0;
     panjang = scoreboardRNG.Count;
     printf("**** SCOREBOARD GAME RNG ****\n");
@@ -690,12 +775,13 @@ void SCOREBOARD(Map scoreboardRNG,Map scoreboardDinerDash,Map scoreboardHangman,
         printf("|       NAMA |       SKOR |\n");
         while (i < panjang)
         {
-            printf("| %-10s | %-10d |\n", scoreboardRNG.Elements[i].Key, scoreboardRNG.Elements[i].Value);  
+            printf("| %-10s | %-10d |\n", scoreboardRNG.Elements[i].Key, scoreboardRNG.Elements[i].Value);
+            i++;
         }
     }
     i = 0;
     panjang = scoreboardDinerDash.Count;
-    printf("**** SCOREBOARD GAME DINER DASH ****\n");
+    printf("\n**** SCOREBOARD GAME DINER DASH ****\n");
     if (panjang == 0)
     {
         printf("------SCOREBOARD KOSONG------\n");
@@ -705,12 +791,13 @@ void SCOREBOARD(Map scoreboardRNG,Map scoreboardDinerDash,Map scoreboardHangman,
         printf("|       NAMA |       SKOR |\n");
         while (i < panjang)
         {
-            printf("| %-10s | %-10d |\n", scoreboardDinerDash.Elements[i].Key, scoreboardDinerDash.Elements[i].Value);  
+            printf("| %-10s | %-10d |\n", scoreboardDinerDash.Elements[i].Key, scoreboardDinerDash.Elements[i].Value);
+            i++;
         }
     }
     i = 0;
     panjang = scoreboardHangman.Count;
-    printf("**** SCOREBOARD GAME HANGMAN ****\n");
+    printf("\n**** SCOREBOARD GAME HANGMAN ****\n");
     if (panjang == 0)
     {
         printf("------SCOREBOARD KOSONG------\n");
@@ -720,12 +807,13 @@ void SCOREBOARD(Map scoreboardRNG,Map scoreboardDinerDash,Map scoreboardHangman,
         printf("|       NAMA |       SKOR |\n");
         while (i < panjang)
         {
-            printf("| %-10s | %-10d |\n", scoreboardHangman.Elements[i].Key, scoreboardHangman.Elements[i].Value);  
+            printf("| %-10s | %-10d |\n", scoreboardHangman.Elements[i].Key, scoreboardHangman.Elements[i].Value);
+            i++;
         }
     }
     i = 0;
     panjang = scoreboardTowerOfHanoi.Count;
-    printf("**** SCOREBOARD GAME TOWER OF HANOI ****\n");
+    printf("\n**** SCOREBOARD GAME TOWER OF HANOI ****\n");
     if (panjang == 0)
     {
         printf("------SCOREBOARD KOSONG------\n");
@@ -735,12 +823,13 @@ void SCOREBOARD(Map scoreboardRNG,Map scoreboardDinerDash,Map scoreboardHangman,
         printf("|       NAMA |       SKOR |\n");
         while (i < panjang)
         {
-            printf("| %-10s | %-10d |", scoreboardTowerOfHanoi.Elements[i].Key, scoreboardTowerOfHanoi.Elements[i].Value);  
+            printf("| %-10s | %-10d |", scoreboardTowerOfHanoi.Elements[i].Key, scoreboardTowerOfHanoi.Elements[i].Value);
+            i++;
         }
     }
     i = 0;
     panjang = scoreboardSnake.Count;
-    printf("**** SCOREBOARD GAME SNAKE ON METEOR ****\n");
+    printf("\n**** SCOREBOARD GAME SNAKE ON METEOR ****\n");
     if (panjang == 0)
     {
         printf("------SCOREBOARD KOSONG------\n");
@@ -750,12 +839,29 @@ void SCOREBOARD(Map scoreboardRNG,Map scoreboardDinerDash,Map scoreboardHangman,
         printf("|       NAMA |       SKOR |\n");
         while (i < panjang)
         {
-            printf("| %-10s | %-10d |\n", scoreboardSnake.Elements[i].Key, scoreboardSnake.Elements[i].Value);  
+            printf("| %-10s | %-10d |\n", scoreboardSnake.Elements[i].Key, scoreboardSnake.Elements[i].Value);
+            i++;
+        }
+    }
+    i = 0;
+    panjang = scoreboardCustomGame.Count;
+    printf("\n**** SCOREBOARD GAME %s ****\n", userCreated);
+    if (panjang == 0)
+    {
+        printf("------SCOREBOARD KOSONG------\n");
+    }
+    else
+    {
+        printf("|       NAMA |       SKOR |\n");
+        while (i < panjang)
+        {
+            printf("| %-10s | %-10d |\n", scoreboardCustomGame.Elements[i].Key, scoreboardSnake.Elements[i].Value);
+            i++;
         }
     }
 }
 
-void ResetScoreboard(Set game, Map *scoreboardRNG,Map *scoreboardDinerDash,Map *scoreboardHangman,Map *scoreboardTowerOfHanoi,Map *scoreboardSnake)
+void ResetScoreboard(Set game, Map *scoreboardRNG, Map *scoreboardDinerDash, Map *scoreboardHangman, Map *scoreboardTowerOfHanoi, Map *scoreboardSnake, Map *scoreboardCustomGame)
 {
     printf("DAFTAR SCOREBOARD: \n");
     printf("0. All\n");
@@ -773,8 +879,8 @@ void ResetScoreboard(Set game, Map *scoreboardRNG,Map *scoreboardDinerDash,Map *
     else if (nomor == 0)
     {
         printf("APAKAH KAMU YAKIN INGIN MELAKUKAN RESET SCOREBOARD ALL (YA/TIDAK)");
-        char* cmd = readQuery();
-        while (! compQuery(cmd, "YA") || !compQuery(cmd,"TIDAK"))
+        char *cmd = readQuery();
+        while (!compQuery(cmd, "YA") || !compQuery(cmd, "TIDAK"))
         {
             printf("Input Tidak Valid, silahkan ulangi (YA/TIDAK): ");
             cmd = readQuery();
@@ -786,14 +892,15 @@ void ResetScoreboard(Set game, Map *scoreboardRNG,Map *scoreboardDinerDash,Map *
             CreateMap(scoreboardHangman);
             CreateMap(scoreboardTowerOfHanoi);
             CreateMap(scoreboardSnake);
+            CreateMap(scoreboardCustomGame);
             printf("Scoreboard berhasil di-reset.\n");
         }
     }
     else if (nomor == 1)
     {
         printf("APAKAH KAMU YAKIN INGIN MELAKUKAN RESET SCOREBOARD RNG (YA/TIDAK)");
-        char* cmd = readQuery();
-        while (! compQuery(cmd, "YA") || !compQuery(cmd,"TIDAK"))
+        char *cmd = readQuery();
+        while (!compQuery(cmd, "YA") || !compQuery(cmd, "TIDAK"))
         {
             printf("Input Tidak Valid, silahkan ulangi (YA/TIDAK): ");
             cmd = readQuery();
@@ -807,23 +914,24 @@ void ResetScoreboard(Set game, Map *scoreboardRNG,Map *scoreboardDinerDash,Map *
     else if (nomor == 2)
     {
         printf("APAKAH KAMU YAKIN INGIN MELAKUKAN RESET SCOREBOARD DINER DASH (YA/TIDAK)");
-        char* cmd = readQuery();
-        while (! compQuery(cmd, "YA") || !compQuery(cmd,"TIDAK"))
+        char *cmd = readQuery();
+        while (!compQuery(cmd, "YA") || !compQuery(cmd, "TIDAK"))
         {
             printf("Input Tidak Valid, silahkan ulangi (YA/TIDAK): ");
             cmd = readQuery();
         }
         if (compQuery(cmd, "YA"))
         {
-            CreateMap(scoreboardDinerDash);;
+            CreateMap(scoreboardDinerDash);
+            ;
             printf("Scoreboard berhasil di-reset.\n");
         }
     }
     else if (nomor == 3)
     {
         printf("APAKAH KAMU YAKIN INGIN MELAKUKAN RESET SCOREBOARD HANGMAN (YA/TIDAK)");
-        char* cmd = readQuery();
-        while (! compQuery(cmd, "YA") || !compQuery(cmd,"TIDAK"))
+        char *cmd = readQuery();
+        while (!compQuery(cmd, "YA") || !compQuery(cmd, "TIDAK"))
         {
             printf("Input Tidak Valid, silahkan ulangi (YA/TIDAK): ");
             cmd = readQuery();
@@ -837,8 +945,8 @@ void ResetScoreboard(Set game, Map *scoreboardRNG,Map *scoreboardDinerDash,Map *
     else if (nomor == 4)
     {
         printf("APAKAH KAMU YAKIN INGIN MELAKUKAN RESET SCOREBOARD TOWER OF HANOI (YA/TIDAK)");
-        char* cmd = readQuery();
-        while (! compQuery(cmd, "YA") || !compQuery(cmd,"TIDAK"))
+        char *cmd = readQuery();
+        while (!compQuery(cmd, "YA") || !compQuery(cmd, "TIDAK"))
         {
             printf("Input Tidak Valid, silahkan ulangi (YA/TIDAK): ");
             cmd = readQuery();
@@ -852,8 +960,8 @@ void ResetScoreboard(Set game, Map *scoreboardRNG,Map *scoreboardDinerDash,Map *
     else if (nomor == 5)
     {
         printf("APAKAH KAMU YAKIN INGIN MELAKUKAN RESET SCOREBOARD SNAKE ON METEOR (YA/TIDAK)");
-        char* cmd = readQuery();
-        while (! compQuery(cmd, "YA") || !compQuery(cmd,"TIDAK"))
+        char *cmd = readQuery();
+        while (!compQuery(cmd, "YA") || !compQuery(cmd, "TIDAK"))
         {
             printf("Input Tidak Valid, silahkan ulangi (YA/TIDAK): ");
             cmd = readQuery();
@@ -864,7 +972,21 @@ void ResetScoreboard(Set game, Map *scoreboardRNG,Map *scoreboardDinerDash,Map *
             printf("Scoreboard berhasil di-reset.\n");
         }
     }
-    
+    else if (nomor == 6 && userCreated != NULL)
+    {
+        printf("APAKAH KAMU YAKIN INGIN MELAKUKAN RESET SCOREBOARD %s (YA/TIDAK)", userCreated);
+        char *cmd = readQuery();
+        while (!compQuery(cmd, "YA") || !compQuery(cmd, "TIDAK"))
+        {
+            printf("Input Tidak Valid, silahkan ulangi (YA/TIDAK): ");
+            cmd = readQuery();
+        }
+        if (compQuery(cmd, "YA"))
+        {
+            CreateMap(scoreboardCustomGame);
+            printf("Scoreboard berhasil di-reset.\n");
+        }
+    }
 }
 /* Implementasi Fungsi Bantuan */
 
@@ -988,31 +1110,31 @@ boolean isInQueue(ElType str, Queue q)
     return false;
 }
 
-char* firstString (char* text)
+char *firstString(char *text)
 {
-   int i = 0;
-   char *first;
-   first = (char*) malloc (100*sizeof(char));
-   while  (text[i] != BLANK && text[i] != '\0')
-   {
-    *(first + i) = text[i];
-    i++;
-   }
-   *(first + i) = '\0';
-   return first;
+    int i = 0;
+    char *first;
+    first = (char *)malloc(100 * sizeof(char));
+    while (text[i] != BLANK && text[i] != '\0')
+    {
+        *(first + i) = text[i];
+        i++;
+    }
+    *(first + i) = '\0';
+    return first;
 }
 
-char* secondString (char* text)
+char *secondString(char *text)
 {
     int i = 0, j = 0;
-    char* second;
-    second = (char*) malloc (100 * sizeof(char));
+    char *second;
+    second = (char *)malloc(100 * sizeof(char));
     while (text[i] != BLANK && text[i] != '\0')
     {
         i++;
     }
     i++;
-    while(text[i] != '\0' && text[i] !=BLANK)
+    while (text[i] != '\0' && text[i] != BLANK)
     {
         second[j] = text[i];
         i++;
@@ -1022,14 +1144,13 @@ char* secondString (char* text)
     return second;
 }
 
-
-void sortedMap (Map *sorted)
+void sortedMap(Map *sorted)
 {
     Map temp;
     CreateMap(&temp);
     int panjang = (*sorted).Count;
-    int i,j;
-    char* keyTemp;
+    int i, j;
+    char *keyTemp;
     int valueTemp;
     for (i = 0; i < panjang; i++)
     {
