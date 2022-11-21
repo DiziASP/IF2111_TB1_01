@@ -22,11 +22,11 @@ typedef struct
 {
     keytype Key;
     valuetype Value;
-} infotype;
+} infomap;
 
 typedef struct
 {
-    infotype Elements[MaxMap];
+    infomap Elements[MaxMap];
     address Count;
 } Map;
 

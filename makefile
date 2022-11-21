@@ -2,7 +2,7 @@ CC=gcc
 TARGET=BNMO
 
 all:
-	$(CC) src/BNMO/*.c src/ADT/Mesin/*.c src/ADT/Array/*.c src/ADT/Queue/*.c src/ADT/Stack/*.c src/ADT/Set/*.c  src/UserCreated/*.c src/Hangman/*.c src/DinerDash/*.c src/DinerDash/ADT_Local/*.c src/RNG/*.c -o $(TARGET) 
+	$(CC) src/BNMO/*.c src/ADT/Mesin/*.c src/ADT/Array/*.c src/ADT/Queue/*.c src/ADT/Stack/*.c src/ADT/Set/*.c src/ADT/Map/*.c src/UserCreated/*.c src/Hangman/*.c src/DinerDash/*.c src/DinerDash/ADT_Local/*.c src/RNG/*.c -o $(TARGET) 
 
 array:
 	$(CC) src/ADT/Array/*.c src/Driver_ADT/driverarray.c -o array

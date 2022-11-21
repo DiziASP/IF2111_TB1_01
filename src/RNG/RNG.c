@@ -2,6 +2,7 @@
 
 int RNG()
 {
+    int score = 100;
     srand(time(NULL));
     int x = rand() % 100;
     int tebak;
@@ -24,9 +25,10 @@ int RNG()
         {
             printf("Lebih besar\n");
         }
+        score -= 4;
         printf("Tebakan: ");
         scanf("%d", &tebak);
     }
     printf("Ya, X adalah %d.\n", x);
-    return 0;
+    return score;
 }

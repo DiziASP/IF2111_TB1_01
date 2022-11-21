@@ -32,5 +32,6 @@ void RServeCycle(QueueF *RServe, QueueF *Cook, QueueF *Order);
 
 boolean ValidInput(char *query1, char *query2);
 
-void dinnerdash();
+int dinnerdash();
+
 #endif

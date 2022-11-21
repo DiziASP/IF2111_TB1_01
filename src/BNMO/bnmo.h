@@ -16,6 +16,7 @@
 #include "../ADT/Queue/queue.h"
 #include "../ADT/Stack/stack.h"
 #include "../ADT/Set/set.h"
+#include "../ADT/Map/map.h"
 // #include "../ADT/LinkedList/linkedlist.h"
 
 /* Import game */
@@ -28,6 +29,7 @@
 /* *** Initial State dari BNMO *** */
 extern ArrayDin history;
 extern Set gamesList;
+extern Map scoreboardRNG, scoreboardDinerDash, scoreboardHangman, scoreboardTowerOfHanoi, scoreboardSnake, scoreboardCustomGame;
 extern boolean Quit;
 extern boolean isLoad;
 extern boolean isSave;
@@ -99,6 +101,10 @@ void HELP();
 void HISTORY(ArrayDin *history);
 
 void RESETHIST(ArrayDin *history);
+
+void SCOREBOARD(Map scoreboardRNG, Map scoreboardDinerDash, Map scoreboardHangman, Map scoreboardTowerOfHanoi, Map scoreboardSnake, Map scoreboardCustomGame);
+
+void ResetScoreboard(Set game, Map *scoreboardRNG, Map *scoreboardDinerDash, Map *scoreboardHangman, Map *scoreboardTowerOfHanoi, Map *scoreboardSnake, Map *scoreboardCustomGame);
 /* ***  Fungsi dan Prosedur Bantuan (Miscellaneous) *** */
 /* Menampilkan Welcome Screen */
 void WELCOMESCREEN();
@@ -122,4 +128,8 @@ char *readQuery();
 char *readGame();
 
 boolean isInQueue(ElType str, Queue q);
+
+char *firstString(char *text);
+char *secondString(char *text);
+void sortedMap(Map *sorted);
 #endif
