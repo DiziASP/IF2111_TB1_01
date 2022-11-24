@@ -15,13 +15,13 @@
 #include "../ADT/Stack/stack.h"
 #include "../ADT/Set/set.h"
 #include "../ADT/Map/map.h"
-// #include "../ADT/LinkedList/linkedlist.h"
+#include "../ADT/LinkedList/linkedlist.h"
 
 /* Import game */
 #include "../RandomIntegerGenerator/randomintegergenerator.h"
 #include "../RNG/RNG.h"
 #include "../UserCreated/UserCreated.h"
-// #include "../Hangman/hangman.h"
+#include "../Hangman/hangman.h"
 #include "../DinerDash/dinnerdash.h"
 
 /* *** Initial State dari BNMO *** */

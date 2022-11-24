@@ -178,9 +178,11 @@ void MAINMENU()
         {
             MMSCREEN();
         }
-        printf("\n");
-
-        query = readQuery();
+        if (!Quit)
+        {
+            printf("\n");
+            query = readQuery();
+        }
     }
 }
 /* Print main menu */
@@ -480,7 +482,7 @@ void PLAYGAME(Queue *daftargame)
         printf("Loading %s ...\n\n", game_now);
         printf("Masukkan Username (tanpa spasi)\n");
         username = readQuery();
-        // int score = hangman();
+        int score = hangman();
         InsertMap(&scoreboardHangman, username, score);
     }
     else if (userCreated != NULL && IsStringEqual(game_now, userCreated))
@@ -538,8 +540,7 @@ void SKIPGAME(Queue *daftargame)
             printf("Loading %s ...\n\n", game_now);
             printf("Masukkan Username (tanpa spasi)\n");
             username = readQuery();
-            int score = 0;
-            // int score = hangman();
+            int score = hangman();
             InsertMap(&scoreboardHangman, username, score);
         }
         else if (userCreated != NULL && IsStringEqual(game_now, userCreated))
@@ -752,13 +753,8 @@ void ResetScoreboard(Set game, Map *scoreboardRNG, Map *scoreboardDinerDash, Map
     }
     else if (nomor == 0)
     {
-        printf("APAKAH KAMU YAKIN INGIN MELAKUKAN RESET SCOREBOARD ALL (YA/TIDAK)");
+        printf("APAKAH KAMU YAKIN INGIN MELAKUKAN RESET SCOREBOARD ALL (YA/TIDAK)\n");
         char *cmd = readQuery();
-        while (!IsStringEqual(cmd, "YA") || !IsStringEqual(cmd, "TIDAK"))
-        {
-            printf("Input Tidak Valid, silahkan ulangi (YA/TIDAK): ");
-            cmd = readQuery();
-        }
         if (IsStringEqual(cmd, "YA"))
         {
             CreateMap(scoreboardRNG);
@@ -768,97 +764,140 @@ void ResetScoreboard(Set game, Map *scoreboardRNG, Map *scoreboardDinerDash, Map
             CreateMap(scoreboardSnake);
             CreateMap(scoreboardCustomGame);
             printf("Scoreboard berhasil di-reset.\n");
+        }
+        else if (IsStringEqual(cmd, "TIDAK"))
+        {
+            printf("Scoreboard tidak jadi di-reset.\n");
+            SCOREBOARD(*scoreboardRNG, *scoreboardDinerDash, *scoreboardHangman, *scoreboardTowerOfHanoi, *scoreboardSnake, *scoreboardCustomGame);
+        }
+        else
+        {
+            printf("Perintah tidak valid! Scoreboard tidak jadi di-reset.\n");
+            SCOREBOARD(*scoreboardRNG, *scoreboardDinerDash, *scoreboardHangman, *scoreboardTowerOfHanoi, *scoreboardSnake, *scoreboardCustomGame);
         }
     }
     else if (nomor == 1)
     {
-        printf("APAKAH KAMU YAKIN INGIN MELAKUKAN RESET SCOREBOARD RNG (YA/TIDAK)");
+        printf("APAKAH KAMU YAKIN INGIN MELAKUKAN RESET SCOREBOARD RNG (YA/TIDAK)\n");
         char *cmd = readQuery();
-        while (!IsStringEqual(cmd, "YA") || !IsStringEqual(cmd, "TIDAK"))
-        {
-            printf("Input Tidak Valid, silahkan ulangi (YA/TIDAK): ");
-            cmd = readQuery();
-        }
+
         if (IsStringEqual(cmd, "YA"))
         {
             CreateMap(scoreboardRNG);
             printf("Scoreboard berhasil di-reset.\n");
         }
+        else if (IsStringEqual(cmd, "TIDAK"))
+        {
+            printf("Scoreboard tidak jadi di-reset.\n");
+            SCOREBOARD(*scoreboardRNG, *scoreboardDinerDash, *scoreboardHangman, *scoreboardTowerOfHanoi, *scoreboardSnake, *scoreboardCustomGame);
+        }
+        else
+        {
+            printf("Perintah tidak valid! Scoreboard tidak jadi di-reset.\n");
+            SCOREBOARD(*scoreboardRNG, *scoreboardDinerDash, *scoreboardHangman, *scoreboardTowerOfHanoi, *scoreboardSnake, *scoreboardCustomGame);
+        }
     }
     else if (nomor == 2)
     {
-        printf("APAKAH KAMU YAKIN INGIN MELAKUKAN RESET SCOREBOARD DINER DASH (YA/TIDAK)");
+        printf("APAKAH KAMU YAKIN INGIN MELAKUKAN RESET SCOREBOARD DINER DASH (YA/TIDAK)\n");
         char *cmd = readQuery();
-        while (!IsStringEqual(cmd, "YA") || !IsStringEqual(cmd, "TIDAK"))
-        {
-            printf("Input Tidak Valid, silahkan ulangi (YA/TIDAK): ");
-            cmd = readQuery();
-        }
-        if (IsStringEqual(cmd, "YA"))
+
+        if (IsStringEqual(cmd, "Y") || IsStringEqual(cmd, "YES") || IsStringEqual(cmd, "y"))
         {
             CreateMap(scoreboardDinerDash);
-            ;
             printf("Scoreboard berhasil di-reset.\n");
+        }
+        else if (IsStringEqual(cmd, "N") || IsStringEqual(cmd, "NO") || IsStringEqual(cmd, "n"))
+        {
+            printf("Scoreboard tidak jadi di-reset.\n");
+            SCOREBOARD(*scoreboardRNG, *scoreboardDinerDash, *scoreboardHangman, *scoreboardTowerOfHanoi, *scoreboardSnake, *scoreboardCustomGame);
+        }
+        else
+        {
+            printf("Perintah tidak valid! Scoreboard tidak jadi di-reset.\n");
+            SCOREBOARD(*scoreboardRNG, *scoreboardDinerDash, *scoreboardHangman, *scoreboardTowerOfHanoi, *scoreboardSnake, *scoreboardCustomGame);
         }
     }
     else if (nomor == 3)
     {
-        printf("APAKAH KAMU YAKIN INGIN MELAKUKAN RESET SCOREBOARD HANGMAN (YA/TIDAK)");
+        printf("APAKAH KAMU YAKIN INGIN MELAKUKAN RESET SCOREBOARD HANGMAN (YA/TIDAK)\n");
         char *cmd = readQuery();
-        while (!IsStringEqual(cmd, "YA") || !IsStringEqual(cmd, "TIDAK"))
-        {
-            printf("Input Tidak Valid, silahkan ulangi (YA/TIDAK): ");
-            cmd = readQuery();
-        }
+
         if (IsStringEqual(cmd, "YA"))
         {
             CreateMap(scoreboardHangman);
             printf("Scoreboard berhasil di-reset.\n");
         }
+        else if (IsStringEqual(cmd, "TIDAK"))
+        {
+            printf("Scoreboard tidak jadi di-reset.\n");
+            SCOREBOARD(*scoreboardRNG, *scoreboardDinerDash, *scoreboardHangman, *scoreboardTowerOfHanoi, *scoreboardSnake, *scoreboardCustomGame);
+        }
+        else
+        {
+            printf("Perintah tidak valid! Scoreboard tidak jadi di-reset.\n");
+            SCOREBOARD(*scoreboardRNG, *scoreboardDinerDash, *scoreboardHangman, *scoreboardTowerOfHanoi, *scoreboardSnake, *scoreboardCustomGame);
+        }
     }
     else if (nomor == 4)
     {
-        printf("APAKAH KAMU YAKIN INGIN MELAKUKAN RESET SCOREBOARD TOWER OF HANOI (YA/TIDAK)");
+        printf("APAKAH KAMU YAKIN INGIN MELAKUKAN RESET SCOREBOARD TOWER OF HANOI (YA/TIDAK)\n");
         char *cmd = readQuery();
-        while (!IsStringEqual(cmd, "YA") || !IsStringEqual(cmd, "TIDAK"))
-        {
-            printf("Input Tidak Valid, silahkan ulangi (YA/TIDAK): ");
-            cmd = readQuery();
-        }
         if (IsStringEqual(cmd, "YA"))
         {
             CreateMap(scoreboardTowerOfHanoi);
             printf("Scoreboard berhasil di-reset.\n");
         }
+        else if (IsStringEqual(cmd, "TIDAK"))
+        {
+            printf("Scoreboard tidak jadi di-reset.\n");
+            SCOREBOARD(*scoreboardRNG, *scoreboardDinerDash, *scoreboardHangman, *scoreboardTowerOfHanoi, *scoreboardSnake, *scoreboardCustomGame);
+        }
+        else
+        {
+            printf("Perintah tidak valid! Scoreboard tidak jadi di-reset.\n");
+            SCOREBOARD(*scoreboardRNG, *scoreboardDinerDash, *scoreboardHangman, *scoreboardTowerOfHanoi, *scoreboardSnake, *scoreboardCustomGame);
+        }
     }
     else if (nomor == 5)
     {
-        printf("APAKAH KAMU YAKIN INGIN MELAKUKAN RESET SCOREBOARD SNAKE ON METEOR (YA/TIDAK)");
+        printf("APAKAH KAMU YAKIN INGIN MELAKUKAN RESET SCOREBOARD SNAKE ON METEOR (YA/TIDAK)\n");
         char *cmd = readQuery();
-        while (!IsStringEqual(cmd, "YA") || !IsStringEqual(cmd, "TIDAK"))
-        {
-            printf("Input Tidak Valid, silahkan ulangi (YA/TIDAK): ");
-            cmd = readQuery();
-        }
+
         if (IsStringEqual(cmd, "YA"))
         {
             CreateMap(scoreboardSnake);
             printf("Scoreboard berhasil di-reset.\n");
         }
+        else if (IsStringEqual(cmd, "TIDAK"))
+        {
+            printf("Scoreboard tidak jadi di-reset.\n");
+            SCOREBOARD(*scoreboardRNG, *scoreboardDinerDash, *scoreboardHangman, *scoreboardTowerOfHanoi, *scoreboardSnake, *scoreboardCustomGame);
+        }
+        else
+        {
+            printf("Perintah tidak valid! Scoreboard tidak jadi di-reset.\n");
+            SCOREBOARD(*scoreboardRNG, *scoreboardDinerDash, *scoreboardHangman, *scoreboardTowerOfHanoi, *scoreboardSnake, *scoreboardCustomGame);
+        }
     }
     else if (nomor == 6 && userCreated != NULL)
     {
-        printf("APAKAH KAMU YAKIN INGIN MELAKUKAN RESET SCOREBOARD %s (YA/TIDAK)", userCreated);
+        printf("APAKAH KAMU YAKIN INGIN MELAKUKAN RESET SCOREBOARD %s (YA/TIDAK)\n", userCreated);
         char *cmd = readQuery();
-        while (!IsStringEqual(cmd, "YA") || !IsStringEqual(cmd, "TIDAK"))
-        {
-            printf("Input Tidak Valid, silahkan ulangi (YA/TIDAK): ");
-            cmd = readQuery();
-        }
         if (IsStringEqual(cmd, "YA"))
         {
             CreateMap(scoreboardCustomGame);
             printf("Scoreboard berhasil di-reset.\n");
+        }
+        else if (IsStringEqual(cmd, "TIDAK"))
+        {
+            printf("Scoreboard tidak jadi di-reset.\n");
+            SCOREBOARD(*scoreboardRNG, *scoreboardDinerDash, *scoreboardHangman, *scoreboardTowerOfHanoi, *scoreboardSnake, *scoreboardCustomGame);
+        }
+        else
+        {
+            printf("Perintah tidak valid! Scoreboard tidak jadi di-reset.\n");
+            SCOREBOARD(*scoreboardRNG, *scoreboardDinerDash, *scoreboardHangman, *scoreboardTowerOfHanoi, *scoreboardSnake, *scoreboardCustomGame);
         }
     }
 }

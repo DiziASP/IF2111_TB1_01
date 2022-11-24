@@ -4,7 +4,7 @@ int main()
 {
     List L;
     CreateEmptyLL(&L);
-    infotype X;
+    infotypeLL X;
     X.x = 1;
     X.y = 2;
     InsVLast(&L, X);
@@ -18,7 +18,7 @@ int main()
 
     InversList(&L);
     PrintInfo(L);
-    infotype Y = {3, 4};
+    infotypeLL Y = {3, 4};
     printf("Index of (3, 4): %d\n", indexOfLL(L, Y));
     DelP(&L, Y);
 
