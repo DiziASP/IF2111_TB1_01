@@ -111,3 +111,33 @@ boolean compMapKey(keytype k1, keytype k2)
     }
     return true;
 }
+
+void sortedMap(Map *sorted)
+{
+    Map temp;
+    CreateMap(&temp);
+    int panjang = (*sorted).Count;
+    int i, j;
+    char *keyTemp;
+    int valueTemp;
+    for (i = 0; i < panjang; i++)
+    {
+        for (j = i + 1; j < panjang; j++)
+        {
+            if ((*sorted).Elements[i].Value > (*sorted).Elements[j].Value)
+            {
+                keyTemp = (*sorted).Elements[i].Key;
+                valueTemp = (*sorted).Elements[i].Value;
+                InsertMap(&temp, keyTemp, valueTemp);
+
+                (*sorted).Elements[i].Key = (*sorted).Elements[j].Key;
+                (*sorted).Elements[i].Value = (*sorted).Elements[j].Value;
+
+                (*sorted).Elements[j].Key = temp.Elements[0].Key;
+                (*sorted).Elements[j].Value = temp.Elements[0].Value;
+
+                DeleteMap(&temp, temp.Elements[0].Key);
+            }
+        }
+    }
+}
