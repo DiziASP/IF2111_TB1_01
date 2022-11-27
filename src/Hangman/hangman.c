@@ -134,21 +134,35 @@ void PrintCurrentState()
     printf("\n");
 }
 
-boolean CheckAnswer()
+boolean CheckAnswer(char useranswer)
 {
     /* Search char inside ans is in guess */
     int i = 0;
     boolean found = false;
 
-    if (!IsIn(guess, ans[i]))
+    while (ans[i] != '\0')
+    {
+        if (ans[i] == useranswer)
+        {
+            found = true;
+            break;
+        }
+        i++;
+    }
+
+    if (!found)
     {
         printf("Salah tebak ya ges ya!\n");
         kesempatan--;
     }
 
+    found = false;
+
+    /* Check if user already guess the word */
+    i = 0;
     while (ans[i] != '\0')
     {
-        if (IsIn(guess, ans[i]) || ans[i] == '-')
+        if (IsIn(guess, ans[i]))
         {
             found = true;
         }
@@ -168,9 +182,6 @@ int hangman()
     LoadDictionary(&word, &answer);
     kesempatan = 10;
     poin = 0;
-    guess = (char *)malloc(255 * sizeof(char));
-    guess[0] = '\0';
-    win = false;
 
     printf("Selamat datang di game hangman!\n");
     printf("CEPAT SELAMATKAN INDRA\n\n");
@@ -182,14 +193,14 @@ int hangman()
 
     /* Main Loop */
     int questionNo = 0;
-    int idx = 0;
-    while (questionNo < lengthSet(word))
+    while (questionNo < lengthSet(word) && kesempatan > 0)
     {
         boolean answered = false;
         printf("Pertanyaan: %s\n", word.Elements[questionNo]);
         ans = answer.Elements[questionNo];
         guess = (char *)malloc(255 * sizeof(char));
         guess[0] = '\0';
+        int idx = 0;
         while (!answered)
         {
 
@@ -205,22 +216,26 @@ int hangman()
                 guess[idx] = userAns;
                 guess[idx + 1] = '\0';
                 idx++;
-                answered = CheckAnswer();
-            }
-
-            if (answered)
-            {
-                printf("Yeyyy ketebak!\n");
-                printf("Jawabannya adalah: %s\n\n", ans);
-                poin += 10;
-                idx = 0;
-                free(guess);
+                answered = CheckAnswer(userAns);
+                if (answered)
+                {
+                    printf("\n\nYeyyy ketebak!\n");
+                    printf("Jawabannya adalah: %s\n\n", ans);
+                    poin += 10;
+                    free(guess);
+                }
             }
         }
         questionNo++;
     }
 
     printf("Perolehan Skor kamu: %d\n", poin);
-
     return poin;
+}
+
+int main()
+{
+    hangman();
+
+    return 0;
 }
