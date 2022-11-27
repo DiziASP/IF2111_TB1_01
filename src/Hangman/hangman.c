@@ -232,10 +232,3 @@ int hangman()
     printf("Perolehan Skor kamu: %d\n", poin);
     return poin;
 }
-
-int main()
-{
-    hangman();
-
-    return 0;
-}
