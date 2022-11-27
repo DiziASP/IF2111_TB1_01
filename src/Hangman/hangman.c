@@ -1,6 +1,6 @@
 #include "hangman.h"
 
-boolean win;
+boolean QUIT;
 int kesempatan, poin;
 Set word;
 Set answer;
@@ -179,9 +179,13 @@ boolean CheckAnswer(char useranswer)
 int hangman()
 {
     /* Initial Booting State */
+    CreateSet(&word);
+    CreateSet(&answer);
+
     LoadDictionary(&word, &answer);
     kesempatan = 10;
     poin = 0;
+    QUIT = false;
 
     printf("Selamat datang di game hangman!\n");
     printf("CEPAT SELAMATKAN INDRA\n\n");
@@ -191,44 +195,78 @@ int hangman()
     printf("Jika kamu benar menebak, maka kamu akan mendapatkan poin\n");
     printf("Jika kamu sudah menebak semua pertanyaan secara berturut-turut, maka kamu akan mendapatkan poin maksimal\n\n");
 
+    printf("Menu: \n");
+    printf("1. Mulai permainan\n");
+    printf("2. Tambahkan pertanyaan\n");
+    printf("3. Keluar\n");
+
     /* Main Loop */
-    int questionNo = 0;
-    while (questionNo < lengthSet(word) && kesempatan > 0)
+    while (!QUIT)
     {
-        boolean answered = false;
-        printf("Pertanyaan: %s\n", word.Elements[questionNo]);
-        ans = answer.Elements[questionNo];
-        guess = (char *)malloc(255 * sizeof(char));
-        guess[0] = '\0';
-        int idx = 0;
-        while (!answered)
+        printf("Masukkan pilihan: ");
+        char cmd = readAns();
+
+        if (cmd == '1')
         {
-
-            PrintCurrentState();
-            printf("Jawaban: ");
-            char userAns = readAns();
-            if (IsIn(guess, userAns))
+            int questionNo = 0;
+            while (questionNo < lengthSet(word) && kesempatan > 0)
             {
-                printf("Kamu sudah pernah menebak huruf ini!\n");
-            }
-            else
-            {
-                guess[idx] = userAns;
-                guess[idx + 1] = '\0';
-                idx++;
-                answered = CheckAnswer(userAns);
-                if (answered)
+                boolean answered = false;
+                printf("Pertanyaan: %s\n", word.Elements[questionNo]);
+                ans = answer.Elements[questionNo];
+                guess = (char *)malloc(255 * sizeof(char));
+                guess[0] = '\0';
+                int idx = 0;
+                while (!answered)
                 {
-                    printf("\n\nYeyyy ketebak!\n");
-                    printf("Jawabannya adalah: %s\n\n", ans);
-                    poin += 10;
-                    free(guess);
-                }
-            }
-        }
-        questionNo++;
-    }
 
-    printf("Perolehan Skor kamu: %d\n", poin);
+                    PrintCurrentState();
+                    printf("Jawaban: ");
+                    char userAns = readAns();
+                    if (IsIn(guess, userAns))
+                    {
+                        printf("Kamu sudah pernah menebak huruf ini!\n");
+                    }
+                    else
+                    {
+                        guess[idx] = userAns;
+                        guess[idx + 1] = '\0';
+                        idx++;
+                        answered = CheckAnswer(userAns);
+                        if (answered)
+                        {
+                            printf("\n\nYeyyy ketebak!\n");
+                            printf("Jawabannya adalah: %s\n\n", ans);
+                            poin += 10;
+                            free(guess);
+                        }
+                    }
+                }
+                questionNo++;
+            }
+
+            printf("Perolehan Skor kamu: %d\n", poin);
+            QUIT = true;
+        }
+        else if (cmd == '2')
+        {
+            AddDictionary(&word, &answer);
+            PrintSet(word);
+            PrintSet(answer);
+
+            printf("Pertanyaan berhasil ditambahkan!\n");
+        }
+        else if (cmd == '3')
+        {
+            QUIT = true;
+        }
+        else
+        {
+            printf("Command tidak valid. Ulangi Kembali!\n");
+        }
+    }
+    printf("Terima kasih sudah bermain henkmen...!\n");
+    SaveDictionary(word, answer);
+
     return poin;
 }
