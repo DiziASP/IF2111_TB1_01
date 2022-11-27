@@ -1,17 +1,17 @@
-#include "../ADT/Mesin/mesinkata.h"
+#include "../ADT/Mesin2/mesinkata.h"
 
 int main()
 {
     /* Kata dibaca per line dengan newline sebagai MARK */
-    char *filename = "src/Driver_ADT/mesintext/coba.txt";
-    STARTWORDFILE(filename);
+    char *filename = "data/config.txt";
+    STARTCONFIG(filename);
     int i = 1;
-    while (!EOP)
+    while (!IsEOP())
     {
-        printf("Word %d : %s\n", i, WordToString(currentWord));
-        ADVWORD();
+        printf("Word %d : %s\n", i, KataToString(currentKata));
+        ADVCONFIG();
         i++;
     }
-    printf("Word %d : %s\n", i, WordToString(currentWord));
+    printf("Kata %d : %s\n", i, KataToString(currentKata));
     return 0;
 }

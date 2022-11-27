@@ -10,14 +10,12 @@
 #include "../ADT/Boolean/boolean.h"
 #include "../ADT/Mesin/mesinkar.h"
 #include "../ADT/Mesin/mesinkata.h"
-#include "../ADT/Mesin/charmachine.h"
-#include "../ADT/Mesin/wordmachine.h"
 #include "../ADT/Array/array.h"
 #include "../ADT/Queue/queue.h"
 #include "../ADT/Stack/stack.h"
 #include "../ADT/Set/set.h"
 #include "../ADT/Map/map.h"
-// #include "../ADT/LinkedList/linkedlist.h"
+#include "../ADT/LinkedList/linkedlist.h"
 
 /* Import game */
 #include "../RandomIntegerGenerator/randomintegergenerator.h"
@@ -27,14 +25,12 @@
 #include "../DinerDash/dinnerdash.h"
 
 /* *** Initial State dari BNMO *** */
-extern ArrayDin history;
+extern Stack history;
 extern Set gamesList;
-extern Map scoreboardRNG, scoreboardDinerDash, scoreboardHangman, scoreboardTowerOfHanoi, scoreboardSnake, scoreboardCustomGame;
-extern boolean Quit;
-extern boolean isLoad;
-extern boolean isSave;
 extern Queue nowPlaying;
-extern char *userCreated;
+extern Map scoreboardRNG, scoreboardDinerDash, scoreboardHangman, scoreboardTowerOfHanoi, scoreboardSnake, scoreboardCustomGame;
+extern boolean Quit, isLoad, isSave;
+extern char *userCreated, *username;
 
 /* *** Definisi Fungsi dan Prosedur *** */
 /* Menampilkan Main Menu BNMO */
@@ -53,7 +49,7 @@ void LOADGAME();
 /* F.S. Game dilanjutkan dari file eksternal */
 
 /* Save BNMO ke File Save Eksternal */
-void SAVEGAME();
+void SAVEGAME(char *userInput);
 /* I.S. Sembarang */
 /* F.S. Game disimpan ke file eksternal */
 
@@ -98,9 +94,9 @@ void HELP();
 /* I.S. Sembarang */
 /* F.S. Menampilkan list bantuan */
 
-void HISTORY(ArrayDin *history);
+void HISTORY(Stack history);
 
-void RESETHIST(ArrayDin *history);
+void RESETHIST(Stack *history);
 
 void SCOREBOARD(Map scoreboardRNG, Map scoreboardDinerDash, Map scoreboardHangman, Map scoreboardTowerOfHanoi, Map scoreboardSnake, Map scoreboardCustomGame);
 
@@ -112,24 +108,7 @@ void WELCOMESCREEN();
 /* Menampilkan MAINMENU Screen */
 void MMSCREEN();
 
-/* Menggabung String */
-void concatStr(char *str1, char *str2, char *str3);
-
-/* Membandingkan String*/
-boolean compQuery(char *query, char *command);
-
-/* Melihat apakah query valid */
-boolean ContainStr(char *query, char *comp);
-
 /* Membaca Query user */
 char *readQuery();
 
-/* Membaca Query creategame*/
-char *readGame();
-
-boolean isInQueue(ElType str, Queue q);
-
-char *firstString(char *text);
-char *secondString(char *text);
-void sortedMap(Map *sorted);
 #endif

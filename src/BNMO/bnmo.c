@@ -3,17 +3,14 @@
 #include "bnmo.h"
 
 /* Inisialisasi State */
-ArrayDin history;
+Stack history;
 Set gamesList;
-Map scoreboardRNG, scoreboardDinerDash, scoreboardHangman, scoreboardTowerOfHanoi, scoreboardSnake, scoreboardCustomGame;
-boolean Quit;
-boolean isLoad;
-boolean isSave;
-char *userCreated;
 Queue nowPlaying;
-char *username;
-/* ***  Fungsi Utama BNMO *** */
+Map scoreboardRNG, scoreboardDinerDash, scoreboardHangman, scoreboardTowerOfHanoi, scoreboardSnake, scoreboardCustomGame;
+boolean Quit, isLoad, isSave;
+char *userCreated, *username;
 
+/* ***  Fungsi Utama BNMO *** */
 void MAINMENU()
 {
     /* STATE INITIAL */
@@ -22,7 +19,7 @@ void MAINMENU()
     isLoad = false;
     isSave = false;
     userCreated = NULL;
-    history = MakeArrayDin();
+    CreateStack(&history);
     CreateQueue(&nowPlaying);
     CreateSet(&gamesList);
     CreateMap(&scoreboardRNG);
@@ -37,201 +34,186 @@ void MAINMENU()
     query = readQuery();
     while (!Quit)
     {
-        if (compQuery(query, "START") && !isLoad)
+        printf("\n");
+        if (IsStringEqual(query, "START") && !isLoad)
         {
             STARTGAME("config.txt");
         }
-        else if (compQuery(query, "LOAD") && !isLoad)
+        else if (IsStringEqual(query, "LOAD") && !isLoad)
         {
-
-            LOADGAME();
-        }
-        else if (compQuery(query, "SAVE"))
-        {
-            SAVEGAME();
-        }
-        else if (compQuery(query, "CREATE"))
-        {
-            ADVWORDSTD();
-            if (compQuery(KataToString(currentKata), "GAME"))
+            ADVWORD();
+            query = KataToString(currentKata);
+            if (!ContainStr(query, ".txt"))
             {
-                CREATEGAME(&gamesList);
+                printf("File tidak valid. Silahkan ulangi Input\n");
             }
             else
             {
-                printf("Input tidak valid\n");
+                STARTGAME(query);
             }
         }
-        else if (compQuery(query, "LIST"))
+        else if (isLoad)
         {
-            ADVWORDSTD();
-            if (compQuery(KataToString(currentKata), "GAME"))
+            if (IsStringEqual(query, "CREATE"))
             {
-                LISTGAME(gamesList);
+                ADVWORD();
+                query = KataToString(currentKata);
+                if (!IsStringEqual(query, "GAME"))
+                {
+                    printf("Perintah tidak valid. Silahkan ulangi Input\n");
+                }
+                else
+                {
+                    CREATEGAME(&gamesList);
+                }
             }
-            else
+            else if (IsStringEqual(query, "SAVE"))
             {
-                printf("Input tidak valid\n");
+                ADVWORD();
+                char *userInput = KataToString(currentKata);
+                // Check input valid
+                while (!ContainStr(userInput, ".txt"))
+                {
+                    printf("Input tidak valid. Ulangi kembali: \n");
+                    STARTWORD();
+                    userInput = KataToString(currentKata);
+                }
+                SAVEGAME(userInput);
             }
-        }
-        else if (compQuery(query, "DELETE"))
-        {
-            ADVWORDSTD();
-            if (compQuery(KataToString(currentKata), "GAME"))
+            else if (IsStringEqual(query, "DELETE"))
             {
-                DELETEGAME(&gamesList, nowPlaying);
+                ADVWORD();
+                query = KataToString(currentKata);
+                if (!IsStringEqual(query, "GAME"))
+                {
+                    printf("Perintah tidak valid. Silahkan ulangi Input\n");
+                }
+                else
+                {
+                    DELETEGAME(&gamesList, nowPlaying);
+                }
             }
-            else
+            else if (IsStringEqual(query, "LIST"))
             {
-                printf("Input tidak valid\n");
+                ADVWORD();
+                query = KataToString(currentKata);
+                if (!IsStringEqual(query, "GAME"))
+                {
+                    printf("Perintah tidak valid. Silahkan ulangi Input\n");
+                }
+                else
+                {
+                    LISTGAME(gamesList);
+                }
             }
-        }
-        else if (compQuery(query, "QUEUE"))
-        {
-            ADVWORDSTD();
-            if (compQuery(KataToString(currentKata), "GAME"))
+            else if (IsStringEqual(query, "QUEUE"))
             {
-                QUEUEGAME(gamesList, &nowPlaying);
+                ADVWORD();
+                query = KataToString(currentKata);
+                if (!IsStringEqual(query, "GAME"))
+                {
+                    printf("Perintah tidak valid. Silahkan ulangi Input\n");
+                }
+                else
+                {
+                    QUEUEGAME(gamesList, &nowPlaying);
+                }
             }
-            else
+            else if (IsStringEqual(query, "PLAY"))
             {
-                printf("Input tidak valid\n");
+                ADVWORD();
+                query = KataToString(currentKata);
+                if (!IsStringEqual(query, "GAME"))
+                {
+                    printf("Perintah tidak valid. Silahkan ulangi Input\n");
+                }
+                else
+                {
+                    PLAYGAME(&nowPlaying);
+                }
             }
-        }
-        else if (compQuery(query, "PLAY"))
-        {
-            ADVWORDSTD();
-            if (compQuery(KataToString(currentKata), "GAME"))
+            else if (IsStringEqual(query, "SKIPGAME"))
             {
-                PLAYGAME(&nowPlaying);
+                SKIPGAME(&nowPlaying);
             }
-            else
+            else if (IsStringEqual(query, "HISTORY"))
             {
-                printf("Input tidak valid\n");
+                HISTORY(history);
             }
-        }
-        else if (compQuery(query, "SKIPGAME"))
-        {
-            SKIPGAME(&nowPlaying);
-        }
-        else if (compQuery(query, "HISTORY"))
-        {
-            HISTORY(&history);
-        }
-        else if (compQuery(query, "RESET"))
-        {
-            ADVWORDSTD();
-            if (compQuery(KataToString(currentKata), "HISTORY"))
+            else if (IsStringEqual(query, "SCOREBOARD"))
             {
-                RESETHIST(&history);
+                SCOREBOARD(scoreboardRNG, scoreboardDinerDash, scoreboardHangman, scoreboardTowerOfHanoi, scoreboardSnake, scoreboardCustomGame);
             }
-            else if (compQuery(KataToString(currentKata), "SCOREBOARD"))
+            else if (IsStringEqual(query, "RESET"))
             {
-                ResetScoreboard(gamesList, &scoreboardRNG, &scoreboardDinerDash, &scoreboardHangman, &scoreboardTowerOfHanoi, &scoreboardSnake, &scoreboardCustomGame);
+                ADVWORD();
+                query = KataToString(currentKata);
+                if (IsStringEqual(query, "HISTORY"))
+                {
+                    RESETHIST(&history);
+                }
+                else if (IsStringEqual(query, "SCOREBOARD"))
+                {
+                    ResetScoreboard(gamesList, &scoreboardRNG, &scoreboardDinerDash, &scoreboardHangman, &scoreboardTowerOfHanoi, &scoreboardSnake, &scoreboardCustomGame);
+                }
+                else
+                {
+                    printf("Perintah tidak valid. Silahkan ulangi Input\n");
+                }
             }
-            else
+            else if (IsStringEqual(query, "HELP"))
             {
-                printf("Input tidak valid\n");
+                HELP();
             }
-        }
-        else if (compQuery(query, "HELP"))
-        {
-            HELP();
-        }
-        else if (compQuery(query, "QUIT"))
-        {
-            QUITGAME();
-        }
-        else if (compQuery(query, "SCOREBOARD"))
-        {
-            SCOREBOARD(scoreboardRNG, scoreboardDinerDash, scoreboardHangman, scoreboardTowerOfHanoi, scoreboardSnake, scoreboardCustomGame);
+            else if (IsStringEqual(query, "QUIT"))
+            {
+                QUITGAME();
+            }
         }
         else
         {
-            printf("Command not found. Please try again.\n");
+            printf("Input tidak valid. Silahkan coba kembali\n");
         }
-
-        if (Quit)
-            break;
         if (isLoad)
         {
-            printf("\n");
             MMSCREEN();
         }
-        query = readQuery();
+        if (!Quit)
+        {
+            printf("\n");
+            query = readQuery();
+        }
     }
 }
+/* Print main menu */
 
 void STARTGAME(char *userFile)
 {
     /* 1. Read Games List */
     char *filename = (char *)malloc(100 * sizeof(char));
     concatStr("data/", userFile, filename);
-    STARTWORDFILE(filename);
-    if (!EOP)
+    STARTCONFIG(filename);
+    if (!IsEOP())
     {
-        /* 1. Add Games List*/
-        int totalGame = WordToInt(WordToString(currentWord)), i = 0;
+        /* 1.1 Add Games List*/
+        int totalGame = KataToInt(currentKata), i = 0;
         while (i < totalGame)
         {
-            ADVWORD();
-            InsertSet(&gamesList, WordToString(currentWord));
+            ADVCONFIG();
+            InsertSet(&gamesList, KataToString(currentKata));
             i++;
         }
         /* 1.2. Add History */
-        ADVWORD();
-        int totalHistory = WordToInt(WordToString(currentWord)), j = 0;
+        ADVCONFIG();
+        int totalHistory = KataToInt(currentKata), j = 0;
         while (j < totalHistory)
         {
-            ADVWORD();
-            InsertLast(&history, WordToString(currentWord));
+            ADVCONFIG();
+            PushStack(&history, KataToString(currentKata));
             j++;
         }
-        ADVWORD();
-        if (!EOP)
-        {
-            int totalscoreRNG = WordToInt(WordToString(currentWord)), k = 0;
-            while (k < totalscoreRNG)
-            {
-                ADVWORD();
-                InsertMap(&scoreboardRNG, firstString(WordToString(currentWord)), WordToInt(secondString(WordToString(currentWord))));
-                k++;
-            }
-            ADVWORD();
-            int totalscoreDinnerDash = WordToInt(WordToString(currentWord)), l = 0;
-            while (l < totalscoreDinnerDash)
-            {
-                ADVWORD();
-                InsertMap(&scoreboardDinerDash, firstString(WordToString(currentWord)), WordToInt(secondString(WordToString(currentWord))));
-                l++;
-            }
-            ADVWORD();
-            int totalscoreHangman = WordToInt(WordToString(currentWord)), m = 0;
-            while (m < totalscoreHangman)
-            {
-                ADVWORD();
-                InsertMap(&scoreboardHangman, firstString(WordToString(currentWord)), WordToInt(secondString(WordToString(currentWord))));
-                m++;
-            }
-            ADVWORD();
-            int totalscoreHanoi = WordToInt(WordToString(currentWord)), n = 0;
-            while (n < totalscoreHanoi)
-            {
-                ADVWORD();
-                InsertMap(&scoreboardTowerOfHanoi, firstString(WordToString(currentWord)), WordToInt(secondString(WordToString(currentWord))));
-                n++;
-            }
-            ADVWORD();
-            int totalscoreSnake = WordToInt(WordToString(currentWord)), o = 0;
-            while (0 < totalscoreSnake)
-            {
-                ADVWORD();
-                InsertMap(&scoreboardSnake, firstString(WordToString(currentWord)), WordToInt(secondString(WordToString(currentWord))));
-                o++;
-            }
-        }
         /* 2. Print Konfig berhasil */
-        if (compQuery(userFile, "config.txt"))
+        if (IsStringEqual(userFile, "config.txt"))
         {
             printf("File konfigurasi sistem berhasil dibaca. BNMO berhasil dijalankan.\n");
         }
@@ -255,13 +237,13 @@ void STARTGAME(char *userFile)
 void LOADGAME()
 {
     /* Next Query */
-    if (cc == MARK)
+    if (currentChar == MARK)
     {
         printf("Input invalid\n");
     }
     else
     {
-        ADVWORDSTD();
+        ADVWORD();
         char *userFile = KataToString(currentKata);
         STARTGAME(userFile);
     }
@@ -269,20 +251,10 @@ void LOADGAME()
 /* I.S. Sembarang */
 /* F.S. Game dilanjutkan dari file eksternal */
 
-void SAVEGAME()
+void SAVEGAME(char *userInput)
 {
     /* 1. Save Games List */
-    ADVWORDSTD();
-    char *userInput = KataToString(currentKata);
     char *filename = (char *)malloc(100 * sizeof(char));
-    // Check input valid
-    while (!ContainStr(userInput, ".txt"))
-    {
-        printf("Input tidak valid. Ulangi kembali: \n");
-        STARTWORD();
-        userInput = KataToString(currentKata);
-    }
-
     concatStr("data/", userInput, filename);
     FILE *file = fopen(filename, "w");
     /* Print Game */
@@ -292,19 +264,23 @@ void SAVEGAME()
         fprintf(file, "%s\n", gamesList.Elements[i]);
     }
     /* Print History */
-    if (Length(history) == 0)
+    if (Top(history) + 1 == 0)
     {
-        fprintf(file, "%d", Length(history));
+        fprintf(file, "%d", 0);
     }
     else
     {
-        fprintf(file, "%d\n", Length(history));
+        fprintf(file, "%d\n", Top(history) + 1);
     }
 
-    for (int i = 0; i < Length(history); i++)
+    Stack temp = history;
+    while (!IsEmptyStack(temp))
     {
-        fprintf(file, "%s\n", Get(history, i));
+        infotype x;
+        PopStack(&temp, &x);
+        fprintf(file, "%s\n", x);
     }
+
     sortedMap(&scoreboardRNG);
     sortedMap(&scoreboardDinerDash);
     sortedMap(&scoreboardHangman);
@@ -357,11 +333,10 @@ void SAVEGAME()
 void CREATEGAME(Set *arr)
 {
     int i = 0;
-    printf("Masukkan nama game yang akan ditambahkan: ");
+    printf("Masukkan nama game yang akan ditambahkan (tanpa spasi)\n");
     /* Input Mechanism */
-    char *input = readGame();
+    char *input = readQuery();
     /* End Input */
-
     if (!IsMember(*arr, input))
     {
         InsertSet(arr, input);
@@ -378,26 +353,6 @@ void CREATEGAME(Set *arr)
 }
 /* I.S. Sembarang */
 /* F.S. Membuat game baru */
-
-void LISTGAME(Set arr)
-{
-    int panjang = lengthSet(arr);
-    int i;
-    printf("List game BNMO :\n");
-    if (IsEmptySet(arr))
-    {
-        printf("Tidak ada game yang tersedia\n");
-    }
-    else
-    {
-        for (i = 0; i < panjang; i++)
-        {
-            printf("%d. %s\n", i + 1, arr.Elements[i]);
-        }
-    }
-}
-/* I.S. Sembarang */
-/* F.S. Menampilkan list game yang tersedia */
 
 void DELETEGAME(Set *arr, Queue daftargame)
 {
@@ -500,38 +455,39 @@ void PLAYGAME(Queue *daftargame)
     printf("%d. %s\n\n", start, daftargame->buffer[i]);
 
     char *game_now;
+    int score = 0;
     dequeue(daftargame, &game_now);
-    if (compQuery(game_now, "Diner DASH"))
+    if (IsStringEqual(game_now, "Diner DASH"))
     {
         // Mainkan Diner Dash
-        InsertLast(&history, "Diner DASH");
+        PushStack(&history, "Diner DASH");
         printf("Loading %s ...\n\n", game_now);
         printf("Masukkan Username (tanpa spasi)\n");
         username = readQuery();
         int score = dinnerdash();
         InsertMap(&scoreboardDinerDash, username, score);
     }
-    else if (compQuery(game_now, "RNG"))
+    else if (IsStringEqual(game_now, "RNG"))
     {
-        InsertLast(&history, "RNG");
+        PushStack(&history, "RNG");
         printf("Loading %s ...\n\n", game_now);
         printf("Masukkan Username (tanpa spasi)\n");
         username = readQuery();
         int score = RNG(); // Karena RNG & Diner Dash dibuat dalam int() / bukan void(), jadi jalaninnya gini
         InsertMap(&scoreboardRNG, username, score);
     }
-    else if (compQuery(game_now, "HANGMAN"))
+    else if (IsStringEqual(game_now, "HANGMAN"))
     {
-        InsertLast(&history, "HANGMAN");
+        PushStack(&history, "HANGMAN");
         printf("Loading %s ...\n\n", game_now);
         printf("Masukkan Username (tanpa spasi)\n");
         username = readQuery();
         int score = hangman();
         InsertMap(&scoreboardHangman, username, score);
     }
-    else if (userCreated != NULL && compQuery(game_now, userCreated))
+    else if (userCreated != NULL && IsStringEqual(game_now, userCreated))
     {
-        InsertLast(&history, userCreated);
+        PushStack(&history, userCreated);
         printf("Loading %s ...\n\n", game_now);
         printf("Masukkan Username (tanpa spasi)\n");
         username = readQuery();
@@ -546,7 +502,7 @@ void PLAYGAME(Queue *daftargame)
 
 void SKIPGAME(Queue *daftargame)
 {
-    ADVWORDSTD();
+    ADVWORD();
     while (KataToInt(currentKata) > CAPACITY || KataToInt(currentKata) < 0)
     {
         printf("Jumlah permainan tidak valid, silahkan masukkan nomor game pada list.\n");
@@ -562,26 +518,38 @@ void SKIPGAME(Queue *daftargame)
     if (!isEmpty(*daftargame))
     {
         dequeue(daftargame, &game_now);
-        if (compQuery(game_now, "Diner DASH"))
+        if (IsStringEqual(game_now, "Diner DASH"))
         {
             // Mainkan Diner Dash
             printf("Loading %s ...\n\n", game_now);
-            dinnerdash();
+            printf("Masukkan Username (tanpa spasi)\n");
+            username = readQuery();
+            int score = dinnerdash();
+            InsertMap(&scoreboardDinerDash, username, score);
         }
-        else if (compQuery(game_now, "RNG"))
+        else if (IsStringEqual(game_now, "RNG"))
         {
             printf("Loading %s ...\n\n", game_now);
-            int a = RNG(); // Karena RNG & Diner Dash dibuat dalam int() / bukan void(), jadi jalaninnya gini
+            printf("Masukkan Username (tanpa spasi)\n");
+            username = readQuery();
+            int score = RNG(); // Karena RNG & Diner Dash dibuat dalam int() / bukan void(), jadi jalaninnya gini
+            InsertMap(&scoreboardRNG, username, score);
         }
-        else if (compQuery(game_now, "HANGMAN"))
+        else if (IsStringEqual(game_now, "HANGMAN"))
         {
             printf("Loading %s ...\n\n", game_now);
-            hangman();
+            printf("Masukkan Username (tanpa spasi)\n");
+            username = readQuery();
+            int score = hangman();
+            InsertMap(&scoreboardHangman, username, score);
         }
-        else if (userCreated != NULL && compQuery(game_now, userCreated))
+        else if (userCreated != NULL && IsStringEqual(game_now, userCreated))
         {
             printf("Loading %s ...\n\n", game_now);
-            UserCreated();
+            printf("Masukkan Username (tanpa spasi)\n");
+            username = readQuery();
+            int score = UserCreated();
+            InsertMap(&scoreboardCustomGame, username, score);
         }
         else
         {
@@ -596,97 +564,33 @@ void SKIPGAME(Queue *daftargame)
 /* I.S. Sembarang */
 /* F.S. Melewati giliran game dalam queue */
 
+void LISTGAME(Set arr)
+{
+    int panjang = lengthSet(arr);
+    int i;
+    printf("List game BNMO :\n");
+    if (IsEmptySet(arr))
+    {
+        printf("Tidak ada game yang tersedia\n");
+    }
+    else
+    {
+        for (i = 0; i < panjang; i++)
+        {
+            printf("%d. %s\n", i + 1, arr.Elements[i]);
+        }
+    }
+}
+/* I.S. Sembarang */
+/* F.S. Menampilkan list game yang tersedia */
+
 void QUITGAME()
 {
     printf("Apakah kamu yakin? Y/N\n");
     char *cmd = readQuery();
-    if (compQuery(cmd, "Y") || compQuery(cmd, "YES") || compQuery(cmd, "y"))
+
+    if (IsStringEqual(cmd, "Y") || IsStringEqual(cmd, "YES") || IsStringEqual(cmd, "y"))
     {
-        if (!isSave)
-        {
-            printf("Sepertinya kamu belum menyimpan permainan\n");
-            printf("Apakah kamu ingin menyimpan permainan? Y/N\n");
-            char *cmd = readQuery();
-            if (compQuery(cmd, "Y") || compQuery(cmd, "YES") || compQuery(cmd, "y"))
-            {
-                char *filename = (char *)malloc(100 * sizeof(char));
-                printf("Masukkan nama file: ");
-                char *userInput = readQuery();
-
-                while (!ContainStr(userInput, ".txt"))
-                {
-                    printf("Input tidak valid. Ulangi kembali: \n");
-                    userInput = readQuery();
-                }
-                concatStr("data/", userInput, filename);
-                FILE *file = fopen(filename, "w");
-                /* Print Game */
-                fprintf(file, "%d\n", lengthSet(gamesList));
-                for (int i = 0; i < lengthSet(gamesList); i++)
-                {
-                    fprintf(file, "%s\n", gamesList.Elements[i]);
-                }
-                /* Print History */
-                if (Length(history) == 0)
-                {
-                    fprintf(file, "%d", Length(history));
-                }
-                else
-                {
-                    fprintf(file, "%d\n", Length(history));
-                }
-
-                for (int i = 0; i < Length(history); i++)
-                {
-                    fprintf(file, "%s\n", Get(history, i));
-                }
-                sortedMap(&scoreboardRNG);
-                sortedMap(&scoreboardDinerDash);
-                sortedMap(&scoreboardHangman);
-                sortedMap(&scoreboardTowerOfHanoi);
-                sortedMap(&scoreboardSnake);
-
-                /* Scoreboard RNG */
-                fprintf(file, "%d\n", scoreboardRNG.Count); // Banyak data RNG
-                for (int i = 0; i < scoreboardRNG.Count; i++)
-                {
-                    fprintf(file, "%s %d\n", scoreboardRNG.Elements[i].Key, scoreboardRNG.Elements[i].Value);
-                }
-
-                /* Scoreboard DinerDash */
-                fprintf(file, "%d\n", scoreboardDinerDash.Count); // Banyak data DinerDash
-                for (int i = 0; i < scoreboardDinerDash.Count; i++)
-                {
-                    fprintf(file, "%s %d\n", scoreboardDinerDash.Elements[i].Key, scoreboardDinerDash.Elements[i].Value);
-                }
-
-                /* Scoreboard Hangman */
-                fprintf(file, "%d\n", scoreboardHangman.Count); // Banyak data Hangman
-                for (int i = 0; i < scoreboardHangman.Count; i++)
-                {
-                    fprintf(file, "%s %d\n", scoreboardHangman.Elements[i].Key, scoreboardHangman.Elements[i].Value);
-                }
-
-                /* Scoreboard Tower of Hanoi */
-                fprintf(file, "%d\n", scoreboardTowerOfHanoi.Count); // Banyak data Tower of Hanoi
-                for (int i = 0; i < scoreboardTowerOfHanoi.Count; i++)
-                {
-                    fprintf(file, "%s %d\n", scoreboardTowerOfHanoi.Elements[i].Key, scoreboardTowerOfHanoi.Elements[i].Value);
-                }
-
-                /* Scoreboard Snake */
-                fprintf(file, scoreboardSnake.Count != 0 ? "%d\n" : "%d", scoreboardSnake.Count); // Banyak data Snake
-                for (int i = 0; i < scoreboardSnake.Count; i++)
-                {
-                    fprintf(file, i < scoreboardSnake.Count - 1 ? "%s %d\n" : "%s %d", scoreboardSnake.Elements[i].Key, scoreboardSnake.Elements[i].Value);
-                }
-
-                fclose(file);
-
-                /* 3. Print Konfig berhasil */
-                printf("Save file berhasil dibuat.\n");
-            }
-        }
         printf("Terima Kasih sudah bermain :D\n");
         Quit = true;
     }
@@ -694,63 +598,34 @@ void QUITGAME()
 /* I.S. Sembarang */
 /* F.S. Keluar dari game */
 
-void HELP()
+void HISTORY(Stack history)
 {
-    printf("============ HELP ============\n");
-    printf("1. START - Mulai menjalankan BNMO\n");
-    printf("2. LOAD <namafile.txt> - Untuk memuat file yang sudah disimpan\n");
-    printf("3. SAVE - Untuk menyimpan state game ke dalam file yang sudah dijalankan\n");
-    printf("4. CREATEGAME - Untuk menambahkan game baru\n");
-    printf("5. LISTGAME - Untuk melihat list game yang tersedia dalam sistem\n");
-    printf("6. DELETEGAME - Untuk menghapus game dari daftar game\n");
-    printf("7. QUEUEGAME - Untuk mendaftarkan permainan ke dalam antrian Game\n");
-    printf("8. PLAYGAME - Untuk memulai permainan sesuai antrian game\n");
-    printf("9. SKIPGAME <nomor game> - Untuk melewati antrian game sebanyak yang diinginkan\n");
-    printf("10. SCOREBOARD - Untuk melihat Scoreboard BNMO\n");
-    printf("11. RESET SCOREBOARD - Untuk menghapus Scoreboard BNMO\n");
-    printf("12. HISTORY - Untuk melihat riwayat game yang telah dimainkan\n");
-    printf("13. RESET HISTORY - Untuk menghapus riwayat game\n");
-    printf("10. QUIT - Untuk keluar dari program\n");
-}
-/* I.S. Sembarang */
-/* F.S. Menampilkan list bantuan */
 
-void HISTORY(ArrayDin *history)
-{
-    ADVWORDSTD();
-    while (KataToInt(currentKata) > CAPACITY || KataToInt(currentKata) < 0)
-    {
-        printf("Jumlah permainan tidak valid, silahkan masukkan kembali.\n");
-        STARTWORD();
-    }
     printf("============ HISTORY Permainan ============\n");
+    Stack temp = history;
     int i = 0;
-    while (i < KataToInt(currentKata) && i < Length(*history))
+    while (!IsEmptyStack(temp))
     {
-        printf("%d. %s\n", i + 1, Get(*history, i));
+        infotype X;
+        PopStack(&temp, &X);
+        printf("%d. %s\n", i + 1, X);
         i++;
     }
 }
 
-void RESETHIST(ArrayDin *history)
+void RESETHIST(Stack *history)
 {
     printf("Apakah kamu yakin ingin menghapus history? Y/N\n");
     char *cmd = readQuery();
-    if (compQuery(cmd, "Y") || compQuery(cmd, "YES") || compQuery(cmd, "y"))
+    if (IsStringEqual(cmd, "Y") || IsStringEqual(cmd, "YES") || IsStringEqual(cmd, "y"))
     {
-        *history = MakeArrayDin();
+        CreateStack(history);
         printf("History berhasil direset.\n");
     }
     else
     {
         printf("History tidak jadi direset.\n");
-        printf("============ HISTORY Permainan ============\n");
-        int i = 0;
-        while (i < KataToInt(currentKata) && i < Length(*history))
-        {
-            printf("%d. %s\n", i + 1, Get(*history, i));
-            i++;
-        }
+        HISTORY(*history);
     }
 }
 
@@ -878,14 +753,9 @@ void ResetScoreboard(Set game, Map *scoreboardRNG, Map *scoreboardDinerDash, Map
     }
     else if (nomor == 0)
     {
-        printf("APAKAH KAMU YAKIN INGIN MELAKUKAN RESET SCOREBOARD ALL (YA/TIDAK)");
+        printf("APAKAH KAMU YAKIN INGIN MELAKUKAN RESET SCOREBOARD ALL (YA/TIDAK)\n");
         char *cmd = readQuery();
-        while (!compQuery(cmd, "YA") || !compQuery(cmd, "TIDAK"))
-        {
-            printf("Input Tidak Valid, silahkan ulangi (YA/TIDAK): ");
-            cmd = readQuery();
-        }
-        if (compQuery(cmd, "YA"))
+        if (IsStringEqual(cmd, "YA"))
         {
             CreateMap(scoreboardRNG);
             CreateMap(scoreboardDinerDash);
@@ -894,282 +764,198 @@ void ResetScoreboard(Set game, Map *scoreboardRNG, Map *scoreboardDinerDash, Map
             CreateMap(scoreboardSnake);
             CreateMap(scoreboardCustomGame);
             printf("Scoreboard berhasil di-reset.\n");
+        }
+        else if (IsStringEqual(cmd, "TIDAK"))
+        {
+            printf("Scoreboard tidak jadi di-reset.\n");
+            SCOREBOARD(*scoreboardRNG, *scoreboardDinerDash, *scoreboardHangman, *scoreboardTowerOfHanoi, *scoreboardSnake, *scoreboardCustomGame);
+        }
+        else
+        {
+            printf("Perintah tidak valid! Scoreboard tidak jadi di-reset.\n");
+            SCOREBOARD(*scoreboardRNG, *scoreboardDinerDash, *scoreboardHangman, *scoreboardTowerOfHanoi, *scoreboardSnake, *scoreboardCustomGame);
         }
     }
     else if (nomor == 1)
     {
-        printf("APAKAH KAMU YAKIN INGIN MELAKUKAN RESET SCOREBOARD RNG (YA/TIDAK)");
+        printf("APAKAH KAMU YAKIN INGIN MELAKUKAN RESET SCOREBOARD RNG (YA/TIDAK)\n");
         char *cmd = readQuery();
-        while (!compQuery(cmd, "YA") || !compQuery(cmd, "TIDAK"))
-        {
-            printf("Input Tidak Valid, silahkan ulangi (YA/TIDAK): ");
-            cmd = readQuery();
-        }
-        if (compQuery(cmd, "YA"))
+
+        if (IsStringEqual(cmd, "YA"))
         {
             CreateMap(scoreboardRNG);
             printf("Scoreboard berhasil di-reset.\n");
         }
+        else if (IsStringEqual(cmd, "TIDAK"))
+        {
+            printf("Scoreboard tidak jadi di-reset.\n");
+            SCOREBOARD(*scoreboardRNG, *scoreboardDinerDash, *scoreboardHangman, *scoreboardTowerOfHanoi, *scoreboardSnake, *scoreboardCustomGame);
+        }
+        else
+        {
+            printf("Perintah tidak valid! Scoreboard tidak jadi di-reset.\n");
+            SCOREBOARD(*scoreboardRNG, *scoreboardDinerDash, *scoreboardHangman, *scoreboardTowerOfHanoi, *scoreboardSnake, *scoreboardCustomGame);
+        }
     }
     else if (nomor == 2)
     {
-        printf("APAKAH KAMU YAKIN INGIN MELAKUKAN RESET SCOREBOARD DINER DASH (YA/TIDAK)");
+        printf("APAKAH KAMU YAKIN INGIN MELAKUKAN RESET SCOREBOARD DINER DASH (YA/TIDAK)\n");
         char *cmd = readQuery();
-        while (!compQuery(cmd, "YA") || !compQuery(cmd, "TIDAK"))
-        {
-            printf("Input Tidak Valid, silahkan ulangi (YA/TIDAK): ");
-            cmd = readQuery();
-        }
-        if (compQuery(cmd, "YA"))
+
+        if (IsStringEqual(cmd, "Y") || IsStringEqual(cmd, "YES") || IsStringEqual(cmd, "y"))
         {
             CreateMap(scoreboardDinerDash);
-            ;
             printf("Scoreboard berhasil di-reset.\n");
+        }
+        else if (IsStringEqual(cmd, "N") || IsStringEqual(cmd, "NO") || IsStringEqual(cmd, "n"))
+        {
+            printf("Scoreboard tidak jadi di-reset.\n");
+            SCOREBOARD(*scoreboardRNG, *scoreboardDinerDash, *scoreboardHangman, *scoreboardTowerOfHanoi, *scoreboardSnake, *scoreboardCustomGame);
+        }
+        else
+        {
+            printf("Perintah tidak valid! Scoreboard tidak jadi di-reset.\n");
+            SCOREBOARD(*scoreboardRNG, *scoreboardDinerDash, *scoreboardHangman, *scoreboardTowerOfHanoi, *scoreboardSnake, *scoreboardCustomGame);
         }
     }
     else if (nomor == 3)
     {
-        printf("APAKAH KAMU YAKIN INGIN MELAKUKAN RESET SCOREBOARD HANGMAN (YA/TIDAK)");
+        printf("APAKAH KAMU YAKIN INGIN MELAKUKAN RESET SCOREBOARD HANGMAN (YA/TIDAK)\n");
         char *cmd = readQuery();
-        while (!compQuery(cmd, "YA") || !compQuery(cmd, "TIDAK"))
-        {
-            printf("Input Tidak Valid, silahkan ulangi (YA/TIDAK): ");
-            cmd = readQuery();
-        }
-        if (compQuery(cmd, "YA"))
+
+        if (IsStringEqual(cmd, "YA"))
         {
             CreateMap(scoreboardHangman);
             printf("Scoreboard berhasil di-reset.\n");
         }
+        else if (IsStringEqual(cmd, "TIDAK"))
+        {
+            printf("Scoreboard tidak jadi di-reset.\n");
+            SCOREBOARD(*scoreboardRNG, *scoreboardDinerDash, *scoreboardHangman, *scoreboardTowerOfHanoi, *scoreboardSnake, *scoreboardCustomGame);
+        }
+        else
+        {
+            printf("Perintah tidak valid! Scoreboard tidak jadi di-reset.\n");
+            SCOREBOARD(*scoreboardRNG, *scoreboardDinerDash, *scoreboardHangman, *scoreboardTowerOfHanoi, *scoreboardSnake, *scoreboardCustomGame);
+        }
     }
     else if (nomor == 4)
     {
-        printf("APAKAH KAMU YAKIN INGIN MELAKUKAN RESET SCOREBOARD TOWER OF HANOI (YA/TIDAK)");
+        printf("APAKAH KAMU YAKIN INGIN MELAKUKAN RESET SCOREBOARD TOWER OF HANOI (YA/TIDAK)\n");
         char *cmd = readQuery();
-        while (!compQuery(cmd, "YA") || !compQuery(cmd, "TIDAK"))
-        {
-            printf("Input Tidak Valid, silahkan ulangi (YA/TIDAK): ");
-            cmd = readQuery();
-        }
-        if (compQuery(cmd, "YA"))
+        if (IsStringEqual(cmd, "YA"))
         {
             CreateMap(scoreboardTowerOfHanoi);
             printf("Scoreboard berhasil di-reset.\n");
         }
+        else if (IsStringEqual(cmd, "TIDAK"))
+        {
+            printf("Scoreboard tidak jadi di-reset.\n");
+            SCOREBOARD(*scoreboardRNG, *scoreboardDinerDash, *scoreboardHangman, *scoreboardTowerOfHanoi, *scoreboardSnake, *scoreboardCustomGame);
+        }
+        else
+        {
+            printf("Perintah tidak valid! Scoreboard tidak jadi di-reset.\n");
+            SCOREBOARD(*scoreboardRNG, *scoreboardDinerDash, *scoreboardHangman, *scoreboardTowerOfHanoi, *scoreboardSnake, *scoreboardCustomGame);
+        }
     }
     else if (nomor == 5)
     {
-        printf("APAKAH KAMU YAKIN INGIN MELAKUKAN RESET SCOREBOARD SNAKE ON METEOR (YA/TIDAK)");
+        printf("APAKAH KAMU YAKIN INGIN MELAKUKAN RESET SCOREBOARD SNAKE ON METEOR (YA/TIDAK)\n");
         char *cmd = readQuery();
-        while (!compQuery(cmd, "YA") || !compQuery(cmd, "TIDAK"))
-        {
-            printf("Input Tidak Valid, silahkan ulangi (YA/TIDAK): ");
-            cmd = readQuery();
-        }
-        if (compQuery(cmd, "YA"))
+
+        if (IsStringEqual(cmd, "YA"))
         {
             CreateMap(scoreboardSnake);
             printf("Scoreboard berhasil di-reset.\n");
         }
+        else if (IsStringEqual(cmd, "TIDAK"))
+        {
+            printf("Scoreboard tidak jadi di-reset.\n");
+            SCOREBOARD(*scoreboardRNG, *scoreboardDinerDash, *scoreboardHangman, *scoreboardTowerOfHanoi, *scoreboardSnake, *scoreboardCustomGame);
+        }
+        else
+        {
+            printf("Perintah tidak valid! Scoreboard tidak jadi di-reset.\n");
+            SCOREBOARD(*scoreboardRNG, *scoreboardDinerDash, *scoreboardHangman, *scoreboardTowerOfHanoi, *scoreboardSnake, *scoreboardCustomGame);
+        }
     }
     else if (nomor == 6 && userCreated != NULL)
     {
-        printf("APAKAH KAMU YAKIN INGIN MELAKUKAN RESET SCOREBOARD %s (YA/TIDAK)", userCreated);
+        printf("APAKAH KAMU YAKIN INGIN MELAKUKAN RESET SCOREBOARD %s (YA/TIDAK)\n", userCreated);
         char *cmd = readQuery();
-        while (!compQuery(cmd, "YA") || !compQuery(cmd, "TIDAK"))
-        {
-            printf("Input Tidak Valid, silahkan ulangi (YA/TIDAK): ");
-            cmd = readQuery();
-        }
-        if (compQuery(cmd, "YA"))
+        if (IsStringEqual(cmd, "YA"))
         {
             CreateMap(scoreboardCustomGame);
             printf("Scoreboard berhasil di-reset.\n");
         }
+        else if (IsStringEqual(cmd, "TIDAK"))
+        {
+            printf("Scoreboard tidak jadi di-reset.\n");
+            SCOREBOARD(*scoreboardRNG, *scoreboardDinerDash, *scoreboardHangman, *scoreboardTowerOfHanoi, *scoreboardSnake, *scoreboardCustomGame);
+        }
+        else
+        {
+            printf("Perintah tidak valid! Scoreboard tidak jadi di-reset.\n");
+            SCOREBOARD(*scoreboardRNG, *scoreboardDinerDash, *scoreboardHangman, *scoreboardTowerOfHanoi, *scoreboardSnake, *scoreboardCustomGame);
+        }
     }
 }
-/* Implementasi Fungsi Bantuan */
 
+void HELP()
+{
+    printf("============ HELP ============\n");
+    printf("1. START - Mulai menjalankan BNMO\n");
+    printf("2. LOAD <namafile.txt> - Untuk memuat file yang sudah disimpan\n");
+    printf("3. SAVE - Untuk menyimpan state game ke dalam file yang sudah dijalankan\n");
+    printf("4. CREATEGAME - Untuk menambahkan game baru\n");
+    printf("5. LISTGAME - Untuk melihat list game yang tersedia dalam sistem\n");
+    printf("6. DELETEGAME - Untuk menghapus game dari daftar game\n");
+    printf("7. QUEUEGAME - Untuk mendaftarkan permainan ke dalam antrian Game\n");
+    printf("8. PLAYGAME - Untuk memulai permainan sesuai antrian game\n");
+    printf("9. SKIPGAME <nomor game> - Untuk melewati antrian game sebanyak yang diinginkan\n");
+    printf("10. SCOREBOARD - Untuk melihat Scoreboard BNMO\n");
+    printf("11. RESET SCOREBOARD - Untuk menghapus Scoreboard BNMO\n");
+    printf("12. HISTORY - Untuk melihat riwayat game yang telah dimainkan\n");
+    printf("13. RESET HISTORY - Untuk menghapus riwayat game\n");
+    printf("10. QUIT - Untuk keluar dari program\n");
+}
+/* I.S. Sembarang */
+/* F.S. Menampilkan list bantuan */
+
+/* Miscellanous Functions and Procedures */
 void WELCOMESCREEN()
 {
     char *filename = "src/ASCIIArt/welcome.txt";
-    STARTWORDFILE(filename);
+    STARTCONFIG(filename);
 
-    while (!EOP)
+    while (!IsEOP())
     {
-        printf("%s\n", WordToString(currentWord));
-        ADVWORD();
+        printf("%s\n", KataToString(currentKata));
+        ADVCONFIG();
     }
-    printf("%s\n", WordToString(currentWord)); // LastWord
+    printf("%s\n", KataToString(currentKata));
 }
 
 void MMSCREEN()
 {
     char *filename = "src/ASCIIArt/menu.txt";
-    STARTWORDFILE(filename);
+    STARTCONFIG(filename);
 
-    while (!EOP)
+    while (!IsEOP())
     {
-        printf("%s\n", WordToString(currentWord));
-        ADVWORD();
+        printf("%s\n", KataToString(currentKata));
+        ADVCONFIG();
     }
-    printf("%s\n", WordToString(currentWord)); // LastWord
+    printf("%s\n", KataToString(currentKata)); // LastKata
 }
 
 char *readQuery()
 {
-
-    printf("Command: ");
+    /* Command Parsing */
+    printf("Masukkan perintah: ");
     STARTWORD();
-    return KataToString(currentKata);
-}
+    char *query = KataToString(currentKata);
 
-boolean compQuery(char *query, char *command)
-{
-    int i = 0;
-    while (query[i] != '\0' && command[i] != '\0')
-    {
-        if (query[i] != command[i])
-        {
-            return false;
-        }
-        i++;
-    }
-    return true;
-}
-
-void concatStr(char *str1, char *str2, char *str3)
-{
-    int i = 0;
-    while (str1[i] != '\0')
-    {
-        str3[i] = str1[i];
-        i++;
-    }
-    int j = 0;
-    while (str2[j] != '\0')
-    {
-        str3[i] = str2[j];
-        i++;
-        j++;
-    }
-    str3[i] = '\0';
-}
-
-char *readGame()
-{
-    char *input = (char *)malloc(sizeof(char) * 100);
-    concatStr("", "", input);
-    STARTWORD();
-    while (cc != MARK)
-    {
-        concatStr(input, KataToString(currentKata), input);
-        concatStr(input, " ", input);
-        ADVWORDSTD();
-    }
-    concatStr(input, KataToString(currentKata), input);
-    return input;
-}
-
-boolean ContainStr(char *query, char *comp)
-{
-    int i = 0;
-    int j = 0;
-    while (query[i] != '\0' && comp[j] != '\0')
-    {
-        if (query[i] == comp[j])
-        {
-            i++;
-            j++;
-        }
-        else
-        {
-            i++;
-        }
-    }
-    if (comp[j] == '\0')
-    {
-        return true;
-    }
-    else
-    {
-        return false;
-    }
-}
-boolean isInQueue(ElType str, Queue q)
-{
-    int len = length(q);
-    int i;
-    for (i = 0; i < len; i++)
-    {
-        if (compQuery(str, q.buffer[i]))
-        {
-            return true;
-        }
-    }
-    return false;
-}
-
-char *firstString(char *text)
-{
-    int i = 0;
-    char *first;
-    first = (char *)malloc(100 * sizeof(char));
-    while (text[i] != BLANK && text[i] != '\0')
-    {
-        *(first + i) = text[i];
-        i++;
-    }
-    *(first + i) = '\0';
-    return first;
-}
-
-char *secondString(char *text)
-{
-    int i = 0, j = 0;
-    char *second;
-    second = (char *)malloc(100 * sizeof(char));
-    while (text[i] != BLANK && text[i] != '\0')
-    {
-        i++;
-    }
-    i++;
-    while (text[i] != '\0' && text[i] != BLANK)
-    {
-        second[j] = text[i];
-        i++;
-        j++;
-    }
-    *(second + j) = '\0';
-    return second;
-}
-
-void sortedMap(Map *sorted)
-{
-    Map temp;
-    CreateMap(&temp);
-    int panjang = (*sorted).Count;
-    int i, j;
-    char *keyTemp;
-    int valueTemp;
-    for (i = 0; i < panjang; i++)
-    {
-        for (j = i + 1; j < panjang; j++)
-        {
-            if ((*sorted).Elements[i].Value > (*sorted).Elements[j].Value)
-            {
-                keyTemp = (*sorted).Elements[i].Key;
-                valueTemp = (*sorted).Elements[i].Value;
-                InsertMap(&temp, keyTemp, valueTemp);
-
-                (*sorted).Elements[i].Key = (*sorted).Elements[j].Key;
-                (*sorted).Elements[i].Value = (*sorted).Elements[j].Value;
-
-                (*sorted).Elements[j].Key = temp.Elements[0].Key;
-                (*sorted).Elements[j].Value = temp.Elements[0].Value;
-
-                DeleteMap(&temp, temp.Elements[0].Key);
-            }
-        }
-    }
+    return query;
 }

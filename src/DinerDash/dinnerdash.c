@@ -9,7 +9,7 @@ void rQuery(char **arg1, char **arg2)
 {
     STARTWORD();
     *arg1 = KataToString(currentKata);
-    ADVWORDSTD();
+    ADVWORD();
     *arg2 = KataToString(currentKata);
 }
 
@@ -93,11 +93,8 @@ boolean ValidInput(char *query1, char *query2)
 
 char *IntToString(int x)
 {
-
     char *res = (char *)malloc(sizeof(char) * 100);
-
     itoa(x, res, 10);
-
     return res;
 }
 /* End of fungsi bantuan */

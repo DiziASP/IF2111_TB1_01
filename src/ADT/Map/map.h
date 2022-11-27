@@ -74,4 +74,6 @@ boolean IsMemberMap(Map M, keytype k);
 /* Fungsi bantuan Map */
 boolean compMapKey(keytype k1, keytype k2);
 
+void sortedMap(Map *sorted);
+
 #endif

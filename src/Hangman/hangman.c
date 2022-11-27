@@ -1,143 +1,226 @@
 #include "hangman.h"
 
 boolean win;
-int babak;
-ArrayDin word;
-ArrayDin answer;
-ArrayDin wordGuess;
+int kesempatan, poin;
+Set word;
+Set answer;
+char *guess;
+char *ans;
 
-void Question()
+char *readInput()
 {
-    word = MakeArrayDin();
-    answer = MakeArrayDin();
-    wordGuess = MakeArrayDin();
-    /* Generate Question */
-    char *question1 = "'if' statement tergolong sebagai statement...";
-    char *answer1 = "percabangan";
-    char *answerGuess1 = "per_ab_n__n";
-    InsertLast(&word, question1);
-    InsertLast(&answer, answer1);
-    InsertLast(&wordGuess, answerGuess1);
-
-    char *question2 = "Badannya besar, tangannya kecil kalau mengaum yang lain langsung...";
-    char *answer2 = "mundur";
-    char *answerGuess2 = "m_n__r";
-    InsertLast(&word, question2);
-    InsertLast(&answer, answer2);
-    InsertLast(&wordGuess, answerGuess2);
-
-    char *question3 = "Kalau sigma tidak diketahui, maka digunakan distribusi...";
-    char *answer3 = "t-distribution";
-    char *answerGuess3 = "_-d__tr_bu__n";
-    InsertLast(&word, question3);
-    InsertLast(&answer, answer3);
-    InsertLast(&wordGuess, answerGuess3);
-
-    char *question4 = "Kalau misalnya crush kita udah suka sama yang lain, sebagai makhluk yang beradab dan berakal maka kita harus...";
-    char *answer4 = "tikung";
-    char *answerGuess4 = "__kung";
-    InsertLast(&word, question4);
-    InsertLast(&answer, answer4);
-    InsertLast(&wordGuess, answerGuess4);
-
-    char *question5 = "Apaan tuh?...";
-    char *answer5 = "yntkts";
-    char *answerGuess5 = "y_k__s";
-    InsertLast(&word, question5);
-    InsertLast(&answer, answer5);
-    InsertLast(&wordGuess, answerGuess5);
-
-    char *question6 = "Siapa asprak terfavorit alstrukdat? (hint:kita semua tau :D)...";
-    char *answer6 = "kak-ace";
-    char *answerGuess6 = "kak-___";
-    InsertLast(&word, question6);
-    InsertLast(&answer, answer6);
-    InsertLast(&wordGuess, answerGuess6);
-
-    char *question7 = "Siapa asprak terwibu alstrukdat? (hint:sering baca manga di sekre)...";
-    char *answer7 = "kak-feihan";
-    char *answerGuess7 = "kak-f_____";
-    InsertLast(&word, question7);
-    InsertLast(&answer, answer7);
-    InsertLast(&wordGuess, answerGuess7);
+    /* Command Parsing */
+    START();
+    char *query = (char *)malloc(255 * sizeof(char));
+    int i = 0;
+    while (currentChar != MARK)
+    {
+        query[i] = currentChar;
+        i++;
+        ADV();
+    }
+    query[i] = '\0';
+    return query;
 }
 
-boolean compuare(char *query, char *command)
+char readAns()
+{
+    START();
+    char ans = currentChar;
+    while (currentChar != '\n')
+    {
+        ADV();
+    }
+
+    return ans;
+}
+
+boolean IsIn(char *defAns, char userGuess)
 {
     int i = 0;
-    while (query[i] != '\0' && command[i] != '\0')
+    while (defAns[i] != '\0')
     {
-        if (query[i] != command[i])
+        if (defAns[i] == userGuess)
         {
-            return false;
+            return true;
         }
         i++;
     }
-    return true;
+    return false;
 }
 
-char *reaued()
+void SaveDictionary(Set word, Set answer)
 {
+    FILE *fp = fopen("data/hangman.txt", "w");
+    fprintf(fp, "%d\n", lengthSet(word));
+    for (int i = 0; i < lengthSet(word); i++)
+    {
+        fprintf(fp, "%s\n", word.Elements[i]);
+    }
 
+    fprintf(fp, "%d\n", lengthSet(answer));
+    for (int i = 0; i < lengthSet(answer); i++)
+    {
+        fprintf(fp, i < lengthSet(answer) - 1 ? "%s\n" : "%s", answer.Elements[i]);
+    }
+}
+
+void LoadDictionary(Set *question, Set *boi)
+{
+    STARTCONFIG("data/hangman.txt");
+    if (!IsEOP())
+    {
+        int totalQ = KataToInt(currentKata), i = 0;
+        while (i < totalQ)
+        {
+            ADVCONFIG();
+            InsertSet(question, KataToString(currentKata));
+            i++;
+        }
+
+        ADVCONFIG();
+        int totalA = KataToInt(currentKata), j = 0;
+        while (j < totalA)
+        {
+            ADVCONFIG();
+            InsertSet(boi, KataToString(currentKata));
+            j++;
+        }
+    }
+}
+
+void AddDictionary(Set *word, Set *answer)
+{
+    char *kata = (char *)malloc(255 * sizeof(char));
+    printf("Masukkan kata: ");
+    kata = readInput();
+    InsertSet(word, kata);
     printf("Masukkan jawaban: ");
-    STARTWORD();
-    return KataToString(currentKata);
+    kata = readInput();
+    InsertSet(answer, kata);
+}
+
+void PrintCurrentState()
+{
+    printf("Tebakan sebelumnya: ");
+    int j = 0;
+    while (guess[j] != '\0')
+    {
+        printf("%c", guess[j]);
+        j++;
+    }
+    printf("\n");
+
+    printf("Kata: ");
+    int i = 0;
+    while (ans[i] != '\0')
+    {
+        /* Check Guessed Word*/
+        boolean found = false;
+        if (IsIn(guess, ans[i]) || ans[i] == '-')
+        {
+            printf("%c", ans[i]);
+        }
+        else
+        {
+            printf("_");
+        }
+        i++;
+    }
+    printf("\n");
+
+    printf("Kesempatan: %d\n", kesempatan);
+    printf("Poin: %d\n", poin);
+    printf("\n");
+}
+
+boolean CheckAnswer()
+{
+    /* Search char inside ans is in guess */
+    int i = 0;
+    boolean found = false;
+
+    if (!IsIn(guess, ans[i]))
+    {
+        printf("Salah tebak ya ges ya!\n");
+        kesempatan--;
+    }
+
+    while (ans[i] != '\0')
+    {
+        if (IsIn(guess, ans[i]) || ans[i] == '-')
+        {
+            found = true;
+        }
+        else
+        {
+            found = false;
+            break;
+        }
+        i++;
+    }
+    return found;
 }
 
 int hangman()
 {
-    babak = 1;
+    /* Initial Booting State */
+    LoadDictionary(&word, &answer);
+    kesempatan = 10;
+    poin = 0;
+    guess = (char *)malloc(255 * sizeof(char));
+    guess[0] = '\0';
     win = false;
-    int streak = 0;
-    Question();
-    /* Selamat datang di game hengmen */
+
     printf("Selamat datang di game hangman!\n");
     printf("CEPAT SELAMATKAN INDRA\n\n");
     printf("Kamu akan diberikan pertanyaan dan kamu harus menebak jawabannya\n");
-    printf("Kamu hanya punya 7 kesempatan untuk menebak jawabannya\n");
-    printf("Jika kamu salah menebak, maka kamu akan lanjut ke pertanyaan selanjutnya\n");
+    printf("Kamu hanya punya 10 kesempatan untuk menebak jawabannya\n");
+    printf("Dalam permainan ini, kamu harus bisa menebak kata yang diberikan\n");
     printf("Jika kamu benar menebak, maka kamu akan mendapatkan poin\n");
-    printf("Jika kamu sudah menebak 4 pertanyaan secara berturut-turut, maka kamu menang\n\n");
+    printf("Jika kamu sudah menebak semua pertanyaan secara berturut-turut, maka kamu akan mendapatkan poin maksimal\n\n");
 
-    while (babak <= 7 && !win)
+    /* Main Loop */
+    int questionNo = 0;
+    int idx = 0;
+    while (questionNo < lengthSet(word))
     {
-        printf("Round : %d | Streak : %d\n", babak, streak);
-        printf("Pertanyaan %d: %s\n", babak, Get(word, babak - 1));
-        printf("Clue: %s\n", Get(wordGuess, babak - 1));
-
-        char *input = (char *)malloc(100 * sizeof(char));
-        input = reaued();
-        if (compuare(input, Get(answer, babak - 1)))
+        boolean answered = false;
+        printf("Pertanyaan: %s\n", word.Elements[questionNo]);
+        ans = answer.Elements[questionNo];
+        guess = (char *)malloc(255 * sizeof(char));
+        guess[0] = '\0';
+        while (!answered)
         {
-            printf("Jawaban kamu benar!\n");
-            printf("Jawaban yang benar adalah %s\n", Get(answer, babak - 1));
-            babak++;
-            streak++;
-            if (streak == 4)
+
+            PrintCurrentState();
+            printf("Jawaban: ");
+            char userAns = readAns();
+            if (IsIn(guess, userAns))
             {
-                win = true;
+                printf("Kamu sudah pernah menebak huruf ini!\n");
+            }
+            else
+            {
+                guess[idx] = userAns;
+                guess[idx + 1] = '\0';
+                idx++;
+                answered = CheckAnswer();
+            }
+
+            if (answered)
+            {
+                printf("Yeyyy ketebak!\n");
+                printf("Jawabannya adalah: %s\n\n", ans);
+                poin += 10;
+                idx = 0;
+                free(guess);
             }
         }
-        else
-        {
-            printf("Jawaban kamu salah!\n");
-            printf("Jawaban yang benar adalah %s\n", Get(answer, babak - 1));
-            babak++;
-            streak = 0;
-        }
-        printf("\n");
+        questionNo++;
     }
 
-    if (win)
-    {
-        printf("Selamat kamu menang!\n");
-        printf("Skor kamu: %d\n", streak);
-    }
-    else
-    {
-        printf("Kamu kalah, git gud ya dek!\n");
-        printf("Skor kamu: %d\n", streak);
-    }
+    printf("Perolehan Skor kamu: %d\n", poin);
 
-    return streak;
+    return poin;
 }

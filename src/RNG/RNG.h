@@ -5,7 +5,7 @@
 #ifndef RNG_H
 #define RNG_H
 
-#include "../ADT/Mesin/wordmachine.h"
+#include "../ADT/Mesin/mesinkata.h"
 int RNG();
 
 #endif
