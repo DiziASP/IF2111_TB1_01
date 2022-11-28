@@ -1,4 +1,5 @@
 #include "../ADT/LinkedList/linkedlist.h"
+#include <stdio.h>
 
 int main()
 {
@@ -15,13 +16,9 @@ int main()
     X.y = 6;
     InsVLast(&L, X);
     PrintInfo(L);
-
-    InversList(&L);
+    printf("\n");
+    DelVLast(&L, &X);
     PrintInfo(L);
-    infotypeLL Y = {3, 4};
-    printf("Index of (3, 4): %d\n", indexOfLL(L, Y));
-    DelP(&L, Y);
 
-    PrintInfo(L);
     return 0;
 }
