@@ -1,6 +1,9 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 <<<<<<< HEAD
+>>>>>>> 254323316e2db3b5d9260e0fc77ff61fb90a2834
+=======
 >>>>>>> 254323316e2db3b5d9260e0fc77ff61fb90a2834
 /* File: RNG.c */
 /* Random Integer Generator */
@@ -10,6 +13,11 @@
 // Boolean
 #include "../ADT/Boolean/boolean.h"
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> ff1f6b35bc970b2a0374610d52f5b32f5275f6d7
+>>>>>>> 254323316e2db3b5d9260e0fc77ff61fb90a2834
 =======
 =======
 >>>>>>> ff1f6b35bc970b2a0374610d52f5b32f5275f6d7
@@ -19,13 +27,17 @@
 #include <time.h>
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 <<<<<<< HEAD
+>>>>>>> 254323316e2db3b5d9260e0fc77ff61fb90a2834
+=======
 >>>>>>> 254323316e2db3b5d9260e0fc77ff61fb90a2834
 int generate_random_number();
 /*
     Fungsi untuk mengembalikan bilangan random
     Pada implementasinya, angka yang keluar akan berada di batas [0,1000]
+<<<<<<< HEAD
 <<<<<<< HEAD
 
 */
@@ -40,6 +52,8 @@ int random_generate();
     fungsi yang mengembalikan random generator
 */
 =======
+=======
+>>>>>>> 254323316e2db3b5d9260e0fc77ff61fb90a2834
 
 */
 
@@ -61,6 +75,9 @@ int random_generate();
 #include "../ADT/Mesin/mesinkata.h"
 int RNG();
 >>>>>>> ff1f6b35bc970b2a0374610d52f5b32f5275f6d7
+<<<<<<< HEAD
+>>>>>>> 254323316e2db3b5d9260e0fc77ff61fb90a2834
+=======
 >>>>>>> 254323316e2db3b5d9260e0fc77ff61fb90a2834
 
 #endif

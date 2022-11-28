@@ -1,6 +1,7 @@
 #include "RNG.h"
 <<<<<<< HEAD
 int mod = 107; // bilangan prima
+<<<<<<< HEAD
 int binary_exponent(int a, int b)
 {
     int result = 1;
@@ -28,6 +29,8 @@ int random_generate()
 =======
 <<<<<<< HEAD
 int mod = 107; // bilangan prima
+=======
+>>>>>>> 254323316e2db3b5d9260e0fc77ff61fb90a2834
 int binary_exponent(int a,int b)
 {
     int result = 1;
@@ -105,4 +108,7 @@ int RNG()
     return score;
 }
 >>>>>>> ff1f6b35bc970b2a0374610d52f5b32f5275f6d7
+<<<<<<< HEAD
+>>>>>>> 254323316e2db3b5d9260e0fc77ff61fb90a2834
+=======
 >>>>>>> 254323316e2db3b5d9260e0fc77ff61fb90a2834

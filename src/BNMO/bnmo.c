@@ -509,8 +509,14 @@ void DELETEGAME(Set *arr, Queue daftargame)
 /* F.S. Menghapus game yang dipilih */
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 void QUEUEGAME(ArrayDin arr, Queue *daftargame) == == == =
                                                              void QUEUEGAME(Set arr, Queue *daftargame)
+=======
+void QUEUEGAME(ArrayDin arr, Queue * daftargame)
+=======
+void QUEUEGAME(Set arr, Queue *daftargame)
+>>>>>>> 254323316e2db3b5d9260e0fc77ff61fb90a2834
 >>>>>>> ff1f6b35bc970b2a0374610d52f5b32f5275f6d7
 /* I.S. Sembarang */
 /* F.S. mendaftarkan permainan kedalam list.
@@ -518,6 +524,23 @@ void QUEUEGAME(ArrayDin arr, Queue *daftargame) == == == =
 {
 <<<<<<< HEAD
     ADVWORDSTD();
+<<<<<<< HEAD
+=======
+    if(isEmpty(*daftargame))
+    {
+        printf("Daftar game antrianmu kosong\n\n.");
+    }else
+    {
+        printf("Berikut adalah daftar antrian game-mu\n");
+        IdxType i;
+        int start = 1;
+        for (i = IDX_HEAD(*daftargame); i != IDX_TAIL(*daftargame); i = (i + 1) % CAPACITY)
+        {
+            printf("%d. %s\n",start, (daftargame->buffer+i));
+            start+=1;
+        }
+=======
+>>>>>>> 254323316e2db3b5d9260e0fc77ff61fb90a2834
     if (isEmpty(*daftargame))
     {
         printf("Daftar game antrianmu kosong\n\n.");
@@ -644,9 +667,180 @@ void QUEUEGAME(ArrayDin arr, Queue *daftargame) == == == =
             start += 1;
         }
         printf("%d. %s\n\n", start, daftargame->buffer[i]);
+<<<<<<< HEAD
 
         char *game_now;
         int score = 0;
+=======
+>>>>>>> ff1f6b35bc970b2a0374610d52f5b32f5275f6d7
+    }
+
+    LISTGAME(arr);
+
+<<<<<<< HEAD
+    while(KataToInt(currentKata) >arr.Neff || KataToInt(currentKata) < 0 )
+=======
+    printf("Nomor game yang ingin dimainkan: ");
+    STARTWORD();
+    while (KataToInt(currentKata) > lengthSet(arr) || KataToInt(currentKata) < 0)
+>>>>>>> ff1f6b35bc970b2a0374610d52f5b32f5275f6d7
+    {
+        printf("Nomor permainan tidak valid, silahkan masukkan nomor game pada list.\n");
+        STARTWORD();
+    }
+
+    IdxType nomor = KataToInt(currentKata);
+    IdxType i;
+    ElType val;
+    IdxType find = 0;
+
+<<<<<<< HEAD
+    for (i = 0;i < arr.Neff && find != nomor;i++)
+    {   
+        val = arr.A[i];
+        find+=1;
+    }
+    enqueue(daftargame, val);
+=======
+    ElType games = arr.Elements[nomor - 1];
+    enqueue(daftargame, games);
+>>>>>>> ff1f6b35bc970b2a0374610d52f5b32f5275f6d7
+
+    printf("Game berhasil ditambahkan kedalam daftar antrian.\n");
+}
+
+<<<<<<< HEAD
+void PLAYGAME(Queue * daftargame)
+/* I.S. Sembarang */
+/* F.S. Memainkan game yang dipilih */
+{
+    ElType game_now;
+    dequeue(daftargame,&game_now);
+
+    if(isEmpty(*daftargame))
+    {
+        printf("Daftar Antrian game-mu kosong.\n");
+        return;
+    }
+    printf("Berikut adalah daftar antrian game-mu\n");
+    IdxType i;
+    int start = 1;
+    for (i = IDX_HEAD(*daftargame); i != IDX_TAIL(*daftargame); i = (i + 1) % CAPACITY)
+    {
+        printf("%d. %s\n",start, (daftargame->buffer+i));
+        start+=1;
+   }
+    
+
+    if(game_now == "Diner DASH")
+    {
+        // Mainkan Diner Dash
+        printf("Loading %s ...\n", game_now);
+        int a = dinnerDash();
+    }else if(game_now == "RNG")
+    {
+        printf("Loading %s ...\n", game_now);
+        int a = RNG();
+    }else
+    {
+        printf("Game %s masih dalam maintenance, belum dapat dimainkan.\n Silahkan pilih game lain.\n");
+    }
+}
+=======
+void PLAYGAME(Queue *daftargame)
+/* I.S. Sembarang */
+/* F.S. Memainkan game yang dipilih */
+{
+>>>>>>> ff1f6b35bc970b2a0374610d52f5b32f5275f6d7
+
+    if (isEmpty(*daftargame))
+    {
+        printf("Daftar Antrian game-mu kosong.\n");
+        return;
+    }
+    printf("Berikut adalah daftar antrian game-mu\n");
+    IdxType i = IDX_HEAD(*daftargame);
+    int start = 1;
+    for (i = IDX_HEAD(*daftargame); i != IDX_TAIL(*daftargame); i = (i + 1) % CAPACITY)
+    {
+        printf("%d. %s\n", start, daftargame->buffer[i]);
+        start += 1;
+    }
+    printf("%d. %s\n\n", start, daftargame->buffer[i]);
+
+    char *game_now;
+    int score = 0;
+    dequeue(daftargame, &game_now);
+    if (IsStringEqual(game_now, "Diner DASH"))
+    {
+        // Mainkan Diner Dash
+        PushStack(&history, "Diner DASH");
+        printf("Loading %s ...\n\n", game_now);
+        printf("Masukkan Username (tanpa spasi)\n");
+        username = readQuery();
+        int score = dinnerdash();
+        InsertMap(&scoreboardDinerDash, username, score);
+    }
+    else if (IsStringEqual(game_now, "RNG"))
+    {
+        PushStack(&history, "RNG");
+        printf("Loading %s ...\n\n", game_now);
+        printf("Masukkan Username (tanpa spasi)\n");
+        username = readQuery();
+        int score = RNG(); // Karena RNG & Diner Dash dibuat dalam int() / bukan void(), jadi jalaninnya gini
+        InsertMap(&scoreboardRNG, username, score);
+    }
+    else if (IsStringEqual(game_now, "HANGMAN"))
+    {
+        PushStack(&history, "HANGMAN");
+        printf("Loading %s ...\n\n", game_now);
+        printf("Masukkan Username (tanpa spasi)\n");
+        username = readQuery();
+        int score = hangman();
+        InsertMap(&scoreboardHangman, username, score);
+    }
+    else if (IsStringEqual(game_now, "TOWER OF HANOI"))
+    {
+        PushStack(&history, "TOWER OF HANOI");
+        printf("Loading %s ...\n\n", game_now);
+        printf("Masukkan Username (tanpa spasi)\n");
+        username = readQuery();
+        int score = TowerofHanoi();
+        InsertMap(&scoreboardTowerOfHanoi, username, score);
+    }
+    else if (userCreated != NULL && IsStringEqual(game_now, userCreated))
+    {
+        PushStack(&history, userCreated);
+        printf("Loading %s ...\n\n", game_now);
+        printf("Masukkan Username (tanpa spasi)\n");
+        username = readQuery();
+        int score = UserCreated();
+        InsertMap(&scoreboardCustomGame, username, score);
+    }
+    else
+    {
+        printf("Game %s masih dalam maintenance, belum dapat dimainkan.\n Silahkan pilih game lain.\n", game_now);
+    }
+}
+
+void SKIPGAME(Queue *daftargame)
+{
+    ADVWORD();
+    while (KataToInt(currentKata) > CAPACITY || KataToInt(currentKata) < 0)
+    {
+        printf("Jumlah permainan tidak valid, silahkan masukkan nomor game pada list.\n");
+        STARTWORD();
+    }
+    char *game_now;
+    int i = 0;
+    while (i < KataToInt(currentKata) && !isEmpty(*daftargame))
+    {
+        dequeue(daftargame, &game_now);
+        i++;
+    }
+    if (!isEmpty(*daftargame))
+    {
+>>>>>>> 254323316e2db3b5d9260e0fc77ff61fb90a2834
         dequeue(daftargame, &game_now);
         if (IsStringEqual(game_now, "Diner DASH"))
         {
@@ -1176,6 +1370,7 @@ void QUEUEGAME(ArrayDin arr, Queue *daftargame) == == == =
         char *query = KataToString(currentKata);
 
 <<<<<<< HEAD
+<<<<<<< HEAD
         boolean compQuery(char *query, char *command)
         {
             int i = 0;
@@ -1225,3 +1420,55 @@ void QUEUEGAME(ArrayDin arr, Queue *daftargame) == == == =
         == == == =
                      return query;
     }
+=======
+boolean compQuery(char *query, char *command)
+{
+    int i = 0;
+    while (query[i] != '\0' && command[i] != '\0')
+    {
+        if (query[i] != command[i])
+        {
+            return false;
+        }
+        i++;
+    }
+    return true;
+}
+
+void concatStr(char *str1, char *str2, char *str3)
+{
+    int i = 0;
+    while (str1[i] != '\0')
+    {
+        str3[i] = str1[i];
+        i++;
+    }
+    int j = 0;
+    while (str2[j] != '\0')
+    {
+        str3[i] = str2[j];
+        i++;
+        j++;
+    }
+    str3[i] = '\0';
+}
+
+char *readGame()
+{
+    char *input = (char *)malloc(sizeof(char) * 100);
+    concatStr("", "", input);
+    STARTWORD();
+    while (cc != MARK)
+    {
+        concatStr(input, KataToString(currentKata), input);
+        concatStr(input, " ", input);
+        ADVWORDSTD();
+    }
+    concatStr(input, KataToString(currentKata), input);
+    return input;
+}
+=======
+    return query;
+}
+>>>>>>> ff1f6b35bc970b2a0374610d52f5b32f5275f6d7
+>>>>>>> 254323316e2db3b5d9260e0fc77ff61fb90a2834
