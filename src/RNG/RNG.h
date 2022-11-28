@@ -6,5 +6,6 @@
 #define RNG_H
 
 int RNG();
+/*Memainkan game RNG*/
 
 #endif

@@ -60,17 +60,31 @@ void Pop(Stack *S, infotype *X);
 /* F.S. X adalah nilai elemen TOP yang lama, TOP berkurang 1 */
 
 void displaystack(Stack A, Stack B, Stack C,int n);
+/*Menampilkan Piringan yang ada dalam stack*/
 
 void displaygaris(Stack s, int n);
+/*Menampilkan garis pada display tower sebagai alas tower*/
 
 void inttodisk (int x,int n);
+/*merubah bentuk integer menjadi display disk pada tower*/
 
 void move(char *asal, char *tujuan, Stack *A, Stack *B, Stack *C, int n);
+/*menggerakan piringan dari tower asal ke tower tujuan*/
+/* I.S. Stack asal tidak boleh kosong */
+/* F.S. Stack tujuan bertambah 1 dan stack asal berkurang 1*/
 
 boolean isvalid(char *asal, char *tujuan, Stack *A, Stack *B, Stack *C);
+/*mengembalikan nilai true jika syarat terpenuhi seperti */
 
-int lengthStack(Stack S);
+int lengthStackHanoi(Stack S);
+/*mengembalikan panjang stack*/
+
 boolean isnumber(char *x);
+/*mengirim nilai true jika current character pada mesin kata bernilai angka*/
+
 int len(char *x);
+/*mengembalikan panjang string*/
+
 int strtoint(char *x);
+/*mengembalikan nilai integer dari string*/
 #endif
