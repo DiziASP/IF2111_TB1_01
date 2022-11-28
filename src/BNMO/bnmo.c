@@ -205,12 +205,114 @@ void STARTGAME(char *userFile)
         }
         /* 1.2. Add History */
         ADVCONFIG();
-        int totalHistory = KataToInt(currentKata), j = 0;
-        while (j < totalHistory)
+        if (!IsEOP())
         {
-            ADVCONFIG();
-            PushStack(&history, KataToString(currentKata));
-            j++;
+            int totalHistory = KataToInt(currentKata), j = 0;
+            while (j < totalHistory)
+            {
+                ADVCONFIG();
+                PushStack(&history, KataToString(currentKata));
+                j++;
+            }
+        }
+
+        /* 1.3 Add Scoreboard */
+        /* 1.3.1 RNG */
+        ADVCONFIG();
+        if (!IsEOP())
+        {
+            int totalRNG = KataToInt(currentKata), k = 0;
+            printf("Total RNG: %d\n", totalRNG);
+            while (k < totalRNG)
+            {
+                ADVWORDFILE();
+                char *Key = KataToString(currentKata);
+                ADVWORDFILE();
+                int Value = KataToInt(currentKata);
+                InsertMap(&scoreboardRNG, Key, Value);
+                k++;
+            }
+        }
+
+        /* 1.3.2 Diner DASH */
+        ADVCONFIG();
+        if (!IsEOP())
+        {
+            int totalDiner = KataToInt(currentKata), l = 0;
+            printf("Total Diner: %d\n", totalDiner);
+            while (l < totalDiner)
+            {
+                ADVWORDFILE();
+                char *Key = KataToString(currentKata);
+                ADVWORDFILE();
+                int Value = KataToInt(currentKata);
+                InsertMap(&scoreboardDinerDash, Key, Value);
+                l++;
+            }
+        }
+
+        /* 1.3.3 Hangman */
+        ADVCONFIG();
+        if (!IsEOP())
+        {
+            int totalHangman = KataToInt(currentKata), k = 0;
+            while (k < totalHangman)
+            {
+                ADVWORDFILE();
+                char *Key = KataToString(currentKata);
+                ADVWORDFILE();
+                int Value = KataToInt(currentKata);
+                InsertMap(&scoreboardHangman, Key, Value);
+                k++;
+            }
+        }
+
+        /* 1.3.4 Tower of Hanoi */
+        ADVCONFIG();
+        if (!IsEOP())
+        {
+            int totalHanoi = KataToInt(currentKata), k = 0;
+            while (k < totalHanoi)
+            {
+                ADVWORDFILE();
+                char *Key = KataToString(currentKata);
+                ADVWORDFILE();
+                int Value = KataToInt(currentKata);
+                InsertMap(&scoreboardTowerOfHanoi, Key, Value);
+                k++;
+            }
+        }
+
+        /* 1.3.5 Snake on Meteor */
+        ADVCONFIG();
+        if (!IsEOP())
+        {
+            int totalSnake = KataToInt(currentKata), k = 0;
+            while (k < totalSnake)
+            {
+                ADVWORDFILE();
+                char *Key = KataToString(currentKata);
+                ADVWORDFILE();
+                int Value = KataToInt(currentKata);
+                InsertMap(&scoreboardSnake, Key, Value);
+                k++;
+            }
+        }
+
+        /* 1.3.6 Custom Game */
+        ADVCONFIG();
+        if (!IsEOP())
+        {
+            int totalCustom = KataToInt(currentKata), k = 0;
+            while (k < totalCustom)
+            {
+                ADVWORDFILE();
+                char *Key = KataToString(currentKata);
+                ADVWORDFILE();
+                int Value = KataToInt(currentKata);
+                InsertMap(&scoreboardCustomGame, Key, Value);
+                k++;
+            }
         }
         /* 2. Print Konfig berhasil */
         if (IsStringEqual(userFile, "config.txt"))
@@ -316,12 +418,18 @@ void SAVEGAME(char *userInput)
     }
 
     /* Scoreboard Snake */
-    fprintf(file, scoreboardSnake.Count != 0 ? "%d\n" : "%d", scoreboardSnake.Count); // Banyak data Snake
+    fprintf(file, "%d\n", scoreboardSnake.Count); // Banyak data Snake
     for (int i = 0; i < scoreboardSnake.Count; i++)
     {
-        fprintf(file, i < scoreboardSnake.Count - 1 ? "%s %d\n" : "%s %d", scoreboardSnake.Elements[i].Key, scoreboardSnake.Elements[i].Value);
+        fprintf(file, "%s %d\n", scoreboardSnake.Elements[i].Key, scoreboardSnake.Elements[i].Value);
     }
 
+    /* Scoreboard Custom */
+    fprintf(file, scoreboardCustomGame.Count != 0 ? "%d\n" : "%d", scoreboardCustomGame.Count); // Banyak data Snake
+    for (int i = 0; i < scoreboardCustomGame.Count; i++)
+    {
+        fprintf(file, i < scoreboardCustomGame.Count - 1 ? "%s %d\n" : "%s %d", scoreboardCustomGame.Elements[i].Key, scoreboardCustomGame.Elements[i].Value);
+    }
     fclose(file);
 
     /* 3. Print Konfig berhasil */

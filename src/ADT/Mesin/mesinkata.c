@@ -231,7 +231,7 @@ char *KataToString(Kata kata)
 int KataToInt(Kata kata)
 {
     int i = 0, result = 0;
-    while (kata.TabKata[i] != '\0')
+    while (kata.TabKata[i] != '\0' && i < kata.Length)
     {
         result = result * 10 + (kata.TabKata[i] - '0');
         i++;
