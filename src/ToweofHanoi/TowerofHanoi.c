@@ -1,19 +1,48 @@
 #include "TowerofHanoi.h"
+#include <math.h>
+void pushdisk(int n, Stack *S){
+    for(int i= n; i>=1 ;i--){
+        Push(S, i);
+    }
+}
+
+void scorer(int n, int *score, int langkah){
+    int max,i, langkahmax;
+    max = 1;
+    for(i=0;i<n;i++){
+        max = max*2;
+    }
+    langkahmax = max-1;
+    if(langkah == langkahmax){
+        *score += 2*n;
+    }
+    else{
+        *score += n;
+    }
+}
+
+
 
 int TowerofHanoi()
 {
     int skor,langkah;
+    skor = 0;
     Stack A, B, C;
     CreateEmpty(&A);
     CreateEmpty(&B);
     CreateEmpty(&C);
-    Push(&A, 9);
-    Push(&A, 7);
-    Push(&A, 5);
-    Push(&A, 3);
-    Push(&A, 1);
-    displaystack(A, B, C);
-    while (!IsFull(C))
+    printf("Masukkan jumlah disk: ");
+    STARTWORD();
+    char *x = KataToString(currentKata);
+    while(!isnumber(x)){
+        printf("Input tidak valid! Masukkan jumlah disk: ");
+        STARTWORD();
+        x = KataToString(currentKata);
+    }
+    int n = strtoint(x);
+    pushdisk(n, &A);
+    displaystack(A, B, C,n);
+    while (lengthStack(C)!=n)
     {
         printf("TIANG ASAL: ");
         STARTWORD();
@@ -23,7 +52,7 @@ int TowerofHanoi()
         char *tujuan = KataToString(currentKata);
         if (isvalid(asal, tujuan, &A, &B, &C))
         {
-            move(asal, tujuan, &A, &B, &C);
+            move(asal, tujuan, &A, &B, &C, n);
             langkah++;
         }
         else
@@ -31,33 +60,10 @@ int TowerofHanoi()
             printf("Tidak bisa dipindahkan\n");
         }
     }
-    if (IsFull(C) && langkah == 31)
-    {
-        printf("Kamu berhasil!\n\n");
-        skor = skor + 10;
-    }
-    else if (IsFull(C) && langkah > 31 && langkah < 40)
-    {
-        printf("Kamu berhasil!\n\n");
-        skor = skor + 7;
-    }
-    else if(IsFull(C) && langkah > 40 && langkah < 50)
-    {
-        printf("Kamu berhasil!\n\n");
-        skor = skor + 5;
-    }
-    else if(IsFull(C) && langkah > 50 && langkah <60)
-    {
-        printf("Kamu berhasil!\n\n");
-        skor = skor + 3;
-    }
-    else
-    {
-        printf("Kamu berhasil\n\n");
-        skor = skor + 1;
-    }
-    
+    scorer(n, &skor, langkah);
     printf("Skor didapatkan : %d\n", skor);
-
+    printf("Nama: ");
+    STARTWORD();
+    char *nama = KataToString(currentKata);
     return 0;
 }

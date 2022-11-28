@@ -1,3 +1,4 @@
+
 /* File : stack.h */
 /* deklarasi stack yang diimplementasi dengan tabel kontigu dan ukuran sama */
 /* TOP adalah alamat elemen puncak */
@@ -9,7 +10,7 @@
 #include "../ADT/Boolean/boolean.h"
 
 #define Nil -1
-#define MaxEl 5
+#define MaxEl 1000
 /* Nil adalah stack dengan elemen kosong . */
 
 typedef int infotype;
@@ -58,14 +59,18 @@ void Pop(Stack *S, infotype *X);
 /* I.S. S  tidak mungkin kosong */
 /* F.S. X adalah nilai elemen TOP yang lama, TOP berkurang 1 */
 
-void displaystack(Stack A, Stack B, Stack C);
+void displaystack(Stack A, Stack B, Stack C,int n);
 
-void displaygaris(Stack s);
+void displaygaris(Stack s, int n);
 
-void inttodisk (int i, Stack *s);
+void inttodisk (int x,int n);
 
-void move(char *asal, char *tujuan, Stack *A, Stack *B, Stack *C);
+void move(char *asal, char *tujuan, Stack *A, Stack *B, Stack *C, int n);
 
 boolean isvalid(char *asal, char *tujuan, Stack *A, Stack *B, Stack *C);
 
+int lengthStack(Stack S);
+boolean isnumber(char *x);
+int len(char *x);
+int strtoint(char *x);
 #endif
