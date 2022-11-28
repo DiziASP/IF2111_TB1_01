@@ -439,7 +439,20 @@ void CREATEGAME(Set *arr)
     int i = 0;
     printf("Masukkan nama game yang akan ditambahkan (tanpa spasi)\n");
     /* Input Mechanism */
-    char *input = readQuery();
+
+    /* Command Parsing */
+    printf("Masukkan nama game: \n");
+    START();
+    char *input = (char *)malloc(255 * sizeof(char));
+    int j = 0;
+    while (currentChar != MARK)
+    {
+        input[j] = currentChar;
+        j++;
+        ADV();
+    }
+    input[j] = '\0';
+
     /* End Input */
     if (!IsMember(*arr, input))
     {
