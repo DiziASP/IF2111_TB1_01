@@ -1,48 +1,53 @@
 #include "TowerofHanoi.h"
 #include <math.h>
-void pushdisk(int n, Stack *S){
-    for(int i= n; i>=1 ;i--){
-        Push(S, i);
+void pushdisk(int n, StackHanoi *S)
+{
+    for (int i = n; i >= 1; i--)
+    {
+        PushHanoi(S, i);
     }
 }
 
-void scorer(int n, int *score, int langkah){
-    int max,i, langkahmax;
+void scorer(int n, int *score, int langkah)
+{
+    int max, i, langkahmax;
     max = 1;
-    for(i=0;i<n;i++){
-        max = max*2;
+    for (i = 0; i < n; i++)
+    {
+        max = max * 2;
     }
-    langkahmax = max-1;
-    if(langkah == langkahmax){
-        *score += 2*n;
+    langkahmax = max - 1;
+    if (langkah == langkahmax)
+    {
+        *score += 2 * n;
     }
-    else{
+    else
+    {
         *score += n;
     }
 }
 
-
-
 int TowerofHanoi()
 {
-    int skor,langkah;
+    int skor, langkah;
     skor = 0;
-    Stack A, B, C;
-    CreateEmpty(&A);
-    CreateEmpty(&B);
-    CreateEmpty(&C);
+    StackHanoi A, B, C;
+    CreateHanoi(&A);
+    CreateHanoi(&B);
+    CreateHanoi(&C);
     printf("Masukkan jumlah disk: ");
     STARTWORD();
     char *x = KataToString(currentKata);
-    while(!isnumber(x)){
+    while (!isnumber(x))
+    {
         printf("Input tidak valid! Masukkan jumlah disk: ");
         STARTWORD();
         x = KataToString(currentKata);
     }
     int n = strtoint(x);
     pushdisk(n, &A);
-    displaystack(A, B, C,n);
-    while (lengthStack(C)!=n)
+    displayStackHanoi(A, B, C, n);
+    while (lengthStackHanoi(C) != n)
     {
         printf("TIANG ASAL: ");
         STARTWORD();
@@ -62,8 +67,5 @@ int TowerofHanoi()
     }
     scorer(n, &skor, langkah);
     printf("Skor didapatkan : %d\n", skor);
-    printf("Nama: ");
-    STARTWORD();
-    char *nama = KataToString(currentKata);
-    return 0;
+    return skor;
 }

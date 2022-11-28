@@ -1,4 +1,4 @@
-#include "TowerofHanoi.h"
+#include "../TowerofHanoi/TowerofHanoi.h"
 
 int main()
 {

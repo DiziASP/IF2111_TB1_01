@@ -8,7 +8,7 @@ Set gamesList;
 Queue nowPlaying;
 Map scoreboardRNG, scoreboardDinerDash, scoreboardHangman, scoreboardTowerOfHanoi, scoreboardSnake, scoreboardCustomGame;
 boolean Quit, isLoad, isSave;
-char *userCreated, *username;
+char *userCreated, *username, *currSaveFile;
 
 /* ***  Fungsi Utama BNMO *** */
 void MAINMENU()
@@ -331,6 +331,7 @@ void STARTGAME(char *userFile)
             userCreated = gamesList.Elements[5];
         }
         isLoad = true;
+        currSaveFile = userFile;
     }
 }
 /* I.S. Sembarang */
@@ -366,14 +367,8 @@ void SAVEGAME(char *userInput)
         fprintf(file, "%s\n", gamesList.Elements[i]);
     }
     /* Print History */
-    if (Top(history) + 1 == 0)
-    {
-        fprintf(file, "%d", 0);
-    }
-    else
-    {
-        fprintf(file, "%d\n", Top(history) + 1);
-    }
+
+    fprintf(file, "%d\n", Top(history) + 1);
 
     Stack temp = history;
     while (!IsEmptyStack(temp))
@@ -434,6 +429,7 @@ void SAVEGAME(char *userInput)
 
     /* 3. Print Konfig berhasil */
     printf("Save file berhasil dibuat.\n");
+    isSave = true;
 }
 /* I.S. Sembarang */
 /* F.S. Game disimpan ke file eksternal */
@@ -593,6 +589,15 @@ void PLAYGAME(Queue *daftargame)
         int score = hangman();
         InsertMap(&scoreboardHangman, username, score);
     }
+    else if (IsStringEqual(game_now, "TOWER OF HANOI"))
+    {
+        PushStack(&history, "TOWER OF HANOI");
+        printf("Loading %s ...\n\n", game_now);
+        printf("Masukkan Username (tanpa spasi)\n");
+        username = readQuery();
+        int score = TowerofHanoi();
+        InsertMap(&scoreboardTowerOfHanoi, username, score);
+    }
     else if (userCreated != NULL && IsStringEqual(game_now, userCreated))
     {
         PushStack(&history, userCreated);
@@ -699,6 +704,14 @@ void QUITGAME()
 
     if (IsStringEqual(cmd, "Y") || IsStringEqual(cmd, "YES") || IsStringEqual(cmd, "y"))
     {
+        printf("Apakah kamu ingin menyimpan progres permainan kamu? Y/N\n");
+
+        char *cmd = readQuery();
+        if (IsStringEqual(cmd, "Y") || IsStringEqual(cmd, "YES") || IsStringEqual(cmd, "y"))
+        {
+            SAVEGAME(currSaveFile);
+            printf("Progres permainan kamu telah disimpan.\n");
+        }
         printf("Terima Kasih sudah bermain :D\n");
         Quit = true;
     }

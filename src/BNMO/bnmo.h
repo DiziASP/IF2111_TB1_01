@@ -23,6 +23,7 @@
 #include "../UserCreated/UserCreated.h"
 #include "../Hangman/hangman.h"
 #include "../DinerDash/dinnerdash.h"
+#include "../TowerOfHanoi/towerofhanoi.h"
 
 /* *** Initial State dari BNMO *** */
 extern Stack history;

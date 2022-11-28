@@ -2,7 +2,7 @@ CC=gcc
 TARGET=BNMO
 
 all:
-	$(CC) src/BNMO/*.c src/ADT/Mesin/*.c src/ADT/Array/*.c src/ADT/Queue/*.c src/ADT/Stack/*.c src/ADT/Set/*.c src/ADT/Map/*.c src/ADT/LinkedList/*.c src/RNG/*.c src/UserCreated/*.c src/DinerDash/*.c src/DinerDash/ADT_Local/*.c src/Hangman/*.c -o $(TARGET) 
+	$(CC) src/BNMO/*.c src/ADT/Mesin/*.c src/ADT/Array/*.c src/ADT/Queue/*.c src/ADT/Stack/*.c src/ADT/Set/*.c src/ADT/Map/*.c src/ADT/LinkedList/*.c src/RNG/*.c src/UserCreated/*.c src/DinerDash/*.c src/DinerDash/ADT_Local/*.c src/Hangman/*.c src/TowerofHanoi/*.c -o $(TARGET) 
 
 array:
 	$(CC) src/ADT/Array/*.c src/Driver_ADT/driverarray.c -o array
@@ -33,6 +33,8 @@ usercreated:
 
 hangman:
 	$(CC) src/Hangman/*.c src/ADT/Mesin/*.c src/ADT/Array/*.c src/ADT/Set/*.c -o hangman
-	
+
+hanoi:
+	$(CC) src/TowerofHanoi/*.c src/ADT/Mesin/*.c -o hanoi
 clean:
 	rm $(TARGET)
