@@ -65,60 +65,112 @@ void Pop(Stack *S, infotype *X)
     }
 }
 
-void displaystack(Stack A, Stack B, Stack C)
+void displaystack(Stack A, Stack B, Stack C,int n)
 {
-    for (int i = MaxEl-1; i >= 0; i--)
+    int i;
+    for (int i = n-1; i >= 0; i--)
     {
-        inttodisk(i,&A);
-        inttodisk(i,&B);
-        inttodisk(i,&C);
+        inttodisk(A.T[i],n);
+        inttodisk(B.T[i],n);
+        inttodisk(C.T[i],n);
         printf("\n");
     }
-    displaygaris(A);
-    displaygaris(B);
-    displaygaris(C);
+    displaygaris(A,n);
+    displaygaris(B,n);
+    displaygaris(C,n);
     printf("\n");
-    printf("     A     ");
-    printf("     B     ");
-    printf("     C     ");
+    for(i=0;i<n;i++)
+    {
+        printf(" ");
+    }
+    printf("A");
+    for(i=0;i<n;i++)
+    {
+        printf(" ");
+    }
+    for(i=0;i<n;i++)
+    {
+        printf(" ");
+    }
+    printf("B");
+    for(i=0;i<n;i++)
+    {
+        printf(" ");
+    }
+    for(i=0;i<n;i++)
+    {
+        printf(" ");
+    }
+    printf("C");
+    for(i=0;i<n;i++)
+    {
+        printf(" ");
+    }
     printf("\n\n");
 }
 
-void displaygaris(Stack s)
+void displaygaris(Stack s, int n)
 {
+    int i;
+    int lenspace = 2*n+1;
     if (IsEmpty(s))
     {
-        printf("    ---    ");
-    }
-    else
-    {
-        printf("  -------  ");
+        for(i=0;i<(lenspace-3)/2;i++)
+        {
+            printf(" ");
+        }
+        printf("---");
+        for(i=0;i<(lenspace-3)/2;i++)
+        {
+            printf(" ");
+        }
+    }else{
+        for(i=0;i<(lenspace-7)/2;i++)
+        {
+            printf(" ");
+        }
+        printf("-------");
+        for(i=0;i<(lenspace-7)/2;i++)
+        {
+            printf(" ");
+        }
     }
 }
 
-void inttodisk(int i, Stack *s)
+
+
+void inttodisk(int x,int n)
 {
-    if((*s).T[i] == 1){
-        printf("     *     ");
-    }
-    else if((*s).T[i] == 3){
-        printf("    ***    ");
-    }
-    else if((*s).T[i] == 5){
-        printf("   *****   ");
-    }
-    else if((*s).T[i] == 7){
-        printf("  *******  ");
-    }
-    else if((*s).T[i] == 9){
-        printf(" ********* ");
-    }
-    else{
-        printf("     |     ");
+    int i,j;
+    int lendisk = 2 * x - 1;
+    int lenspace = ((2*n +1) - lendisk)/2;
+    
+    if(x != Nil){
+        for(i=0;i<lenspace;i++)
+        {
+            printf(" ");
+        }
+        for(i = 0; i<lendisk; i++){
+            printf("*");
+        }
+        for(i=0;i<lenspace;i++)
+        {
+            printf(" ");
+        }
+    }else{
+        for(i=0;i<n;i++)
+        {
+            printf(" ");
+        }
+        printf("|");
+        for(i=0;i<n;i++)
+        {
+            printf(" ");
+        }
     }
 }
 
-void move(char *asal, char *tujuan, Stack *A, Stack *B, Stack *C)
+void move(char *asal, char *tujuan, Stack *A, Stack *B, Stack *C,int n)
 {
     infotype x;
     if (*asal == 'A' && !IsEmpty(*A))
@@ -167,7 +219,7 @@ void move(char *asal, char *tujuan, Stack *A, Stack *B, Stack *C)
     {
         printf("Tidak bisa dipindahkan\n");
     }
-    displaystack(*A, *B, *C);
+    displaystack(*A, *B, *C,n);
 }
 
 boolean isvalid(char *asal, char *tujuan, Stack *A, Stack *B, Stack *C)
@@ -246,4 +298,39 @@ boolean isvalid(char *asal, char *tujuan, Stack *A, Stack *B, Stack *C)
     }else{
         return false;
     }
+}
+
+int lengthStack(Stack S)
+{
+    return Top(S) + 1;
+}
+
+boolean isnumber(char *x)
+{
+    int i;
+    for (i = 0; i < len(x); i++)
+    {
+        if (x[i] < '0' || x[i] > '9')
+        {
+            return false;
+        }
+    }
+    return true;
+}
+
+int len(char *x){
+    int i = 0;
+    while(x[i] != '\0'){
+        i++;
+    }
+    return i;
+}
+
+int strtoint(char *x){
+    int i;
+    int hasil = 0;
+    for(i=0;i<len(x);i++){
+        hasil = hasil * 10 + (x[i] - '0');
+    }
+    return hasil;
 }
