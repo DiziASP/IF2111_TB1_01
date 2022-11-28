@@ -1,20 +1,20 @@
-#include "../ADT/Mesin/mesinkar.h"
+#include "../ADT/Mesin2/mesinkar.h"
 
 int main()
 {
     STARTFILE("src/Driver_ADT/mesintext/drivermesinkar.txt");
-    while (!EOP)
+    while (!IsEOP())
     {
         printf("%c", GetCC());
-        ADV();
+        ADVFILE();
     }
     printf("\n");
 
     STARTFILE("src/Driver_ADT/mesintext/drivermesinkar2.txt");
-    while (!EOP)
+    while (!IsEOP())
     {
         printf("%c", GetCC());
-        ADV();
+        ADVFILE();
     }
     printf("\n");
 

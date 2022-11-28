@@ -1,4 +1,5 @@
 #include "RNG.h"
+<<<<<<< HEAD
 int mod = 107; // bilangan prima
 int binary_exponent(int a,int b)
 {
@@ -34,3 +35,38 @@ int random_generate()
     return binary_exponent(a,b);
 
 }
+=======
+
+int RNG()
+{
+    int score = 100;
+    srand(time(NULL));
+    int x = rand() % 100;
+    int tebak;
+    printf("Tebakan:");
+    STARTWORD();
+    tebak = KataToInt(currentKata);
+    while (tebak > 100 && tebak < 0)
+    {
+        printf("Tebakan:");
+        STARTWORD();
+        tebak = KataToInt(currentKata);
+    }
+    while (tebak != x)
+    {
+        if (tebak > x)
+        {
+            printf("Lebih kecil\n");
+        }
+        else
+        {
+            printf("Lebih besar\n");
+        }
+        score -= 4;
+        printf("Tebakan: ");
+        scanf("%d", &tebak);
+    }
+    printf("Ya, X adalah %d.\n", x);
+    return score;
+}
+>>>>>>> ff1f6b35bc970b2a0374610d52f5b32f5275f6d7
