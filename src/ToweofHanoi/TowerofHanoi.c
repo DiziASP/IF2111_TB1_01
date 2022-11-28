@@ -1,5 +1,5 @@
 #include "TowerofHanoi.h"
-#include <math.h>
+
 void pushdisk(int n, Stack *S){
     for(int i= n; i>=1 ;i--){
         Push(S, i);
@@ -25,8 +25,9 @@ void scorer(int n, int *score, int langkah){
 
 int TowerofHanoi()
 {
-    int skor,langkah;
+    int skor,langkah,validasi;
     skor = 0;
+    langkah = 0;
     Stack A, B, C;
     CreateEmpty(&A);
     CreateEmpty(&B);
@@ -38,6 +39,13 @@ int TowerofHanoi()
         printf("Input tidak valid! Masukkan jumlah disk: ");
         STARTWORD();
         x = KataToString(currentKata);
+        validasi = strtoint(x);
+        while(validasi<=0){
+            printf("Input tidak valid! Masukkan jumlah disk: ");
+            STARTWORD();
+            x = KataToString(currentKata);
+            validasi = strtoint(x);
+        }
     }
     int n = strtoint(x);
     pushdisk(n, &A);
@@ -50,7 +58,7 @@ int TowerofHanoi()
         printf("TIANG TUJUAN: ");
         STARTWORD();
         char *tujuan = KataToString(currentKata);
-        if (isvalid(asal, tujuan, &A, &B, &C))
+        if (isvalid(asal, tujuan, &A, &B, &C) && currenkatalength(asal) == 1 && currenkatalength(tujuan) == 1)
         {
             move(asal, tujuan, &A, &B, &C, n);
             langkah++;

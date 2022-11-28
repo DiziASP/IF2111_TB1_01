@@ -79,32 +79,62 @@ void displaystack(Stack A, Stack B, Stack C,int n)
     displaygaris(B,n);
     displaygaris(C,n);
     printf("\n");
-    for(i=0;i<n;i++)
-    {
-        printf(" ");
-    }
-    printf("A");
-    for(i=0;i<n;i++)
-    {
-        printf(" ");
-    }
-    for(i=0;i<n;i++)
-    {
-        printf(" ");
-    }
-    printf("B");
-    for(i=0;i<n;i++)
-    {
-        printf(" ");
-    }
-    for(i=0;i<n;i++)
-    {
-        printf(" ");
-    }
-    printf("C");
-    for(i=0;i<n;i++)
-    {
-        printf(" ");
+    if(n>2){
+        for(i=0;i<n;i++)
+        {
+            printf(" ");
+        }
+        printf("A");
+        for(i=0;i<n;i++)
+        {
+            printf(" ");
+        }
+        for(i=0;i<n;i++)
+        {
+            printf(" ");
+        }
+        printf("B");
+        for(i=0;i<n;i++)
+        {
+            printf(" ");
+        }
+        for(i=0;i<n;i++)
+        {
+            printf(" ");
+        }
+        printf("C");
+        for(i=0;i<n;i++)
+        {
+            printf(" ");
+        }
+    }else{
+        for(i=0;i<3;i++)
+        {
+            printf(" ");
+        }
+        printf("A");
+        for(i=0;i<3;i++)
+        {
+            printf(" ");
+        }
+        for(i=0;i<3;i++)
+        {
+            printf(" ");
+        }
+        printf("B");
+        for(i=0;i<3;i++)
+        {
+            printf(" ");
+        }
+        for(i=0;i<3;i++)
+        {
+            printf(" ");
+        }
+        printf("C");
+        for(i=0;i<3;i++)
+        {
+            printf(" ");
+        }
     }
     printf("\n\n");
 }
@@ -113,26 +143,51 @@ void displaygaris(Stack s, int n)
 {
     int i;
     int lenspace = 2*n+1;
-    if (IsEmpty(s))
-    {
-        for(i=0;i<(lenspace-3)/2;i++)
+    if(n>2){
+        if (IsEmpty(s))
         {
-            printf(" ");
-        }
-        printf("---");
-        for(i=0;i<(lenspace-3)/2;i++)
-        {
-            printf(" ");
+            for(i=0;i<(lenspace-3)/2;i++)
+            {
+                printf(" ");
+            }
+            printf("---");
+            for(i=0;i<(lenspace-3)/2;i++)
+            {
+                printf(" ");
+            }
+        }else{
+            for(i=0;i<(lenspace-7)/2;i++)
+            {
+                printf(" ");
+            }
+            printf("-------");
+            for(i=0;i<(lenspace-7)/2;i++)
+            {
+                printf(" ");
+            }
         }
     }else{
-        for(i=0;i<(lenspace-7)/2;i++)
+        if (IsEmpty(s))
         {
-            printf(" ");
-        }
-        printf("-------");
-        for(i=0;i<(lenspace-7)/2;i++)
-        {
-            printf(" ");
+            for(i=0;i<2;i++)
+            {
+                printf(" ");
+            }
+            printf("---");
+            for(i=0;i<2;i++)
+            {
+                printf(" ");
+            }
+        }else{
+            for(i=0;i<0;i++)
+            {
+                printf(" ");
+            }
+            printf("-------");
+            for(i=0;i<0;i++)
+            {
+                printf(" ");
+            }
         }
     }
 }
@@ -145,27 +200,77 @@ void inttodisk(int x,int n)
     int lendisk = 2 * x - 1;
     int lenspace = ((2*n +1) - lendisk)/2;
     
-    if(x != Nil){
-        for(i=0;i<lenspace;i++)
-        {
-            printf(" ");
+    if(n>2){
+        if(x != Nil){
+            for(i=0;i<lenspace;i++)
+            {
+                printf(" ");
+            }
+            for(i = 0; i<lendisk; i++){
+                printf("*");
+            }
+            for(i=0;i<lenspace;i++)
+            {
+                printf(" ");
+            }
+        }else{
+            for(i=0;i<n;i++)
+            {
+                printf(" ");
+            }
+            printf("|");
+            for(i=0;i<n;i++)
+            {
+                printf(" ");
+            }
         }
-        for(i = 0; i<lendisk; i++){
-            printf("*");
-        }
-        for(i=0;i<lenspace;i++)
-        {
-            printf(" ");
-        }
+    }else if (n==2){
+        if(x != Nil){
+            for(i=0;i<(7 - lendisk)/2;i++)
+            {
+                printf(" ");
+            }
+            for(i = 0; i<lendisk; i++){
+                printf("*");
+            }
+            for(i=0;i<(7 - lendisk)/2;i++)
+            {
+                printf(" ");
+            }
+        }else{
+            for(i=0;i<3;i++)
+            {
+                printf(" ");
+            }
+            printf("|");
+            for(i=0;i<3;i++)
+            {
+                printf(" ");
+            }
+        }    
     }else{
-        for(i=0;i<n;i++)
-        {
-            printf(" ");
-        }
-        printf("|");
-        for(i=0;i<n;i++)
-        {
-            printf(" ");
+        if(x != Nil){
+            for(i=0;i<(7 - lendisk)/2;i++)
+            {
+                printf(" ");
+            }
+            for(i = 0; i<lendisk; i++){
+                printf("*");
+            }
+            for(i=0;i<(7 - lendisk)/2;i++)
+            {
+                printf(" ");
+            }
+        }else{
+            for(i=0;i<3;i++)
+            {
+                printf(" ");
+            }
+            printf("|");
+            for(i=0;i<3;i++)
+            {
+                printf(" ");
+            }
         }
     }
 }
@@ -333,4 +438,12 @@ int strtoint(char *x){
         hasil = hasil * 10 + (x[i] - '0');
     }
     return hasil;
+}
+
+int currenkatalength(char *x){
+    int i = 0;
+    while(x[i] != ' ' && x[i] != '\0'){
+        i++;
+    }
+    return i;
 }

@@ -87,4 +87,7 @@ int len(char *x);
 
 int strtoint(char *x);
 /*mengembalikan nilai integer dari string*/
+
+int currenkatalength(char *x);
+/*Mengembalikan nilai panjang currentkata*/
 #endif
