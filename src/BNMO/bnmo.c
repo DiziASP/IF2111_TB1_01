@@ -600,6 +600,16 @@ void QUITGAME()
 
 void HISTORY(Stack history)
 {
+    ADVWORD();
+    if (KataToInt(currentKata) > CAPACITY || KataToInt(currentKata) < 0)
+    {
+        printf("Jumlah permainan tidak valid, silahkan ulangi kembali perintah.\n");
+        while (!IsEOP())
+        {
+            ADVWORD();
+        }
+        return;
+    }
 
     printf("============ HISTORY Permainan ============\n");
     Stack temp = history;
