@@ -192,7 +192,6 @@ void printsnake() //ngeprint sklian ngecek kepala dll
                     if(indexOfLL(ular,temp) == 1)
                     {
                         can = false;
-
                     } 
                     DelP(&ular, temp);
                } 
@@ -266,5 +265,12 @@ int snakeonmeteor()
             move();
         }
     }    
+
+    int skorakhir;
+    if(IsEmptyLL(ular)) skorakhir = 0;
+    else skorakhir = indexOfLL(ular, Info(Last(ular)))*2;
+
+    printf("Game berakhir. Skor : %d\n", skorakhir);
+    return skorakhir;
 
 }   
