@@ -52,6 +52,6 @@ boolean ValidInput(char *query1, char *query2);
 /*mengembalikan true jika input valid*/
 
 int dinnerdash();
-
 /*memainkan game dinnerdash*/
+
 #endif
