@@ -24,7 +24,6 @@ char *conStr(char *str1, char *str2);
 int charLength(char *str);
 /*Menghitung panjang string*/
 
-
 boolean cQuery(char *query, char *command);
 /*membandingkan query dengan command yang ada*/
 
@@ -52,6 +51,7 @@ void RServeCycle(QueueF *RServe, QueueF *Cook, QueueF *Order);
 boolean ValidInput(char *query1, char *query2);
 /*mengembalikan true jika input valid*/
 
-void dinnerdash();
+int dinnerdash();
+
 /*memainkan game dinnerdash*/
 #endif

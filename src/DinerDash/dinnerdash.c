@@ -9,7 +9,7 @@ void rQuery(char **arg1, char **arg2)
 {
     STARTWORD();
     *arg1 = KataToString(currentKata);
-    ADVWORDSTD();
+    ADVWORD();
     *arg2 = KataToString(currentKata);
 }
 
@@ -63,10 +63,14 @@ boolean cQuery(char *query, char *command)
 
 boolean ValidInput(char *query1, char *query2)
 {
-    if (cQuery(query1, "COOK") || cQuery(query1, "SERVE") || query2 != NULL)
+    if (cQuery(query1, "COOK") || cQuery(query1, "SERVE") || cQuery(query1, "SKIP") || query2 != NULL)
     {
-        if (query2[0] == 'M' && !cQuery(query2, "M"))
+        if (query2[0] == 'M' || !cQuery(query2, "M") || cQuery(query2, "TURN"))
         {
+            if (cQuery(query1, "SKIP") && cQuery(query2, "TURN"))
+            {
+                return true;
+            }
             int i = 1;
             while (query2[i] != '\0')
             {
@@ -89,11 +93,8 @@ boolean ValidInput(char *query1, char *query2)
 
 char *IntToString(int x)
 {
-
     char *res = (char *)malloc(sizeof(char) * 100);
-
     itoa(x, res, 10);
-
     return res;
 }
 /* End of fungsi bantuan */
@@ -105,6 +106,11 @@ void PrintInitialState(int saldo, int ctr_layani, QueueF Order, QueueF Cook, Que
     displayQueueOrder(Order);
     displayQueueCook(Cook);
     displayQueueServe(RServe);
+
+    printf("List Command\n");
+    printf("1. COOK <Makanan>\n");
+    printf("2. SERVE <Makanan>\n");
+    printf("3. SKIP TURN\n");
 }
 
 void QueueOrder(QueueF *Order)
@@ -176,7 +182,7 @@ void RServeCycle(QueueF *RServe, QueueF *Cook, QueueF *Order)
     }
 }
 
-void dinnerdash()
+int dinnerdash()
 {
     ordNum = 0;
     QueueF Order, Cook, RServe;
@@ -262,8 +268,9 @@ void dinnerdash()
                 printf("Tidak ada makanan yang siap disajikan\n");
             }
         }
-        else if (cQuery(query1, "SKIP"))
+        else if (cQuery(query1, "SKIP") && cQuery(query2, "TURN"))
         {
+            printf("Skip turn...\n");
             RServeCycle(&RServe, &Cook, &Order);
             CookCycle(&Cook, &RServe, &Order);
             QueueOrder(&Order);
@@ -284,4 +291,5 @@ void dinnerdash()
     {
         printf("\nMaaf, Anda gagal menyelesaikan level ini!\n");
     }
+    return saldo;
 }
