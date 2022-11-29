@@ -1062,7 +1062,7 @@ void HELP()
     printf("11. RESET SCOREBOARD - Untuk menghapus Scoreboard BNMO\n");
     printf("12. HISTORY - Untuk melihat riwayat game yang telah dimainkan\n");
     printf("13. RESET HISTORY - Untuk menghapus riwayat game\n");
-    printf("10. QUIT - Untuk keluar dari program\n");
+    printf("14. QUIT - Untuk keluar dari program\n");
 }
 /* I.S. Sembarang */
 /* F.S. Menampilkan list bantuan */
