@@ -79,32 +79,65 @@ void displayStackHanoi(StackHanoi A, StackHanoi B, StackHanoi C, int n)
     displaygaris(B, n);
     displaygaris(C, n);
     printf("\n");
-    for (i = 0; i < n; i++)
+    if (n > 2)
     {
-        printf(" ");
+        for (i = 0; i < n; i++)
+        {
+            printf(" ");
+        }
+        printf("A");
+        for (i = 0; i < n; i++)
+        {
+            printf(" ");
+        }
+        for (i = 0; i < n; i++)
+        {
+            printf(" ");
+        }
+        printf("B");
+        for (i = 0; i < n; i++)
+        {
+            printf(" ");
+        }
+        for (i = 0; i < n; i++)
+        {
+            printf(" ");
+        }
+        printf("C");
+        for (i = 0; i < n; i++)
+        {
+            printf(" ");
+        }
     }
-    printf("A");
-    for (i = 0; i < n; i++)
+    else
     {
-        printf(" ");
-    }
-    for (i = 0; i < n; i++)
-    {
-        printf(" ");
-    }
-    printf("B");
-    for (i = 0; i < n; i++)
-    {
-        printf(" ");
-    }
-    for (i = 0; i < n; i++)
-    {
-        printf(" ");
-    }
-    printf("C");
-    for (i = 0; i < n; i++)
-    {
-        printf(" ");
+        for (i = 0; i < 3; i++)
+        {
+            printf(" ");
+        }
+        printf("A");
+        for (i = 0; i < 3; i++)
+        {
+            printf(" ");
+        }
+        for (i = 0; i < 3; i++)
+        {
+            printf(" ");
+        }
+        printf("B");
+        for (i = 0; i < 3; i++)
+        {
+            printf(" ");
+        }
+        for (i = 0; i < 3; i++)
+        {
+            printf(" ");
+        }
+        printf("C");
+        for (i = 0; i < 3; i++)
+        {
+            printf(" ");
+        }
     }
     printf("\n\n");
 }
@@ -113,28 +146,58 @@ void displaygaris(StackHanoi s, int n)
 {
     int i;
     int lenspace = 2 * n + 1;
-    if (IsEmptyHanoi(s))
+    if (n > 2)
     {
-        for (i = 0; i < (lenspace - 3) / 2; i++)
+        if (IsEmptyHanoi(s))
         {
-            printf(" ");
+            for (i = 0; i < (lenspace - 3) / 2; i++)
+            {
+                printf(" ");
+            }
+            printf("---");
+            for (i = 0; i < (lenspace - 3) / 2; i++)
+            {
+                printf(" ");
+            }
         }
-        printf("---");
-        for (i = 0; i < (lenspace - 3) / 2; i++)
+        else
         {
-            printf(" ");
+            for (i = 0; i < (lenspace - 7) / 2; i++)
+            {
+                printf(" ");
+            }
+            printf("-------");
+            for (i = 0; i < (lenspace - 7) / 2; i++)
+            {
+                printf(" ");
+            }
         }
     }
     else
     {
-        for (i = 0; i < (lenspace - 7) / 2; i++)
+        if (IsEmptyHanoi(s))
         {
-            printf(" ");
+            for (i = 0; i < 2; i++)
+            {
+                printf(" ");
+            }
+            printf("---");
+            for (i = 0; i < 2; i++)
+            {
+                printf(" ");
+            }
         }
-        printf("-------");
-        for (i = 0; i < (lenspace - 7) / 2; i++)
+        else
         {
-            printf(" ");
+            for (i = 0; i < 0; i++)
+            {
+                printf(" ");
+            }
+            printf("-------");
+            for (i = 0; i < 0; i++)
+            {
+                printf(" ");
+            }
         }
     }
 }
@@ -145,31 +208,94 @@ void inttodisk(int x, int n)
     int lendisk = 2 * x - 1;
     int lenspace = ((2 * n + 1) - lendisk) / 2;
 
-    if (x != NilHanoi)
+    if (n > 2)
     {
-        for (i = 0; i < lenspace; i++)
+        if (x != NilHanoi)
         {
-            printf(" ");
+            for (i = 0; i < lenspace; i++)
+            {
+                printf(" ");
+            }
+            for (i = 0; i < lendisk; i++)
+            {
+                printf("*");
+            }
+            for (i = 0; i < lenspace; i++)
+            {
+                printf(" ");
+            }
         }
-        for (i = 0; i < lendisk; i++)
+        else
         {
-            printf("*");
+            for (i = 0; i < n; i++)
+            {
+                printf(" ");
+            }
+            printf("|");
+            for (i = 0; i < n; i++)
+            {
+                printf(" ");
+            }
         }
-        for (i = 0; i < lenspace; i++)
+    }
+    else if (n == 2)
+    {
+        if (x != NilHanoi)
         {
-            printf(" ");
+            for (i = 0; i < (7 - lendisk) / 2; i++)
+            {
+                printf(" ");
+            }
+            for (i = 0; i < lendisk; i++)
+            {
+                printf("*");
+            }
+            for (i = 0; i < (7 - lendisk) / 2; i++)
+            {
+                printf(" ");
+            }
+        }
+        else
+        {
+            for (i = 0; i < 3; i++)
+            {
+                printf(" ");
+            }
+            printf("|");
+            for (i = 0; i < 3; i++)
+            {
+                printf(" ");
+            }
         }
     }
     else
     {
-        for (i = 0; i < n; i++)
+        if (x != NilHanoi)
         {
-            printf(" ");
+            for (i = 0; i < (7 - lendisk) / 2; i++)
+            {
+                printf(" ");
+            }
+            for (i = 0; i < lendisk; i++)
+            {
+                printf("*");
+            }
+            for (i = 0; i < (7 - lendisk) / 2; i++)
+            {
+                printf(" ");
+            }
         }
-        printf("|");
-        for (i = 0; i < n; i++)
+        else
         {
-            printf(" ");
+            for (i = 0; i < 3; i++)
+            {
+                printf(" ");
+            }
+            printf("|");
+            for (i = 0; i < 3; i++)
+            {
+                printf(" ");
+            }
         }
     }
 }
@@ -345,4 +471,14 @@ int strtoint(char *x)
         hasil = hasil * 10 + (x[i] - '0');
     }
     return hasil;
+}
+
+int currenkatalength(char *x)
+{
+    int i = 0;
+    while (x[i] != ' ' && x[i] != '\0')
+    {
+        i++;
+    }
+    return i;
 }

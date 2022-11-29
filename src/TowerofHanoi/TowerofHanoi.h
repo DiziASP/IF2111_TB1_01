@@ -3,7 +3,14 @@
 #define TowerofHanoi_H
 
 void pushdisk(int n, StackHanoi *S);
-void scorer(int n, int *score, int langkah);
+/*Menambahkan disk ke stack*/
+/* I.S. Stack kosong*/
+/* F.S. Stack berisi n disk*/
+
+void score(int n, int score, int langkah);
+/*Menampilkan score dan langkah yang telah dilakukan*/
+
 int TowerofHanoi();
+/*Menampilkan permainan Tower of Hanoi*/
 
 #endif
