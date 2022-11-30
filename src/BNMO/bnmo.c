@@ -208,11 +208,19 @@ void STARTGAME(char *userFile)
         if (!IsEOP())
         {
             int totalHistory = KataToInt(currentKata), j = 0;
+            Stack historyTemp;
+            CreateStack(&historyTemp);
             while (j < totalHistory)
             {
                 ADVCONFIG();
-                PushStack(&history, KataToString(currentKata));
+                PushStack(&historyTemp, KataToString(currentKata));
                 j++;
+            }
+            while (!IsEmptyStack(historyTemp))
+            {
+                infotype X;
+                PopStack(&historyTemp, &X);
+                PushStack(&history, X);
             }
         }
 
