@@ -619,6 +619,15 @@ void PLAYGAME(Queue *daftargame)
         int score = TowerofHanoi();
         InsertMap(&scoreboardTowerOfHanoi, username, score);
     }
+    else if (IsStringEqual(game_now, "SNAKE ON METEOR"))
+    {
+        PushStack(&history, "SNAKE ON METEOR");
+        printf("Loading %s ...\n\n", game_now);
+        printf("Masukkan Username (tanpa spasi)\n");
+        username = readQuery();
+        int score = snakeonmeteor();
+        InsertMap(&scoreboardSnake, username, score);
+    }
     else if (userCreated != NULL && IsStringEqual(game_now, userCreated))
     {
         PushStack(&history, userCreated);
@@ -676,6 +685,24 @@ void SKIPGAME(Queue *daftargame)
             username = readQuery();
             int score = hangman();
             InsertMap(&scoreboardHangman, username, score);
+        }
+        else if (IsStringEqual(game_now, "TOWER OF HANOI"))
+        {
+            PushStack(&history, "TOWER OF HANOI");
+            printf("Loading %s ...\n\n", game_now);
+            printf("Masukkan Username (tanpa spasi)\n");
+            username = readQuery();
+            int score = TowerofHanoi();
+            InsertMap(&scoreboardTowerOfHanoi, username, score);
+        }
+        else if (IsStringEqual(game_now, "SNAKE ON METEOR"))
+        {
+            PushStack(&history, "SNAKE ON METEOR");
+            printf("Loading %s ...\n\n", game_now);
+            printf("Masukkan Username (tanpa spasi)\n");
+            username = readQuery();
+            int score = snakeonmeteor();
+            InsertMap(&scoreboardSnake, username, score);
         }
         else if (userCreated != NULL && IsStringEqual(game_now, userCreated))
         {

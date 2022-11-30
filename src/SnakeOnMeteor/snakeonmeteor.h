@@ -12,11 +12,10 @@ extern List ular;
 extern int turn;
 extern boolean can;
 extern boolean gothitbymeteor;
-extern char * command;
+extern char *command;
 extern infotypeLL meteor;
 
-
-void move();
+void movesnake();
 
 void initialize();
 
@@ -24,7 +23,7 @@ void makemeteor();
 
 void makefood();
 
-boolean iscommandvalid(char * cmd);
+boolean iscommandvalid(char *cmd);
 
 void printsnake();
 

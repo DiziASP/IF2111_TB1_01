@@ -9,7 +9,7 @@ char *before;
 infotypeLL meteor;
 infotypeLL food;
 
-void move()
+void movesnake()
 {
     infotypeLL kepala = Info(First(ular));
     infotypeLL temp;
@@ -141,7 +141,7 @@ boolean iscommandvalid(char *cmd)
     boolean checkinput = (IsStringEqual(cmd, "W") || IsStringEqual(cmd, "A") || IsStringEqual(cmd, "S") || IsStringEqual(cmd, "D"));
     boolean cmdbefore = ((IsStringEqual(cmd, "W") && !IsStringEqual(before, "S")) || (IsStringEqual(cmd, "S") && !IsStringEqual(before, "W")) || (IsStringEqual(cmd, "A") && !IsStringEqual(before, "D")) || (IsStringEqual(cmd, "D") && !IsStringEqual(before, "A")));
     int cmdmeteor = 0;
-    int cmdmove = 0;
+    int cmdmovesnake = 0;
     infotypeLL kepala = Info(First(ular));
 
     if (cmd == "W")
@@ -165,7 +165,7 @@ boolean iscommandvalid(char *cmd)
         kepala.x = (kepala.x + 1 + 5) % 5;
     }
 
-    cmdmove = (SearchLL(ular, kepala) == NilLL);
+    cmdmovesnake = (SearchLL(ular, kepala) == NilLL);
     if (cmdmeteor == 1)
         printf("Meteor masih panas! Anda belum dapat kembali ke titik tersebut. %d \n", cmdmeteor);
 
@@ -270,7 +270,7 @@ int snakeonmeteor()
 
             makefood();
             makemeteor();
-            move();
+            movesnake();
         }
     }
 

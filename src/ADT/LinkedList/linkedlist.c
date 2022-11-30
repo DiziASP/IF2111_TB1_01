@@ -223,6 +223,7 @@ void DelLastLL(List *L, addressLL *P)
             Prec = Next(Prec);
         }
         DelAfter(L, P, Prec);
+        Last(*L) = Prec;
     }
 }
 /* I.S. List tidak kosong */
