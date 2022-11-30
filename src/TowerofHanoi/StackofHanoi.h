@@ -60,17 +60,35 @@ void PopHanoi(StackHanoi *S, infohanoi *X);
 /* F.S. X adalah nilai elemen TOP yang lama, TOP berkurang 1 */
 
 void displayStackHanoi(StackHanoi A, StackHanoi B, StackHanoi C, int n);
+/* Menampilkan Piringan yang ada dalam stack */
 
 void displaygaris(StackHanoi s, int n);
+/* Menampilkan Piringan yang ada dalam stack */
 
 void inttodisk(int x, int n);
+/* merubah bentuk integer menjadi display disk pada tower */
 
 void move(char *asal, char *tujuan, StackHanoi *A, StackHanoi *B, StackHanoi *C, int n);
+/* Menggerakan piringan dari tower asal ke tower tujuan */
+/* I.S. Stack asal tidak boleh kosong */
+/* F.S. Stack tujuan bertambah 1 dan stack asal berkurang 1*/
 
 boolean isvalid(char *asal, char *tujuan, StackHanoi *A, StackHanoi *B, StackHanoi *C);
+/*mengembalikan nilai true jika syarat terpenuhi seperti */
 
 int lengthStackHanoi(StackHanoi S);
+/* Mengembalikan panjang stack */
+
 boolean isnumber(char *x);
+/* Mengirim nilai true jika current character pada mesin kata bernilai angka */
+
 int len(char *x);
+/* mengembalikan panjang string */
+
 int strtoint(char *x);
+/* mengembalikan nilai integer dari string */
+
+int currenkatalength(char *x);
+/*Mengembalikan nilai panjang currentkata*/
+
 #endif

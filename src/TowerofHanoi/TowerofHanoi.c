@@ -29,8 +29,9 @@ void scorer(int n, int *score, int langkah)
 
 int TowerofHanoi()
 {
-    int skor, langkah;
+    int skor, langkah, validasi;
     skor = 0;
+    langkah = 0;
     StackHanoi A, B, C;
     CreateHanoi(&A);
     CreateHanoi(&B);
@@ -43,6 +44,14 @@ int TowerofHanoi()
         printf("Input tidak valid! Masukkan jumlah disk: ");
         STARTWORD();
         x = KataToString(currentKata);
+        validasi = strtoint(x);
+        while (validasi <= 0)
+        {
+            printf("Input tidak valid! Masukkan jumlah disk: ");
+            STARTWORD();
+            x = KataToString(currentKata);
+            validasi = strtoint(x);
+        }
     }
     int n = strtoint(x);
     pushdisk(n, &A);
@@ -55,7 +64,7 @@ int TowerofHanoi()
         printf("TIANG TUJUAN: ");
         STARTWORD();
         char *tujuan = KataToString(currentKata);
-        if (isvalid(asal, tujuan, &A, &B, &C))
+        if (isvalid(asal, tujuan, &A, &B, &C) && currenkatalength(asal) == 1 && currenkatalength(tujuan) == 1)
         {
             move(asal, tujuan, &A, &B, &C, n);
             langkah++;
@@ -67,5 +76,5 @@ int TowerofHanoi()
     }
     scorer(n, &skor, langkah);
     printf("Skor didapatkan : %d\n", skor);
-    return skor;
+    return 0;
 }

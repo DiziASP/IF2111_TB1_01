@@ -7,5 +7,6 @@
 
 #include "../ADT/Mesin/mesinkata.h"
 int RNG();
+/*Memainkan game RNG*/
 
 #endif

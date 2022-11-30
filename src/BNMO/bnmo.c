@@ -208,11 +208,19 @@ void STARTGAME(char *userFile)
         if (!IsEOP())
         {
             int totalHistory = KataToInt(currentKata), j = 0;
+            Stack historyTemp;
+            CreateStack(&historyTemp);
             while (j < totalHistory)
             {
                 ADVCONFIG();
-                PushStack(&history, KataToString(currentKata));
+                PushStack(&historyTemp, KataToString(currentKata));
                 j++;
+            }
+            while (!IsEmptyStack(historyTemp))
+            {
+                infotype X;
+                PopStack(&historyTemp, &X);
+                PushStack(&history, X);
             }
         }
 
@@ -1062,7 +1070,7 @@ void HELP()
     printf("11. RESET SCOREBOARD - Untuk menghapus Scoreboard BNMO\n");
     printf("12. HISTORY - Untuk melihat riwayat game yang telah dimainkan\n");
     printf("13. RESET HISTORY - Untuk menghapus riwayat game\n");
-    printf("10. QUIT - Untuk keluar dari program\n");
+    printf("14. QUIT - Untuk keluar dari program\n");
 }
 /* I.S. Sembarang */
 /* F.S. Menampilkan list bantuan */
