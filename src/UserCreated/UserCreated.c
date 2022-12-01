@@ -1,63 +1,121 @@
 #include "UserCreated.h"
 
-ArrayDin Encourage;
-ArrayDin Booster;
-ArrayDin Sad;
-int YourMood;
+BinTree tree;
+int question_node;
 
-void Quotinator()
+int generate_num()
 {
-    YourMood = rand() % 100 + 1;
-    printf("Your mood rate today is %d\n");
+    int x = rand() % 100;
+    return x;
+}
 
-    /* Initial Quote */
-    /* Sad */
-    char sad1[500] = "Aku tahun kau sedang mencari. Tapi mencari kan, tak harus jauh-jauh. Dari aku yang dekat tapi tak pernah kau lihat.";
-    char sad2[500] = "Beberapa jarak diciptakan bukan untuk ditempuh, tapi untuk dibiarkan.";
-    char sad3[500] = "Kalau dunia engga baik ke kamu, kamu tetap harus baik ke dirimu sendiri.";
-    InsertLast(&Sad, sad1);
-    InsertLast(&Sad, sad2);
-    InsertLast(&Sad, sad3);
-    /* Encourage */
-    char encourage1[500] = "Namun bila hari ini adalah yang terakhir, namun ku tetap bahagia. Selalu kusyukuri, begitulah adanya.";
-    char encourage2[500] = "Ulat terbang tak akan cantik. Biji bunga yang belum terbelah. Waktu adalah perias rupa. Berjalanlah berdampingan.";
-    char encourage3[500] = "Mengapa takut pada lara, sementara semua rasa bisa kita cipta.";
-    InsertLast(&Encourage, encourage1);
-    InsertLast(&Encourage, encourage2);
-    InsertLast(&Encourage, encourage3);
-    /* Booster */
-    char booster1[500] = "Kalau ada yang nyakitin kamu, aku bakal bilang 'Kamu nanyaea?'";
-    char booster2[500] = "Jangan kebanyakan kasih kode. Salah tiga kali, hatinya bisa keblokir.";
-    char booster3[500] = "Jika terlalu menjaga image, hidupmu hanyalah sebatas jpeg.";
-    InsertLast(&Booster, booster1);
-    InsertLast(&Booster, booster2);
-    InsertLast(&Booster, booster3);
+BinTree CreateTree(int n)
+{
+    addrNode P;
+    BinTree L, R;
+    infotree X;
+    int nL, nR;
 
-    /* Quotinator */
-    if (YourMood <= 25)
+    if (n == 0)
     {
-        printf("Kamu terindikasi Sadboi/Sadgirl, nih quote yang pas buat kamu!\n\n");
-        printf("%s\n\n", Get(Sad, rand() % Length(Sad)));
-    }
-    else if (YourMood > 25 && YourMood <= 50)
-    {
-        printf("Lagi biasa aja ya? Ini juga ada quote buat kamu ihiy!\n\n");
-        printf("%s\n\n", Get(Encourage, rand() % Length(Encourage)));
+        return NilRec;
     }
     else
     {
-        printf("Idieh lagi seneng kenapa sihh? Kasmaran ya? Nih quote buat kamu\n\n");
-        printf("%s\n\n", Get(Booster, rand() % Length(Booster)));
+        X = generate_num();
+        P = AlokNode(X);
+        if (P != NilRec)
+        {
+            nL = n / 2;
+            nR = n - nL - 1;
+            L = CreateTree(nL);
+            R = CreateTree(nR);
+            Left(P) = L;
+            Right(P) = R;
+        }
+        return P;
     }
 }
+
+int generate_question()
+{
+    /* Find the possible num inside Tree */
+    int x = rand() % 100;
+
+    while (!BSearch(tree, x))
+    {
+        x = rand() % 100;
+    }
+
+    return x;
+}
+
+int check_answer(BinTree P, int x)
+{
+    if (Akar(P) == x)
+    {
+        return 0;
+    }
+    else
+    {
+        if (BSearch(Left(P), x))
+        {
+            return 1 + (2 * check_answer(P->left, x));
+        }
+        else if (BSearch(Right(P), x))
+        {
+            return 2 * check_answer(P->right, x);
+        }
+        else
+        {
+            return -1;
+        }
+    }
+}
+
 int UserCreated()
 {
+    /* Initial States */
     srand(time(NULL));
-    Encourage = MakeArrayDin();
-    Booster = MakeArrayDin();
-    Sad = MakeArrayDin();
-    printf("Selamat datang di QUOTINATOR!\n");
-    Quotinator();
+    int score = 100;
+    tree = CreateTree(15);
 
-    return YourMood;
+    /* Welcome */
+    printf("       _-_\n");
+    printf("    /~~   ~~\\\n");
+    printf(" /~~         ~~\\\n");
+    printf("{               }\n");
+    printf(" \\  _-     -_  /\n");
+    printf("   ~  \\ //  ~\n");
+    printf("_- -   | | _- _\n");
+    printf("  _ -  | |   -_\n");
+    printf("      // \\\n");
+
+    printf("Welcome to the TREE OF LIFE!\n\n");
+    printf("Berikut adalah Pohon Angka kamu:\n");
+    PrintTree(tree, 2);
+
+    /* Game */
+    question_node = generate_question();
+    printf("Angka berapa yang dihasilkan node %d: ", question_node);
+
+    int kunjaw = check_answer(tree, question_node);
+    int answer;
+
+    scanf("%d", &answer);
+    while (answer != kunjaw)
+    {
+        score -= 10;
+        printf("Salah! Coba lagi: ");
+        scanf("%d", &answer);
+    }
+    printf("Kamu berhasil menebak angka %d!\n", kunjaw);
+    printf("Score kamu: %d\n", score);
+    return score;
+}
+
+int main()
+{
+    UserCreated();
+    return 0;
 }
