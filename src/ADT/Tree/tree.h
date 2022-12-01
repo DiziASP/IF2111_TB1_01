@@ -119,7 +119,7 @@ boolean SearchTree(BinTree P, infotree X);
 /* Mengirimkan true jika ada node dari P yang bernilai X */
 
 /* *** Fungsi-Fungsi Lain *** */
-int NbElmt(BinTree P);
+int CountElmt(BinTree P);
 /* Mengirimkan banyaknya elemen (node) pohon biner P */
 int NbDaun(BinTree P);
 /* Mengirimkan banyaknya daun (node) pohon biner P */

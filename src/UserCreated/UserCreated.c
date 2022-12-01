@@ -113,9 +113,3 @@ int UserCreated()
     printf("Score kamu: %d\n", score);
     return score;
 }
-
-int main()
-{
-    UserCreated();
-    return 0;
-}

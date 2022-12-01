@@ -268,7 +268,7 @@ boolean SearchTree(BinTree P, infotree X)
 }
 
 /* *** Fungsi-Fungsi Lain *** */
-int NbElmt(BinTree P)
+int CountElmt(BinTree P)
 /* Mengirimkan banyaknya elemen (node) pohon biner P */
 {
     if (IsTreeEmpty(P))
@@ -277,7 +277,7 @@ int NbElmt(BinTree P)
     }
     else
     {
-        return 1 + NbElmt(Left(P)) + NbElmt(Right(P));
+        return 1 + CountElmt(Left(P)) + CountElmt(Right(P));
     }
 }
 
