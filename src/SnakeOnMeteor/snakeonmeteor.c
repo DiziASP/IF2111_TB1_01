@@ -202,7 +202,8 @@ void printsnake() // ngeprint sklian ngecek kepala dll
                     {
                         can = false;
                     }
-                    DelP(&ular, temp);
+                    if(indexOfLL(ular,temp) == NbElmt(ular)) DelVLast(&ular,&temp);
+                    else DelP(&ular,temp);
                 }
             }else if (SearchLL(ular, temp) != NilLL)
             {
@@ -288,7 +289,7 @@ int snakeonmeteor()
     }
 
     int skorakhir;
-    if (IsEmptyLL(ular))
+    if (IsEmptyLL(ular)) 
         skorakhir = 0;
     else
         skorakhir = indexOfLL(ular, Info(Last(ular))) * 2;
