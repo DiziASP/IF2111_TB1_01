@@ -6,6 +6,9 @@
 #include <time.h>
 #include "../ADT/Tree/tree.h"
 
+extern BinTree tree;
+extern int question_node;
+
 int generate_num();
 
 BinTree CreateTree(int n);
