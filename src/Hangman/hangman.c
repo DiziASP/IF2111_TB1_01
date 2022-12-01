@@ -217,7 +217,7 @@ int hangman()
                 guess = (char *)malloc(255 * sizeof(char));
                 guess[0] = '\0';
                 int idx = 0;
-                while (!answered)
+                while (!answered && !(kesempatan == 0))
                 {
 
                     PrintCurrentState();
