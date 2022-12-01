@@ -234,8 +234,21 @@ void printsnake() // ngeprint sklian ngecek kepala dll
 
     if (gothitbymeteor)
         printf("Anda terkena meteor! \n");
-    else
-        printf("Anda beruntung tidak terkena meteor! Silahkan lanjutkan permainan\n");
+    else if(can) printf("Anda beruntung tidak terkena meteor! Silahkan lanjutkan permainan\n");
+
+
+    infotypeLL kepala = Info(First(ular));
+    int headcanmove = 0;
+    kepala.x = (kepala.x -1 +5)%5;
+    headcanmove += (SearchLL(ular,kepala))!= NilLL || (kepala.x == meteor.x && kepala.y == meteor.y);
+    kepala.x = (kepala.x +2 +5)%5;
+    headcanmove += (SearchLL(ular,kepala))!= NilLL || (kepala.x == meteor.x && kepala.y == meteor.y);
+    kepala.y = (kepala.y -1 +5)%5;
+    headcanmove += (SearchLL(ular,kepala))!= NilLL || (kepala.x == meteor.x && kepala.y == meteor.y);
+    kepala.y = (kepala.x +2 +5)%5;
+    headcanmove += (SearchLL(ular,kepala))!= NilLL || (kepala.x == meteor.x && kepala.y == meteor.y);
+
+    if(headcanmove >= 4) can = false;
 
     gothitbymeteor = false;
     printf("\n");
