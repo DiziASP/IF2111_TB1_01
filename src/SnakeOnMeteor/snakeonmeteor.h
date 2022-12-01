@@ -14,6 +14,7 @@ extern boolean can;
 extern boolean gothitbymeteor;
 extern char *command;
 extern infotypeLL meteor;
+extern int eaten;
 
 void movesnake();
 

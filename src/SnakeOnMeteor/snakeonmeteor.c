@@ -2,6 +2,7 @@
 
 List ular;
 int turn;
+int eaten;
 boolean can;
 boolean gothitbymeteor;
 char *command;
@@ -37,14 +38,13 @@ void movesnake()
         temp.y = kepala.y;
     }
 
-    // masih belum tahu gimana kelanjutannya ini.
     InsVFirst(&ular, temp);
     infotypeLL sampah;
-    DelVLast(&ular, &sampah); // Disini error gatau kenapa
-    // printf("HERE");
+    DelVLast(&ular, &sampah); 
 
-    if (temp.x = food.x && temp.y == food.y)
+    if (temp.x == food.x && temp.y == food.y)
     {
+        eaten = 1;
         infotypeLL ekor = Info(Last(ular));
         ekor.x = (ekor.x - 1 + 5) % 5;
         if (SearchLL(ular, ekor) == NilLL)
@@ -95,6 +95,7 @@ void initialize()
     before = (char *)malloc(100 * sizeof(char));
     before = "D";
     gothitbymeteor = false;
+    int eaten = 0;
 
     // generate koordinat kepala
 
@@ -117,6 +118,8 @@ void initialize()
 void makemeteor()
 {
     meteor = createrandominfotype();
+
+    while (meteor.x == food.x && meteor.y == food.y) meteor = createrandominfotype();
 }
 
 void makefood()
@@ -124,6 +127,7 @@ void makefood()
     food = createrandominfotype();
     while (SearchLL(ular, food) != Nil)
         food = createrandominfotype();
+
 }
 
 char *bacacommand()
@@ -135,47 +139,45 @@ char *bacacommand()
     return kata;
 }
 
-boolean iscommandvalid(char *cmd)
+boolean iscommandvalid(char *cmd) // masih ada error
 {
-    // if(cmd[0] > 90) cmd[0] -= 32;
     boolean checkinput = (IsStringEqual(cmd, "W") || IsStringEqual(cmd, "A") || IsStringEqual(cmd, "S") || IsStringEqual(cmd, "D"));
     boolean cmdbefore = ((IsStringEqual(cmd, "W") && !IsStringEqual(before, "S")) || (IsStringEqual(cmd, "S") && !IsStringEqual(before, "W")) || (IsStringEqual(cmd, "A") && !IsStringEqual(before, "D")) || (IsStringEqual(cmd, "D") && !IsStringEqual(before, "A")));
     int cmdmeteor = 0;
     int cmdmovesnake = 0;
     infotypeLL kepala = Info(First(ular));
 
-    if (cmd == "W")
+    if (IsStringEqual(cmd, "W"))
     {
-        cmdmeteor = ((kepala.y - 1 + 5) % 5) == meteor.y;
+        cmdmeteor = ((kepala.y - 1 + 5) % 5) == meteor.y && kepala.x == meteor.x;
         kepala.y = (kepala.y - 1 + 5) % 5;
     }
-    else if (cmd == "S")
+    else if (IsStringEqual(cmd, "S"))
     {
-        cmdmeteor = ((kepala.y + 1 + 5) % 5) == meteor.y;
-        kepala.x = (kepala.x - 1 + 5) % 5;
-    }
-    else if (cmd == "A")
-    {
-        cmdmeteor = ((kepala.x - 1 + 5) % 5) == meteor.x;
+        cmdmeteor = ((kepala.y + 1 + 5) % 5) == meteor.y && kepala.x == meteor.x;
         kepala.y = (kepala.y + 1 + 5) % 5;
     }
-    else if (cmd == "D")
+    else if (IsStringEqual(cmd, "A"))
     {
-        cmdmeteor = ((kepala.x + 1 + 5) % 5) == meteor.x;
+        cmdmeteor = ((kepala.x - 1 + 5) % 5) == meteor.x && kepala.y == meteor.y;
+        kepala.x = (kepala.x -1 + 5) % 5;
+    }
+    else if (IsStringEqual(cmd, "D"))
+    {
+        cmdmeteor = ((kepala.x + 1 + 5) % 5) == meteor.x && kepala.y == meteor.y;
         kepala.x = (kepala.x + 1 + 5) % 5;
     }
 
     cmdmovesnake = (SearchLL(ular, kepala) == NilLL);
-    if (cmdmeteor == 1)
-        printf("Meteor masih panas! Anda belum dapat kembali ke titik tersebut. %d \n", cmdmeteor);
+    if (cmdmeteor)
+        printf("Meteor masih panas! Anda belum dapat kembali ke titik tersebut. \n");
 
-    // printf("%d %d %d %s\n",checkinput,cmdbefore,cmdmeteor,cmd);
-
-    return checkinput && cmdbefore && !cmdmeteor;
+    return checkinput && cmdbefore && !cmdmeteor && cmdmovesnake;
 }
 
 void printsnake() // ngeprint sklian ngecek kepala dll
 {
+    system("cls");
     printf("Berikut merupakan peta permainan \n\n");
     int j, i;
     for (j = 0; j < 5; j++)
@@ -185,12 +187,14 @@ void printsnake() // ngeprint sklian ngecek kepala dll
             infotypeLL temp;
             temp.x = i;
             temp.y = j;
+            int empty = 0;
 
             printf(" ");
+
             if (temp.x == meteor.x && temp.y == meteor.y)
             {
+                empty = 1;
                 printf("m");
-                // gothitbymeteor = true;
                 if (SearchLL(ular, temp) != NilLL)
                 {
                     gothitbymeteor = true;
@@ -200,9 +204,9 @@ void printsnake() // ngeprint sklian ngecek kepala dll
                     }
                     DelP(&ular, temp);
                 }
-            }
-            else if (SearchLL(ular, temp) != NilLL)
+            }else if (SearchLL(ular, temp) != NilLL)
             {
+                empty = 1;
                 // print dia elemen ke berapa;
                 if (indexOfLL(ular, temp) == 1)
                 {
@@ -211,10 +215,15 @@ void printsnake() // ngeprint sklian ngecek kepala dll
                 else
                     printf("%d", indexOfLL(ular, temp));
             }
-            else
+            else if(temp.x == food.x && temp.y == food.y)
             {
-                printf(" ");
+                empty = 1;
+                printf("o");
             }
+
+            if(!empty) printf(" ");
+
+            if(NbElmt(ular) == 0) can = false;
 
             printf(" ");
             if (i == 4)
@@ -228,15 +237,15 @@ void printsnake() // ngeprint sklian ngecek kepala dll
         printf("Anda beruntung tidak terkena meteor! Silahkan lanjutkan permainan\n");
 
     gothitbymeteor = false;
-    printf("\n\n");
+    printf("\n");
 }
 
 infotypeLL createrandominfotype()
 {
     infotypeLL temp;
     srand(time(NULL));
-    temp.x = rand() % 5;
-    temp.y = rand() % 5;
+    temp.x = rand()%5;
+    temp.y = rand()%5;
     return temp;
 }
 
@@ -247,16 +256,16 @@ int snakeonmeteor()
     printf("Selamat datang di snake on meteor!\n\n");
     printf("Mengenerate peta, snake dan makanan . . .\n\n");
     printf("Berhasil digenerate!\n\n");
-    // int cnt = 0;
 
     while (can)
     {
         printsnake();
         // check apakah udah mati atau belum
 
-        if (can)
+
+        if(can)
         {
-            printf("TURN %d:\n", turn);
+            printf("TURN %d\n", turn);
             command = bacacommand();
 
             while (!iscommandvalid(command))
@@ -264,14 +273,18 @@ int snakeonmeteor()
                 printf("Command tidak valid! Silahkan input command menggunakan huruf W/A/S/D\n");
                 command = bacacommand();
             }
-
+            movesnake();
             turn++;
             before = command;
-
-            makefood();
+            if(eaten)
+            {
+                makefood();
+                eaten = 0;
+            }
             makemeteor();
-            movesnake();
         }
+
+        
     }
 
     int skorakhir;
