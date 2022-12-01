@@ -24,6 +24,7 @@
 #include "../Hangman/hangman.h"
 #include "../DinerDash/dinnerdash.h"
 #include "../TowerOfHanoi/towerofhanoi.h"
+#include "../SnakeOnMeteor/snakeonmeteor.h"
 
 /* *** Initial State dari BNMO *** */
 extern Stack history;
