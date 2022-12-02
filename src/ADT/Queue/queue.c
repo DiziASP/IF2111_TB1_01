@@ -85,3 +85,17 @@ void displayQueue(Queue q)
     printf("%s]\n", TAIL(q));
   }
 }
+
+boolean isInQueue(ElType str, Queue q)
+{
+  int len = length(q);
+  int i;
+  for (i = 0; i < len; i++)
+  {
+    if (IsStringEqual(str, q.buffer[i]))
+    {
+      return true;
+    }
+  }
+  return false;
+}

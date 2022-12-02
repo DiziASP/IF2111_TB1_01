@@ -9,7 +9,7 @@ void rQuery(char **arg1, char **arg2)
 {
     STARTWORD();
     *arg1 = KataToString(currentKata);
-    ADVWORDSTD();
+    ADVWORD();
     *arg2 = KataToString(currentKata);
 }
 
@@ -93,11 +93,8 @@ boolean ValidInput(char *query1, char *query2)
 
 char *IntToString(int x)
 {
-
     char *res = (char *)malloc(sizeof(char) * 100);
-
     itoa(x, res, 10);
-
     return res;
 }
 /* End of fungsi bantuan */
@@ -185,7 +182,7 @@ void RServeCycle(QueueF *RServe, QueueF *Cook, QueueF *Order)
     }
 }
 
-void dinnerdash()
+int dinnerdash()
 {
     ordNum = 0;
     QueueF Order, Cook, RServe;
@@ -271,7 +268,7 @@ void dinnerdash()
                 printf("Tidak ada makanan yang siap disajikan\n");
             }
         }
-        else if (cQuery(query1, "SKIP"))
+        else if (cQuery(query1, "SKIP") && cQuery(query2, "TURN"))
         {
             printf("Skip turn...\n");
             RServeCycle(&RServe, &Cook, &Order);
@@ -294,4 +291,5 @@ void dinnerdash()
     {
         printf("\nMaaf, Anda gagal menyelesaikan level ini!\n");
     }
+    return saldo;
 }

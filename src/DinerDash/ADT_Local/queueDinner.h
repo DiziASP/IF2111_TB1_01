@@ -5,7 +5,7 @@
 #define QUEUEDINNER_H
 
 #include "../../ADT/Boolean/boolean.h"
-#include "../../ADT/Mesin/wordmachine.h"
+#include "../../ADT/Mesin/mesinkata.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>

@@ -1,61 +1,94 @@
 /* File: mesinkata.h */
-/* Definisi Mesin Kata: Model Modifikasi File Eksternal */
+/* Definisi Mesin Word: Model Akuisisi Versi I */
 
 #ifndef __MESINKATA_H__
 #define __MESINKATA_H__
 
 #include "../Boolean/boolean.h"
 #include "mesinkar.h"
-#include <stdio.h>
-#include <stdlib.h>
 
-#define NMax 255
+#define MAX_KATA 255
 #define BLANK ' '
-#define NEWLINE '\n'
 
 typedef struct
 {
-   char TabWord[NMax]; /* container penyimpan kata, indeks yang dipakai [0..NMax-1] */
+   char TabKata[MAX_KATA]; /* container penyimpan kata, indeks yang dipakai [0..NMax-1] */
    int Length;
-} Word;
+} Kata;
 
 /* State Mesin Kata */
-extern Word currentWord;
+extern boolean EndKata;
+extern Kata currentKata;
 
-void IgnoreBlanks();
+/* Pemrosesan Mesin Kata Input */
+void IGNOREBLANKS();
 /* Mengabaikan satu atau beberapa BLANK
-   I.S. : currentChar sembarang
-   F.S. : currentChar ≠ BLANK atau currentChar = MARK */
+   I.S. : CC sembarang
+   F.S. : CC ≠ BLANK atau CC = MARK */
 
-void STARTWORDFILE();
-/* Versi Input dari File Eksternal */
-/* I.S. : currentChar sembarang
-   F.S. : EndWord = true, dan currentChar = MARK;
-          atau EndWord = false, currentWord adalah kata yang sudah diakuisisi,
-          currentChar karakter pertama sesudah karakter terakhir kata */
+void STARTWORD();
+/* I.S. : CC sembarang
+   F.S. : EndWord = true, dan CC = MARK;
+          atau EndWord = false, CWord adalah kata yang sudah diakuisisi,
+          CC karakter pertama sesudah karakter terakhir kata */
 
 void ADVWORD();
+/* I.S. : CC adalah karakter pertama kata yang akan diakuisisi
+   F.S. : CWord adalah kata terakhir yang sudah diakuisisi,
+          CC adalah karakter pertama dari kata berikutnya, mungkin MARK
+          Jika CC = MARK, EndWord = true.
+   Proses : Akuisisi kata menggunakan procedure SalinWord */
+
+void COPYWORD();
+/* Mengakuisisi kata, menyimpan dalam CWord
+   I.S. : CC adalah karakter pertama dari kata
+   F.S. : CWord berisi kata yang sudah diakuisisi;
+          CC = BLANK atau CC = MARK;
+          CC adalah karakter sesudah karakter terakhir yang diakuisisi.
+          Jika panjang kata melebihi NMax, maka sisa kata "dipotong" */
+
+/* Pemrosesan Mesin Kata File */
+void IGNOREBLANKSFILE();
+/* Mengabaikan satu atau beberapa BLANK
+   I.S. : currentChar sembarang
+   F.S. : currentChar ≠ BLANK atau currentChar = NEWLINE */
+
+void STARTWORDFILE(char *filename);
+/* Memulai Pembacaan Kata pada File */
+
+void ADVWORDFILE();
+/* I.S. : currentChar adalah karakter pertama kata yang akan diakuisisi
+   F.S. : currentWord adalah kata terakhir yang sudah diakuisisi,
+         currentChar adalah karakter pertama dari kata berikutnya, mungkin NEWLINE
+         Jika currentChar = NEWLINE, endWord = true.
+   Proses : Akuisisi kata menggunakan procedure CopyWord */
+
+void COPYWORDFILE();
+/* Mengakuisisi kata, menyimpan dalam currentWord
+   I.S. : currentChar adalah karakter pertama dari kata
+   F.S. : currentWord berisi kata yang sudah diakuisisi;
+         currentChar = BLANK atau currentChar = NEWLINE;
+         currentChar adalah karakter sesudah karakter terakhir yang diakuisisi.
+         Jika panjang kata melebihi CAPACITY, maka sisa kata terpotong */
+
+void STARTCONFIG(char *filename);
+
+void ADVCONFIG();
 /* I.S. : currentChar adalah karakter pertama kata yang akan diakuisisi
    F.S. : currentWord adalah kata terakhir yang sudah diakuisisi,
           currentChar adalah karakter pertama dari kata berikutnya, mungkin MARK
           Jika currentChar = MARK, EndWord = true.
-   Proses : Akuisisi kata menggunakan procedure SalinWord */
+   Proses : Akuisisi kata menggunakan procedure COPYWORDFILE */
 
-void CopyWord();
-/* Mengakuisisi kata, menyimpan dalam currentWord
-   I.S. : currentChar adalah karakter pertama dari kata
-   F.S. : currentWord berisi kata yang sudah diakuisisi;
-          currentChar = BLANK atau currentChar = MARK;
-          currentChar adalah karakter sesudah karakter terakhir yang diakuisisi.
-          Jika panjang kata melebihi NMax, maka sisa kata "dipotong" */
+void stringify();
 
-int WordToInt();
-/* Mengubah Word menjadi integer
-   I.S. : W terdefinisi
-   F.S. : W berisi integer yang sudah diakuisisi */
+boolean IsStringEqual(char *str1, char *str2);
 
-char *WordToString();
-/* Mengubah Word menjadi string
-   I.S. : W terdefinisi
-   F.S. : W berisi string yang sudah diakuisisi */
+char *KataToString(Kata Kata);
+
+int KataToInt(Kata kata);
+
+void concatStr(char *str1, char *str2, char *str3);
+
+boolean ContainStr(char *query, char *comp);
 #endif
