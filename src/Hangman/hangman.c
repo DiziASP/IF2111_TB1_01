@@ -63,6 +63,7 @@ void SaveDictionary(Set word, Set answer)
     {
         fprintf(fp, i < lengthSet(answer) - 1 ? "%s\n" : "%s", answer.Elements[i]);
     }
+    fclose(fp);
 }
 
 void LoadDictionary(Set *question, Set *boi)
@@ -142,7 +143,7 @@ boolean CheckAnswer(char useranswer)
 
     while (ans[i] != '\0')
     {
-        if (ans[i] == useranswer)
+        if (ans[i] == useranswer || (ans[i] == '-' && useranswer == '-'))
         {
             found = true;
             break;
@@ -251,9 +252,6 @@ int hangman()
         else if (cmd == '2')
         {
             AddDictionary(&word, &answer);
-            PrintSet(word);
-            PrintSet(answer);
-
             printf("Pertanyaan berhasil ditambahkan!\n");
         }
         else if (cmd == '3')
