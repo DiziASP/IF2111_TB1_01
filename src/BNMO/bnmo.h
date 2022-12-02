@@ -25,12 +25,13 @@
 #include "../DinerDash/dinnerdash.h"
 #include "../TowerOfHanoi/towerofhanoi.h"
 #include "../SnakeOnMeteor/snakeonmeteor.h"
+#include "../TreeOfLife/treeoflife.h"
 
 /* *** Initial State dari BNMO *** */
 extern Stack history;
 extern Set gamesList;
 extern Queue nowPlaying;
-extern Map scoreboardRNG, scoreboardDinerDash, scoreboardHangman, scoreboardTowerOfHanoi, scoreboardSnake, scoreboardCustomGame;
+extern Map scoreboardRNG, scoreboardDinerDash, scoreboardHangman, scoreboardTowerOfHanoi, scoreboardSnake, scoreboardTreeOfLife, scoreboardCustomGame;
 extern boolean Quit, isLoad, isSave;
 extern char *userCreated, *username;
 

@@ -6,7 +6,7 @@
 Stack history;
 Set gamesList;
 Queue nowPlaying;
-Map scoreboardRNG, scoreboardDinerDash, scoreboardHangman, scoreboardTowerOfHanoi, scoreboardSnake, scoreboardCustomGame;
+Map scoreboardRNG, scoreboardDinerDash, scoreboardHangman, scoreboardTowerOfHanoi, scoreboardSnake, scoreboardTreeOfLife, scoreboardCustomGame;
 boolean Quit, isLoad, isSave;
 char *userCreated, *username, *currSaveFile;
 
@@ -27,6 +27,7 @@ void MAINMENU()
     CreateMap(&scoreboardHangman);
     CreateMap(&scoreboardTowerOfHanoi);
     CreateMap(&scoreboardSnake);
+    CreateMap(&scoreboardTreeOfLife);
     CreateMap(&scoreboardCustomGame);
 
     /* STATE MAIN MENU */
@@ -230,7 +231,6 @@ void STARTGAME(char *userFile)
         if (!IsEOP())
         {
             int totalRNG = KataToInt(currentKata), k = 0;
-            printf("Total RNG: %d\n", totalRNG);
             while (k < totalRNG)
             {
                 ADVWORDFILE();
@@ -247,7 +247,6 @@ void STARTGAME(char *userFile)
         if (!IsEOP())
         {
             int totalDiner = KataToInt(currentKata), l = 0;
-            printf("Total Diner: %d\n", totalDiner);
             while (l < totalDiner)
             {
                 ADVWORDFILE();
@@ -307,7 +306,22 @@ void STARTGAME(char *userFile)
             }
         }
 
-        /* 1.3.6 Custom Game */
+        /* 1.3.6 Tree Of Life */
+        ADVCONFIG();
+        if (!IsEOP())
+        {
+            int totalTree = KataToInt(currentKata), l = 0;
+            while (l < totalTree)
+            {
+                ADVWORDFILE();
+                char *Key = KataToString(currentKata);
+                ADVWORDFILE();
+                int Value = KataToInt(currentKata);
+                InsertMap(&scoreboardTreeOfLife, Key, Value);
+                l++;
+            }
+        }
+        /* 1.3.7 Custom Game */
         ADVCONFIG();
         if (!IsEOP())
         {
@@ -333,10 +347,10 @@ void STARTGAME(char *userFile)
         }
 
         /* 3. User created game */
-        if (lengthSet(gamesList) > 5)
+        if (lengthSet(gamesList) > 6)
         {
             userCreated = (char *)malloc(100 * sizeof(char));
-            userCreated = gamesList.Elements[5];
+            userCreated = gamesList.Elements[6];
         }
         isLoad = true;
         currSaveFile = userFile;
@@ -391,6 +405,8 @@ void SAVEGAME(char *userInput)
     sortedMap(&scoreboardHangman);
     sortedMap(&scoreboardTowerOfHanoi);
     sortedMap(&scoreboardSnake);
+    sortedMap(&scoreboardTreeOfLife);
+    sortedMap(&scoreboardCustomGame);
 
     /* Scoreboard RNG */
     fprintf(file, "%d\n", scoreboardRNG.Count); // Banyak data RNG
@@ -425,6 +441,13 @@ void SAVEGAME(char *userInput)
     for (int i = 0; i < scoreboardSnake.Count; i++)
     {
         fprintf(file, "%s %d\n", scoreboardSnake.Elements[i].Key, scoreboardSnake.Elements[i].Value);
+    }
+
+    /* Scoreboard Tree */
+    fprintf(file, "%d\n", scoreboardTreeOfLife.Count); // Banyak data Tree
+    for (int i = 0; i < scoreboardTreeOfLife.Count; i++)
+    {
+        fprintf(file, "%s %d\n", scoreboardTreeOfLife.Elements[i].Key, scoreboardTreeOfLife.Elements[i].Value);
     }
 
     /* Scoreboard Custom */
@@ -628,6 +651,15 @@ void PLAYGAME(Queue *daftargame)
         int score = snakeonmeteor();
         InsertMap(&scoreboardSnake, username, score);
     }
+    else if (IsStringEqual(game_now, "TREE OF LIFE"))
+    {
+        PushStack(&history, "TREE OF LIFE");
+        printf("Loading %s ...\n\n", game_now);
+        printf("Masukkan Username (tanpa spasi)\n");
+        username = readQuery();
+        int score = treeoflife();
+        InsertMap(&scoreboardTreeOfLife, username, score);
+    }
     else if (userCreated != NULL && IsStringEqual(game_now, userCreated))
     {
         PushStack(&history, userCreated);
@@ -703,6 +735,15 @@ void SKIPGAME(Queue *daftargame)
             username = readQuery();
             int score = snakeonmeteor();
             InsertMap(&scoreboardSnake, username, score);
+        }
+        else if (IsStringEqual(game_now, "TREE OF LIFE"))
+        {
+            PushStack(&history, "TREE OF LIFE");
+            printf("Loading %s ...\n\n", game_now);
+            printf("Masukkan Username (tanpa spasi)\n");
+            username = readQuery();
+            int score = treeoflife();
+            InsertMap(&scoreboardTreeOfLife, username, score);
         }
         else if (userCreated != NULL && IsStringEqual(game_now, userCreated))
         {
@@ -815,6 +856,7 @@ void SCOREBOARD(Map scoreboardRNG, Map scoreboardDinerDash, Map scoreboardHangma
     sortedMap(&scoreboardHangman);
     sortedMap(&scoreboardTowerOfHanoi);
     sortedMap(&scoreboardSnake);
+    sortedMap(&scoreboardTreeOfLife);
     sortedMap(&scoreboardCustomGame);
     int panjang, i;
     i = 0;
@@ -894,6 +936,22 @@ void SCOREBOARD(Map scoreboardRNG, Map scoreboardDinerDash, Map scoreboardHangma
         while (i < panjang)
         {
             printf("| %-10s | %-10d |\n", scoreboardSnake.Elements[i].Key, scoreboardSnake.Elements[i].Value);
+            i++;
+        }
+    }
+    i = 0;
+    panjang = scoreboardTreeOfLife.Count;
+    printf("\n**** SCOREBOARD GAME TREE OF LIFE ****\n");
+    if (panjang == 0)
+    {
+        printf("------SCOREBOARD KOSONG------\n");
+    }
+    else
+    {
+        printf("|       NAMA |       SKOR |\n");
+        while (i < panjang)
+        {
+            printf("| %-10s | %-10d |\n", scoreboardTreeOfLife.Elements[i].Key, scoreboardTreeOfLife.Elements[i].Value);
             i++;
         }
     }
