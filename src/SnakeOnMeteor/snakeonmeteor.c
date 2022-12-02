@@ -246,13 +246,14 @@ void printsnake() // ngeprint sklian ngecek kepala dll
     infotypeLL kepala = Info(First(ular));
     int headcanmove = 0;
     kepala.x = (kepala.x -1 +5)%5;
-    headcanmove += (SearchLL(ular,kepala))!= NilLL || (kepala.x == meteor.x && kepala.y == meteor.y);
+    headcanmove += ((SearchLL(ular,kepala))!= NilLL) || (kepala.x == meteor.x && kepala.y == meteor.y);
     kepala.x = (kepala.x +2 +5)%5;
-    headcanmove += (SearchLL(ular,kepala))!= NilLL || (kepala.x == meteor.x && kepala.y == meteor.y);
+    headcanmove += ((SearchLL(ular,kepala))!= NilLL) || (kepala.x == meteor.x && kepala.y == meteor.y);
+    kepala.x = (kepala.x -1 + 5)%5;
     kepala.y = (kepala.y -1 +5)%5;
-    headcanmove += (SearchLL(ular,kepala))!= NilLL || (kepala.x == meteor.x && kepala.y == meteor.y);
+    headcanmove += ((SearchLL(ular,kepala))!= NilLL) || (kepala.x == meteor.x && kepala.y == meteor.y);
     kepala.y = (kepala.y +2 +5)%5;
-    headcanmove += (SearchLL(ular,kepala))!= NilLL || (kepala.x == meteor.x && kepala.y == meteor.y);
+    headcanmove += ((SearchLL(ular,kepala))!= NilLL) || (kepala.x == meteor.x && kepala.y == meteor.y);
 
     if(headcanmove >= 4) can = false;
 
