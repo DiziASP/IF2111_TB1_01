@@ -9,12 +9,16 @@
 #include <time.h>
 
 extern List ular;
+extern int firstprint;
+extern int headhit;
 extern int turn;
+extern int eaten;
 extern boolean can;
 extern boolean gothitbymeteor;
 extern char *command;
+extern char *before;
 extern infotypeLL meteor;
-extern int eaten;
+extern infotypeLL food;
 
 void movesnake();
 

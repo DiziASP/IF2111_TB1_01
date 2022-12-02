@@ -1,6 +1,8 @@
 #include "snakeonmeteor.h"
 
 List ular;
+int firstprint;
+int headhit;
 int turn;
 int eaten;
 boolean can;
@@ -9,6 +11,7 @@ char *command;
 char *before;
 infotypeLL meteor;
 infotypeLL food;
+
 
 void movesnake()
 {
@@ -86,6 +89,7 @@ void movesnake()
 
 void initialize()
 {
+    headhit = 0;
     turn = 1;
     can = true;
     meteor.x = -1;
@@ -96,6 +100,7 @@ void initialize()
     before = "D";
     gothitbymeteor = false;
     int eaten = 0;
+    firstprint = 1;
 
     // generate koordinat kepala
 
@@ -177,7 +182,7 @@ boolean iscommandvalid(char *cmd) // masih ada error
 
 void printsnake() // ngeprint sklian ngecek kepala dll
 {
-    system("cls");
+
     printf("Berikut merupakan peta permainan \n\n");
     int j, i;
     for (j = 0; j < 5; j++)
@@ -200,6 +205,7 @@ void printsnake() // ngeprint sklian ngecek kepala dll
                     gothitbymeteor = true;
                     if (indexOfLL(ular, temp) == 1)
                     {
+                        headhit = 1;
                         can = false;
                     }
                     if(indexOfLL(ular,temp) == NbElmt(ular)) DelVLast(&ular,&temp);
@@ -209,7 +215,7 @@ void printsnake() // ngeprint sklian ngecek kepala dll
             {
                 empty = 1;
                 // print dia elemen ke berapa;
-                if (indexOfLL(ular, temp) == 1)
+                if (indexOfLL(ular, temp) == 1 && !headhit)
                 {
                     printf("H");
                 }
@@ -234,8 +240,8 @@ void printsnake() // ngeprint sklian ngecek kepala dll
 
     if (gothitbymeteor)
         printf("Anda terkena meteor! \n");
-    else if(can) printf("Anda beruntung tidak terkena meteor! Silahkan lanjutkan permainan\n");
-
+    else if(can && !firstprint) printf("Anda beruntung tidak terkena meteor! Silahkan lanjutkan permainan\n");
+    firstprint = 0;
 
     infotypeLL kepala = Info(First(ular));
     int headcanmove = 0;
@@ -275,8 +281,6 @@ int snakeonmeteor()
     {
         printsnake();
         // check apakah udah mati atau belum
-
-
         if(can)
         {
             printf("TURN %d\n", turn);
