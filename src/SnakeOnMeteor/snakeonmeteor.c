@@ -251,7 +251,7 @@ void printsnake() // ngeprint sklian ngecek kepala dll
     headcanmove += (SearchLL(ular,kepala))!= NilLL || (kepala.x == meteor.x && kepala.y == meteor.y);
     kepala.y = (kepala.y -1 +5)%5;
     headcanmove += (SearchLL(ular,kepala))!= NilLL || (kepala.x == meteor.x && kepala.y == meteor.y);
-    kepala.y = (kepala.x +2 +5)%5;
+    kepala.y = (kepala.y +2 +5)%5;
     headcanmove += (SearchLL(ular,kepala))!= NilLL || (kepala.x == meteor.x && kepala.y == meteor.y);
 
     if(headcanmove >= 4) can = false;
@@ -309,7 +309,7 @@ int snakeonmeteor()
     if (IsEmptyLL(ular)) 
         skorakhir = 0;
     else
-        skorakhir = indexOfLL(ular, Info(Last(ular))) * 2;
+        skorakhir = NbElmt(ular) * 2;
 
     printf("Game berakhir. Skor : %d\n", skorakhir);
     return skorakhir;
