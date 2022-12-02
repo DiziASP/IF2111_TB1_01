@@ -175,7 +175,7 @@ void MAINMENU()
         {
             printf("Input tidak valid. Silahkan coba kembali\n");
         }
-        if (isLoad)
+        if (isLoad && !Quit)
         {
             MMSCREEN();
         }
@@ -967,7 +967,7 @@ void SCOREBOARD(Map scoreboardRNG, Map scoreboardDinerDash, Map scoreboardHangma
         printf("|       NAMA |       SKOR |\n");
         while (i < panjang)
         {
-            printf("| %-10s | %-10d |\n", scoreboardCustomGame.Elements[i].Key, scoreboardSnake.Elements[i].Value);
+            printf("| %-10s | %-10d |\n", scoreboardCustomGame.Elements[i].Key, scoreboardCustomGame.Elements[i].Value);
             i++;
         }
     }
