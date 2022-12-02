@@ -170,25 +170,6 @@ void MAINMENU()
             {
                 QUITGAME();
             }
-<<<<<<< HEAD
-        }
-        else if (compQuery(query, "SKIPGAME"))
-        {
-            SKIPGAME(&nowPlaying);
-        }
-        else if (compQuery(query, "HELP"))
-        {
-            HELP();
-        }
-        else if (compQuery(query, "SKIPGAME"))
-        {
-            SKIPGAME(&nowPlaying);
-        }
-        else if (compQuery(query, "QUIT"))
-        {
-            QUITGAME();
-=======
->>>>>>> 6ea515785ac8fe06f49539009f8e17e1c918f954
         }
         else
         {
