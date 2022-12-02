@@ -80,7 +80,9 @@ void movesnake()
                         InsVLast(&ular, ekor);
                     }
                     else
+                    {
                         can = false;
+                    } 
                 }
             }
         }
@@ -185,6 +187,30 @@ void printsnake() // ngeprint sklian ngecek kepala dll
 
     printf("Berikut merupakan peta permainan \n\n");
     int j, i;
+
+    for(j = 0;j < 5;j++)
+    {
+        for(i = 0;i < 5;i++)
+        {
+            infotypeLL temp;
+            temp.x = i;
+            temp.y = j;
+            if(temp.x == meteor.x && temp.y == meteor.y)
+            {
+                if (SearchLL(ular, temp) != NilLL)
+                {
+                    gothitbymeteor = true;
+                    if (indexOfLL(ular, temp) == 1)
+                    {
+                        headhit = 1;
+                        can = false;
+                    }
+                    if(indexOfLL(ular,temp) == NbElmt(ular)) DelVLast(&ular,&temp);
+                    else DelP(&ular,temp);
+                }
+            }                    
+        }
+    }
     for (j = 0; j < 5; j++)
     {
         for (i = 0; i < 5; i++)
@@ -200,17 +226,7 @@ void printsnake() // ngeprint sklian ngecek kepala dll
             {
                 empty = 1;
                 printf("m");
-                if (SearchLL(ular, temp) != NilLL)
-                {
-                    gothitbymeteor = true;
-                    if (indexOfLL(ular, temp) == 1)
-                    {
-                        headhit = 1;
-                        can = false;
-                    }
-                    if(indexOfLL(ular,temp) == NbElmt(ular)) DelVLast(&ular,&temp);
-                    else DelP(&ular,temp);
-                }
+
             }else if (SearchLL(ular, temp) != NilLL)
             {
                 empty = 1;
@@ -236,7 +252,7 @@ void printsnake() // ngeprint sklian ngecek kepala dll
             if (i == 4)
                 printf("\n");
         }
-    }
+    }    
 
     if (gothitbymeteor)
         printf("Anda terkena meteor! \n");
